@@ -9,7 +9,11 @@ import java.util.List;
 
 import fr.cgaiton611.model.Computer;
 
-
+/**
+ * CRUD operations for entity Computer
+ * @author cyril
+ * @version 1.0
+ */
 public class ComputerDAO extends DAO<Computer>{
 	
 	@Override

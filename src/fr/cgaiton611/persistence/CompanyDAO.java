@@ -9,7 +9,11 @@ import java.util.List;
 
 import fr.cgaiton611.model.Company;
 
-
+/**
+ * CRUD operations for entity Company
+ * @author cyril
+ * @version 1.0
+ */
 public class CompanyDAO extends DAO<Company>{
 
 	@Override
