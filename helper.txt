@@ -1,0 +1,8 @@
+Commands available :
+    'ls computer'  : List computers
+    'ls company'   : List companies
+    'get computer' : Show computer details
+    'create computer'   : Create a computer
+    'update computer'   : Update a computer
+    'delete computer'   : Delete a computer
+
