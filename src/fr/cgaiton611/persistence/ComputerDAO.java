@@ -109,15 +109,15 @@ public class ComputerDAO extends DAO<Computer>{
         }
 	}
 	
-	public List<Computer> find_all(int l1, int l2) {
+	public List<Computer> find_all(int page, int nb_elements) {
 		List<Computer> computers = null;
         try {
             PreparedStatement prepare = this.connection
                     .prepareStatement(
-                            "SELECT * FROM computer LIMIT ?, ? "
+                            "SELECT * FROM computer LIMIT ? OFFSET ? "
                     );
-            prepare.setInt(1, l1);
-            prepare.setInt(2, l2);
+            prepare.setInt(1, nb_elements);
+            prepare.setInt(2, page*nb_elements);
             ResultSet rs = prepare.executeQuery();
             computers = new ArrayList<>();
             while(rs.next()) {

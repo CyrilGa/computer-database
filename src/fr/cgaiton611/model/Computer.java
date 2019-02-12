@@ -2,6 +2,12 @@ package fr.cgaiton611.model;
 
 import java.sql.Timestamp;
 
+/**
+ * Represent a computer with an id, name, introduced date, discontinued date and company_id
+ * of which company manufactured it
+ * @author cyril
+ * @version 1.0
+ */
 public class Computer {
 	private long id;
 	private String name;

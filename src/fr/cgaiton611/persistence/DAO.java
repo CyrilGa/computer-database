@@ -2,25 +2,42 @@ package fr.cgaiton611.persistence;
 
 import java.sql.Connection;
 
+/**
+ * Abstract Class getting the connection with the database
+ * and define CRUD method to be implemented
+ * @author cyril
+ * @version 1.0
+ * @param <T>
+ */
 public abstract class DAO<T> {
 
     public Connection connection = ConnectionDatabase.getInstance();
 
-
-    // Permet de creer un objet dans la base de donnees.
-    
+    /**
+     * Create an object in the database
+     * @param obj
+     * @return
+     */
     public abstract T create (T obj);
-
-    // Permet de trouver un objet
     
+    /**
+     * Find an object in the database
+     * @param obj
+     * @return
+     */
     public abstract T find (T obj);
 
-    // Permet de modifier un objet existant dans la base de donnees.
-
+    /**
+     * Update an object in the database
+     * @param obj
+     * @return
+     */
     public abstract T  update (T obj);
 
-    // Permet de supprimer un objet dans la base de donnees.
-
+    /**
+     * Delete an object in the database
+     * @param obj
+     */
     public abstract void delete(T obj);
 
 

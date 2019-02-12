@@ -1,5 +1,10 @@
 package fr.cgaiton611.model;
 
+/**
+ * Represent a company with an id and name
+ * @author cyril
+ * @version 1.0
+ */
 public class Company {
 	private long id;
 	private String name;

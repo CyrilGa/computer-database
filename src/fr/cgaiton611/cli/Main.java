@@ -2,8 +2,17 @@ package fr.cgaiton611.cli;
 
 import java.util.Scanner;
 
+/**
+ * Main class for the cli
+ * @author cyril
+ * @version 1.0
+ */
 public class Main {
 	
+	/**
+	 * Wait for the user entry and call facade method appropriately
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		
 		Scanner scanner = new Scanner(System.in);
