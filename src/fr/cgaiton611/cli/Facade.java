@@ -12,6 +12,7 @@ import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.persistence.CompanyDAO;
 import fr.cgaiton611.persistence.ComputerDAO;
+import fr.cgaiton611.validation.Validator;
 
 /**
  * Class serving as a front-facing interface for treating the cli
@@ -24,6 +25,7 @@ public class Facade {
 	Scanner scanner = new Scanner(System.in);
 	CompanyDAO companyDAO = new CompanyDAO();
 	ComputerDAO computerDAO = new ComputerDAO();
+	Validator validator = new Validator();
 	
 	/**
 	 * Use pagination to return a list of computers
@@ -36,10 +38,10 @@ public class Facade {
 	    	for (Computer computer : computers) {
 				System.out.println(computer.toString());
 			}
-	    	System.out.println("p for previous, n for next, q for quit");
+	    	System.out.println("p for previous, n for next, e for exit");
 	        String command = scanner.nextLine();
-	        while ((!command.equals("p")) && (!command.equals("n")) && (!command.equals("q"))) {
-		    	System.out.println("p for previous, n for next, q for quit");
+	        while ((!command.equals("p")) && (!command.equals("n")) && (!command.equals("e"))) {
+		    	System.out.println("p for previous, n for next, e for exit");
 		        command = scanner.nextLine();
 	        }
 	        if (command.equals("p")) {
@@ -49,7 +51,7 @@ public class Facade {
 	        else if (command.equals("n")){
 	        	page++;
 	        }
-	        else if (command.equals("q")){
+	        else if (command.equals("e")){
 	        	break;
 	        }
 		}
@@ -66,10 +68,10 @@ public class Facade {
 	    	for (Company company : companies) {
 				System.out.println(company.toString());
 			}
-	    	System.out.println("p for previous, n for next, q for quit");
+	    	System.out.println("p for previous, n for next, e for exit");
 	        String command = scanner.nextLine();
-	        while ((!command.equals("p")) && (!command.equals("n")) && (!command.equals("q"))) {
-		    	System.out.println("p for previous, n for next, q for quit");
+	        while ((!command.equals("p")) && (!command.equals("n")) && (!command.equals("e"))) {
+		    	System.out.println("p for previous, n for next, e for exit");
 		        command = scanner.nextLine();
 	        }
 	        if (command.equals("p")) {
@@ -79,7 +81,7 @@ public class Facade {
 	        else if (command.equals("n")){
 	        	page++;
 	        }
-	        else if (command.equals("q")){
+	        else if (command.equals("e")){
 	        	break;
 	        }
 		}
@@ -92,11 +94,12 @@ public class Facade {
 		System.out.println("Id: ");
         String id_str = scanner.nextLine();
 		int id = 0;
-		try {
+		if (validator.isInt(id_str)) {
 			id = Integer.parseInt(id_str);
 		}
-		catch (Exception e) {
-			System.out.println("<id:integer>");
+		else {
+			System.out.println("id must be an interger");
+			return;
 		}
 		Computer computer = computerDAO.find(new Computer(id));
 		if (computer == null) System.out.println("Computer not found");
@@ -115,11 +118,11 @@ public class Facade {
 		System.out.println("Company id: ");
 		String company_id_str = scanner.nextLine();
 		int company_id = 0;
-		try {
+		if (validator.isInt(company_id_str)) {
 			company_id = Integer.parseInt(company_id_str);
 		}
-		catch (Exception e) {
-			System.out.println("id must be an interger");
+		else {
+			System.out.println("company_id must be an interger");
 			return;
 		}
 		
@@ -127,8 +130,8 @@ public class Facade {
 		Timestamp introduced = new Timestamp(new Date().getTime());
 		
 		Computer computer = new Computer(name, introduced, null, company_id);
-		computerDAO.create(computer);
-		System.out.println("Computer sucefully created !");
+		computer = computerDAO.create(computer);
+		System.out.println("Computer sucefully created ! (id: "+computer.getId()+")");
 	}
 	
 	/**
@@ -137,7 +140,15 @@ public class Facade {
 	public void updateComputer() {
 		// id
 		System.out.println("id to update: ");
-		int id = Integer.parseInt(scanner.nextLine());
+		String id_str = scanner.nextLine();
+		int id;
+		if (validator.isInt(id_str)) {
+			id = Integer.parseInt(id_str);
+		}
+		else {
+			System.out.println("id must be an interger");
+			return;
+		}
 		
 		// name
 		System.out.println("New name: ");
@@ -145,7 +156,15 @@ public class Facade {
 		
 		// company_id
 		System.out.println("New company id: ");
-		int company_id = Integer.parseInt(scanner.nextLine());
+		String company_id_str = scanner.nextLine();
+		int company_id = 0;
+		if (validator.isInt(company_id_str)) {
+			company_id = Integer.parseInt(company_id_str);
+		}
+		else {
+			System.out.println("company_id must be an interger");
+			return;
+		}
 		
 		Computer computer = new Computer(id, name, null, null, company_id);
 		computerDAO.update(computer);
@@ -159,11 +178,12 @@ public class Facade {
 		System.out.println("Id: ");
         String id_str = scanner.nextLine();
 		int id = 0;
-		try {
+		if (validator.isInt(id_str)) {
 			id = Integer.parseInt(id_str);
 		}
-		catch (Exception e) {
-			System.out.println("<id:integer>");
+		else {
+			System.out.println("company_id must be an interger");
+			return;
 		}
 		computerDAO.delete(new Computer(id));
 		System.out.println("Computer sucefully deleted !");
