@@ -20,7 +20,7 @@ public class Main {
             else if ("ls company".equals(input)) {
             	facade.findAllCompany();
             }
-			else if (input.startsWith("get computer")) {
+			else if ("get computer".equals(input)) {
 				facade.findComputerById();
 			}
 			else if ("create computer".equals(input)) {

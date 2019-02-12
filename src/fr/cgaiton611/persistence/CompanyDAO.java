@@ -47,11 +47,13 @@ public class CompanyDAO extends DAO<Company>{
             prepare.setLong(1, obj.getId());
             ResultSet rs = prepare.executeQuery();
             if(rs.first()) {
-            	System.out.println("salut");
                 obj = new Company(
                         obj.getId(),
                         rs.getString("name")
                 );
+            }
+            else {
+            	obj = null;
             }
 
         } catch (SQLException e) {

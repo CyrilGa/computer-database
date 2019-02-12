@@ -58,6 +58,9 @@ public class ComputerDAO extends DAO<Computer>{
                         rs.getLong("company_id")
                 );
             }
+            else {
+            	obj= null;
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
