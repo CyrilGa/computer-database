@@ -40,10 +40,10 @@ public class Validator {
 				&& isInt(day)
 				&& isInt(hour)
 				&& isInt(minute)){
-			if (isIn(year, -1900, 9999)
+			if (isIn(year, 0000, 9999)
 					&& isIn(month, 0, 11)
 					&& isIn(day, 1, 31)
-					&& isIn(hour, 0, 59)
+					&& isIn(hour, 0, 23)
 					&& isIn(minute, 0, 59)) {
 				return true;
 			}
