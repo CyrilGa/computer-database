@@ -35,10 +35,12 @@ public class Facade {
 			List<Computer> computers = computerService.findPaged(page);
 			printUtil.printEntities(computers);
 			printUtil.printn("p for previous, n for next, e for exit");
-			String input = scanUtil.askString("--> ", false);
+			printUtil.print("--> ");
+			String input = scanUtil.getLine();
 			while ((!input.equals("p")) && (!input.equals("n")) && (!input.equals("e"))) {
 				printUtil.printn("p for previous, n for next, e for exit");
-				input = scanUtil.askString("--> ", false);
+				printUtil.print("--> ");
+				input = scanUtil.getLine();
 			}
 			if (input.equals("p"))
 				page = page == 0 ? 0 : page--;
@@ -58,10 +60,12 @@ public class Facade {
 			List<Company> company = companyService.findPaged(page);
 			printUtil.printEntities(company);
 			printUtil.printn("p for previous, n for next, e for exit");
-			String input = scanUtil.askString("--> ", false);
+			printUtil.print("--> ");
+			String input = scanUtil.getLine();
 			while ((!input.equals("p")) && (!input.equals("n")) && (!input.equals("e"))) {
 				printUtil.printn("p for previous, n for next, e for exit");
-				input = scanUtil.askString("--> ", false);
+				printUtil.print("--> ");
+				input = scanUtil.getLine();
 			}
 			if (input.equals("p"))
 				page = page == 0 ? 0 : page--;
