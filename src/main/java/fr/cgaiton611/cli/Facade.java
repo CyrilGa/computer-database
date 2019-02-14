@@ -5,12 +5,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Scanner;
 
+import fr.cgaiton611.cli.util.PrintUtil;
+import fr.cgaiton611.cli.util.ScanUtil;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
-import fr.cgaiton611.persistence.CompanyDAO;
-import fr.cgaiton611.persistence.ComputerDAO;
+import fr.cgaiton611.service.CompanyService;
+import fr.cgaiton611.service.ComputerService;
 
 /**
  * Class serving as a front-facing interface for treating the cli
@@ -20,73 +21,48 @@ import fr.cgaiton611.persistence.ComputerDAO;
 public class Facade {
 
 
-	Scanner scanner = new Scanner(System.in);
-	CompanyDAO companyDAO = new CompanyDAO();
-	ComputerDAO computerDAO = new ComputerDAO();
-	Validator validator = new Validator();
 	ScanUtil scanUtil = new ScanUtil();
-
+	PrintUtil printUtil = new PrintUtil();
+	ComputerService computerService = new ComputerService();
+	CompanyService companyService = new CompanyService();
+	
 	/**
 	 * Use pagination to return a list of computers
 	 */
-	public void findAllComputer() {
-		int nb_elements = 15;
+	public void findPagedComputer() {
 		int page = 0;
 		while (true) {
-			List<Computer> computers = computerDAO.find_all(page, nb_elements);
-			for (Computer computer : computers) {
-				System.out.println(computer.toString());
+			List<Computer> computers = computerService.findPaged(page);
+			printUtil.printEntities(computers);
+			printUtil.printn("p for previous, n for next, e for exit");
+			String input = scanUtil.askString("--> ", false);
+			while ((!input.equals("p")) && (!input.equals("n")) && (!input.equals("e"))) {
+				printUtil.printn("p for previous, n for next, e for exit");
+				input = scanUtil.askString("--> ", false);
 			}
-			System.out.println("p for previous, n for next, e for exit");
-			System.out.printf("--> ");
-			String command = scanner.nextLine();
-			while ((!command.equals("p")) && (!command.equals("n")) && (!command.equals("e"))) {
-				System.out.println("p for previous, n for next, e for exit");
-				System.out.printf("--> ");
-				command = scanner.nextLine();
-			}
-			if (command.equals("p")) {
-				page--;
-				if (page < 0) page = 0;
-			}
-			else if (command.equals("n")){
-				page++;
-			}
-			else if (command.equals("e")){
-				break;
-			}
+			if (input.equals("p")) page = page==0?0:page--;
+			else if (input.equals("n")) page++;
+			else if (input.equals("e")) break;
 		}
 	}
 
 	/**
 	 * Use pagination to return a list of companies
 	 */
-	public void findAllCompany() {
-		int nb_elements = 15;
+	public void findPagedCompany() {
 		int page = 0;
 		while (true) {
-			List<Company> companies = companyDAO.find_all(page, nb_elements);
-			for (Company company : companies) {
-				System.out.println(company.toString());
+			List<Company> company = companyService.findPaged(page);
+			printUtil.printEntities(company);
+			printUtil.printn("p for previous, n for next, e for exit");
+			String input = scanUtil.askString("--> ", false);
+			while ((!input.equals("p")) && (!input.equals("n")) && (!input.equals("e"))) {
+				printUtil.printn("p for previous, n for next, e for exit");
+				input = scanUtil.askString("--> ", false);
 			}
-			System.out.println("p for previous, n for next, e for exit");
-			System.out.printf("--> ");
-			String command = scanner.nextLine();
-			while ((!command.equals("p")) && (!command.equals("n")) && (!command.equals("e"))) {
-				System.out.println("p for previous, n for next, e for exit");
-				System.out.printf("--> ");
-				command = scanner.nextLine();
-			}
-			if (command.equals("p")) {
-				page--;
-				if (page < 0) page = 0;
-			}
-			else if (command.equals("n")){
-				page++;
-			}
-			else if (command.equals("e")){
-				break;
-			}
+			if (input.equals("p")) page = page==0?0:page--;
+			else if (input.equals("n")) page++;
+			else if (input.equals("e")) break;
 		}
 	}
 
@@ -96,32 +72,28 @@ public class Facade {
 	public void findComputerById() {
 		Integer id = scanUtil.askInteger("id", false);
 		if (id == null) return;
-		Computer computer = computerDAO.find(new Computer(id));
-		if (computer == null) System.out.println("Computer not found");
-		else System.out.println(computer.toString());
+		
+		Computer computer = computerService.find(id);
+		if (computer == null) printUtil.printn("Computer not found");
+		else printUtil.printn(computer);
 	}
 
 	/**
 	 * Create a computer with all information given
 	 */
 	public void createComputer() {
-		// name
 		String name = scanUtil.askString("name", false);
 		if (name == null) return;
 		
-		// introduced
 		Timestamp introduced = scanUtil.askTimestamp("introduced", true);
 
-		// discontinued
 		Timestamp discontinued = scanUtil.askTimestamp("discontinued", true);
 
-		// company_id
-		Integer company_id = scanUtil.askInteger("company_id", false);
-		if (company_id == null) return;
+		Integer companyId = scanUtil.askInteger("company_id", false);
+		if (companyId == null) return;
 
-		Computer computer = new Computer(name, introduced, discontinued, company_id);
-		computer = computerDAO.create(computer);
-		System.out.println("Computer sucefully created ! (id: "+computer.getId()+")");
+		long id = computerService.create(name, introduced, discontinued, companyId);
+		printUtil.printn("Computer sucefully created ! (id: "+id+")");
 	}
 
 	/**
@@ -132,23 +104,17 @@ public class Facade {
 		Integer id = scanUtil.askInteger("id", false);
 		if (id == null) return;
 
-		// name
 		String name = scanUtil.askString("name", true);
-
-		// introduced
+		if (name == null) return;
+		
 		Timestamp introduced = scanUtil.askTimestamp("introduced", true);
 
-		// discontinued
-		Timestamp discontinued = scanUtil.askTimestamp("introduced", true);
-		
+		Timestamp discontinued = scanUtil.askTimestamp("discontinued", true);
 
-		// company_id
-		Integer company_id = scanUtil.askInteger("company_id", true);
-		if (company_id == null) return;
+		Integer companyId = scanUtil.askInteger("company_id", true);
 
-		Computer computer = new Computer(id, name, introduced, discontinued, company_id);
-		computerDAO.update(computer);
-		System.out.println("Computer sucefully updated !");
+		computerService.update(id, name, introduced, discontinued, companyId);
+		printUtil.printn("Computer sucefully updated !");
 	}
 
 	/**
@@ -157,8 +123,8 @@ public class Facade {
 	public void deleteComputer() {
 		Integer id = scanUtil.askInteger("id", false);
 		if (id == null) return;
-		computerDAO.delete(new Computer(id));
-		System.out.println("Computer sucefully deleted !");
+		computerService.delete(id);
+		printUtil.printn("Computer sucefully deleted !");
 	}
 
 	/**

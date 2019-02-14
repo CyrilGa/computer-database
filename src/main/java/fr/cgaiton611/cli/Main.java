@@ -1,9 +1,10 @@
 package fr.cgaiton611.cli;
 
-import java.util.Scanner;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import fr.cgaiton611.cli.util.PrintUtil;
+import fr.cgaiton611.cli.util.ScanUtil;
 
 /**
  * Main class for the cli
@@ -18,23 +19,25 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
-		Scanner scanner = new Scanner(System.in);
+
+		ScanUtil scanUtil = new ScanUtil();
+		PrintUtil printUtil = new PrintUtil();
 		Facade facade = new Facade();
 		final Logger logger = LoggerFactory.getLogger(Main.class);
+		String input;
 		
 		while (true) {
 
-            System.out.printf(">>> ");
-            String input = scanner.nextLine();
+            printUtil.print(">>> ");
+            input = scanUtil.getLine();
 
             if ("ls computer".equals(input)) {
             	logger.info("ls computer");
-            	facade.findAllComputer();
+            	facade.findPagedComputer();
             }
             else if ("ls company".equals(input)) {
             	logger.info("ls computer");
-            	facade.findAllCompany();
+            	facade.findPagedCompany();
             }
 			else if ("find computer".equals(input)) {
             	logger.info("find computer");
@@ -58,17 +61,17 @@ public class Main {
             }
             else if ("exit".equals(input)) {
             	logger.info("exit");
-                System.out.println("Exit!");
+                printUtil.printn("Exit!");
                 break;
             }
             else {
             	logger.info("invalid command");
-            	System.out.println("Type 'help' for help");
+            	printUtil.printn("Type 'help' for help");
             }
 
 		}
 		
-		scanner.close();
+		scanUtil.closeScanner();
 	}
 	
 }

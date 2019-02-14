@@ -99,15 +99,15 @@ public class CompanyDAO extends DAO<Company>{
         }
 	}
 	
-	public List<Company> find_all(int page, int nb_elements) {
+	public List<Company> findPaged(int page, int elements) {
 		List<Company> companies = null;
         try {
             PreparedStatement prepare = this.connection
                     .prepareStatement(
                             "SELECT * FROM company LIMIT ? OFFSET ? "
                     );
-            prepare.setInt(1, nb_elements);
-            prepare.setInt(2, page*nb_elements);
+            prepare.setInt(1, elements);
+            prepare.setInt(2, page*elements);
             ResultSet rs = prepare.executeQuery();
             companies = new ArrayList<>();
             while(rs.next()) {

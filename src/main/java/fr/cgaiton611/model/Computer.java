@@ -13,7 +13,7 @@ public class Computer {
 	private String name;
 	private Timestamp introduced;
 	private Timestamp discontinued;
-	private long company_id;
+	private long companyId;
 	
 	
 	public Computer(long id, String name, Timestamp introduced, Timestamp discontinued, long company_id) {
@@ -22,7 +22,7 @@ public class Computer {
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.company_id = company_id;
+		this.companyId = company_id;
 	}
 	
 	public Computer(String name, Timestamp introduced, Timestamp discontinued, long company_id) {
@@ -30,7 +30,7 @@ public class Computer {
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.company_id = company_id;
+		this.companyId = company_id;
 	}
 	
 	
@@ -69,16 +69,16 @@ public class Computer {
 		this.discontinued = discontinued;
 	}
 	public long getCompany_id() {
-		return company_id;
+		return companyId;
 	}
 	public void setCompany_id(long company_id) {
-		this.company_id = company_id;
+		this.companyId = company_id;
 	}
 
 	@Override
 	public String toString() {
 		return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
-				+ ", company_id=" + company_id + "]";
+				+ ", company_id=" + companyId + "]";
 	}
 
 	@Override

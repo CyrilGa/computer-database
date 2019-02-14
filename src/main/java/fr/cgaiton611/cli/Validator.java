@@ -1,5 +1,7 @@
 package fr.cgaiton611.cli;
 
+import java.sql.Timestamp;
+
 /**
  * Service that validate the data in terms of type and format
  * @author cyril
@@ -7,12 +9,19 @@ package fr.cgaiton611.cli;
  */
 public class Validator {
 	
+	public <T> boolean isType(String s, T t){
+		if (t instanceof Integer) return isInteger(s);
+		else if (t instanceof Timestamp) return isTimestamp(s);
+		else if (t instanceof String) return isString(s);
+		else return false;
+	}
+	
 	/**
 	 * Test if a string represent an integer
 	 * @param s The string tested
 	 * @return True or false if the string is an integer or not
 	 */
-	public boolean isInt(String s) {
+	public boolean isInteger(String s) {
 		try {
 			Integer.parseInt(s);
 		}
@@ -25,7 +34,7 @@ public class Validator {
 	/**
 	 * Test if a string represent an Timestamp
 	 * @param s The string tested
-	 * @return True or false if the string is an Timestamp or not
+	 * @return True or false if the string is a Timestamp or not
 	 */
 	public boolean isTimestamp(String s) {
 		if (s.length()<16) return false;
@@ -35,24 +44,22 @@ public class Validator {
 		String day = s.substring(8, 10);
 		String hour = s.substring(11, 13);
 		String minute = s.substring(14, 16);
-		if (isInt(year) 
-				&& isInt(month)
-				&& isInt(day)
-				&& isInt(hour)
-				&& isInt(minute)){
-			if (isIn(year, 0000, 9999)
-					&& isIn(month, 0, 11)
-					&& isIn(day, 1, 31)
-					&& isIn(hour, 0, 23)
-					&& isIn(minute, 0, 59)) {
-				return true;
-			}
+		if (isIn(year, 0000, 9999)
+				&& isIn(month, 0, 11)
+				&& isIn(day, 1, 31)
+				&& isIn(hour, 0, 23)
+				&& isIn(minute, 0, 59)) {
+			return true;
 		}
 		return false;
 	}
 	
+	public boolean isString(String s) {
+		return true;
+	}
+	
 	/**
-	 * Test if a String (converted to an integer) if included between two int
+	 * Test if a String (converted to an integer) if included between two integer
 	 * @param s The string tested
 	 * @param c1 The "inferior" integer
 	 * @param c2 The "superior" integer
