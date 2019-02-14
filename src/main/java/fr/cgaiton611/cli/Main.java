@@ -16,7 +16,7 @@ public class Main {
 	
 	/**
 	 * Wait for the user entry and call facade method appropriately
-	 * @param args
+	 * @param args Arguments
 	 */
 	public static void main(String[] args) {
 
