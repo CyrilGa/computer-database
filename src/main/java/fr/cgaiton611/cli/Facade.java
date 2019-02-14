@@ -15,17 +15,17 @@ import fr.cgaiton611.service.ComputerService;
 
 /**
  * Class serving as a front-facing interface for treating the cli
+ * 
  * @author cyril
  * @version 1.0
  */
 public class Facade {
 
-
 	ScanUtil scanUtil = new ScanUtil();
 	PrintUtil printUtil = new PrintUtil();
 	ComputerService computerService = new ComputerService();
 	CompanyService companyService = new CompanyService();
-	
+
 	/**
 	 * Use pagination to return a list of computers
 	 */
@@ -40,9 +40,12 @@ public class Facade {
 				printUtil.printn("p for previous, n for next, e for exit");
 				input = scanUtil.askString("--> ", false);
 			}
-			if (input.equals("p")) page = page==0?0:page--;
-			else if (input.equals("n")) page++;
-			else if (input.equals("e")) break;
+			if (input.equals("p"))
+				page = page == 0 ? 0 : page--;
+			else if (input.equals("n"))
+				page++;
+			else if (input.equals("e"))
+				break;
 		}
 	}
 
@@ -60,9 +63,12 @@ public class Facade {
 				printUtil.printn("p for previous, n for next, e for exit");
 				input = scanUtil.askString("--> ", false);
 			}
-			if (input.equals("p")) page = page==0?0:page--;
-			else if (input.equals("n")) page++;
-			else if (input.equals("e")) break;
+			if (input.equals("p"))
+				page = page == 0 ? 0 : page--;
+			else if (input.equals("n"))
+				page++;
+			else if (input.equals("e"))
+				break;
 		}
 	}
 
@@ -71,11 +77,14 @@ public class Facade {
 	 */
 	public void findComputerById() {
 		Integer id = scanUtil.askInteger("id", false);
-		if (id == null) return;
-		
+		if (id == null)
+			return;
+
 		Computer computer = computerService.find(id);
-		if (computer == null) printUtil.printn("Computer not found");
-		else printUtil.printn(computer);
+		if (computer == null)
+			printUtil.printn("Computer not found");
+		else
+			printUtil.printn(computer);
 	}
 
 	/**
@@ -83,30 +92,35 @@ public class Facade {
 	 */
 	public void createComputer() {
 		String name = scanUtil.askString("name", false);
-		if (name == null) return;
-		
+		if (name == null)
+			return;
+
 		Timestamp introduced = scanUtil.askTimestamp("introduced", true);
 
 		Timestamp discontinued = scanUtil.askTimestamp("discontinued", true);
 
 		Integer companyId = scanUtil.askInteger("company_id", false);
-		if (companyId == null) return;
+		if (companyId == null)
+			return;
 
 		long id = computerService.create(name, introduced, discontinued, companyId);
-		printUtil.printn("Computer sucefully created ! (id: "+id+")");
+		printUtil.printn("Computer sucefully created ! (id: " + id + ")");
 	}
 
 	/**
-	 * Update the computer with the id given and replace his fields with the information given
+	 * Update the computer with the id given and replace his fields with the
+	 * information given
 	 */
 	public void updateComputer() {
 		// id
 		Integer id = scanUtil.askInteger("id", false);
-		if (id == null) return;
+		if (id == null)
+			return;
 
 		String name = scanUtil.askString("name", true);
-		if (name == null) return;
-		
+		if (name == null)
+			return;
+
 		Timestamp introduced = scanUtil.askTimestamp("introduced", true);
 
 		Timestamp discontinued = scanUtil.askTimestamp("discontinued", true);
@@ -122,7 +136,8 @@ public class Facade {
 	 */
 	public void deleteComputer() {
 		Integer id = scanUtil.askInteger("id", false);
-		if (id == null) return;
+		if (id == null)
+			return;
 		computerService.delete(id);
 		printUtil.printn("Computer sucefully deleted !");
 	}

@@ -9,22 +9,21 @@ import fr.cgaiton611.persistence.ComputerDAO;
 
 class ComputerDAOTest {
 
-	ComputerDAO computerDAO  = new ComputerDAO();
-	
-	
+	ComputerDAO computerDAO = new ComputerDAO();
+
 	@Test
 	void find() {
 		Computer computer = computerDAO.find(new Computer(1));
 		assertNotEquals(computer.getName(), "");
 	}
-	
+
 	@Test
 	void create() {
 		Computer c1 = computerDAO.create(new Computer("test computer", null, null, 1));
 		Computer c2 = computerDAO.find(c1);
 		assertEquals(c1, c2);
 	}
-	
+
 	@Test
 	void update() {
 		Computer c1 = computerDAO.create(new Computer("test computer", null, null, 1));
@@ -32,7 +31,7 @@ class ComputerDAOTest {
 		c1 = computerDAO.find(c1);
 		assertEquals("modified", c1.getName());
 	}
-	
+
 	@Test
 	void delete() {
 		Computer c1 = computerDAO.create(new Computer("test computer", null, null, 1));
@@ -40,6 +39,5 @@ class ComputerDAOTest {
 		c1 = computerDAO.find(c1);
 		assertEquals(null, c1);
 	}
-
 
 }

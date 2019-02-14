@@ -15,12 +15,12 @@ class ValidatorTest {
 		String s2 = "N33";
 		String s3 = "3N3";
 		String s4 = "33";
-		assertFalse(validator.isInt(s1));
-		assertFalse(validator.isInt(s2));
-		assertFalse(validator.isInt(s3));
-		assertTrue(validator.isInt(s4));
+		assertFalse(validator.isInteger(s1));
+		assertFalse(validator.isInteger(s2));
+		assertFalse(validator.isInteger(s3));
+		assertTrue(validator.isInteger(s4));
 	}
-	
+
 	@Test
 	void isTimestamp() {
 		String s1 = "2012:00:01 22:22";
@@ -30,7 +30,7 @@ class ValidatorTest {
 		assertFalse(validator.isTimestamp(s2));
 		assertTrue(validator.isTimestamp(s3));
 	}
-	
+
 	@Test
 	void isIn() {
 		String s1 = "20";

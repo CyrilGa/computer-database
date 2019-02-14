@@ -2,19 +2,20 @@ package fr.cgaiton611.model;
 
 /**
  * Represent a company with an id and name
+ * 
  * @author cyril
  * @version 1.0
  */
 public class Company {
 	private long id;
 	private String name;
-	
+
 	public Company(long id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
 	}
-	
+
 	public Company(long id) {
 		super();
 		this.id = id;
@@ -23,22 +24,27 @@ public class Company {
 	public Company(String name) {
 		this.name = name;
 	}
+
 	public Company() {
 		super();
 	}
-	
+
 	public long getId() {
 		return id;
 	}
+
 	public void setId(long id) {
 		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	@Override
 	public String toString() {
 		return "Company [id=" + id + ", name=" + name + "]";
@@ -72,6 +78,4 @@ public class Company {
 		return true;
 	}
 
-	
-	
 }

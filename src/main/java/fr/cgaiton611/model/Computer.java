@@ -3,8 +3,9 @@ package fr.cgaiton611.model;
 import java.sql.Timestamp;
 
 /**
- * Represent a computer with an id, name, introduced date, discontinued date and company_id
- * of which company manufactured it
+ * Represent a computer with an id, name, introduced date, discontinued date and
+ * company_id of which company manufactured it
+ * 
  * @author cyril
  * @version 1.0
  */
@@ -14,8 +15,7 @@ public class Computer {
 	private Timestamp introduced;
 	private Timestamp discontinued;
 	private long companyId;
-	
-	
+
 	public Computer(long id, String name, Timestamp introduced, Timestamp discontinued, long company_id) {
 		super();
 		this.id = id;
@@ -24,7 +24,7 @@ public class Computer {
 		this.discontinued = discontinued;
 		this.companyId = company_id;
 	}
-	
+
 	public Computer(String name, Timestamp introduced, Timestamp discontinued, long company_id) {
 		super();
 		this.name = name;
@@ -32,9 +32,7 @@ public class Computer {
 		this.discontinued = discontinued;
 		this.companyId = company_id;
 	}
-	
-	
-	
+
 	public Computer(long id) {
 		super();
 		this.id = id;
@@ -43,34 +41,43 @@ public class Computer {
 	public Computer() {
 		super();
 	}
-	
+
 	public long getId() {
 		return id;
 	}
+
 	public void setId(long id) {
 		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public Timestamp getIntroduced() {
 		return introduced;
 	}
+
 	public void setIntroduced(Timestamp introduced) {
 		this.introduced = introduced;
 	}
+
 	public Timestamp getDiscontinued() {
 		return discontinued;
 	}
+
 	public void setDiscontinued(Timestamp discontinued) {
 		this.discontinued = discontinued;
 	}
+
 	public long getCompany_id() {
 		return companyId;
 	}
+
 	public void setCompany_id(long company_id) {
 		this.companyId = company_id;
 	}
@@ -108,5 +115,5 @@ public class Computer {
 			return false;
 		return true;
 	}
-	
+
 }

@@ -7,8 +7,8 @@ import fr.cgaiton611.persistence.CompanyDAO;
 
 public class CompanyService {
 	CompanyDAO companyDAO = new CompanyDAO();
-	
-	public List<Company> findPaged(int page){
+
+	public List<Company> findPaged(int page) {
 		int elements = 15;
 		return companyDAO.findPaged(page, elements);
 	}
