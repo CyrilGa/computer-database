@@ -19,7 +19,7 @@ import fr.cgaiton611.service.ComputerService;
  * @author cyril
  * @version 1.0
  */
-public class UILauncherFacade {
+public class CLIMenuFacade {
 
 	ScanUtil scanUtil = new ScanUtil();
 	PrintUtil printUtil = new PrintUtil();

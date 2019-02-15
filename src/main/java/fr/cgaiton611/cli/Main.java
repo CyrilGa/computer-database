@@ -23,7 +23,7 @@ public class Main {
 
 		ScanUtil scanUtil = new ScanUtil();
 		PrintUtil printUtil = new PrintUtil();
-		UILauncherFacade uiLauncherFacade = new UILauncherFacade();
+		CLIMenuFacade cliMenuFacade = new CLIMenuFacade();
 		final Logger logger = LoggerFactory.getLogger(Main.class);
 		String input;
 
@@ -34,25 +34,25 @@ public class Main {
 
 			if ("ls computer".equals(input)) {
 				logger.info("ls computer");
-				uiLauncherFacade.showPagedComputer();
+				cliMenuFacade.showPagedComputer();
 			} else if ("ls company".equals(input)) {
 				logger.info("ls computer");
-				uiLauncherFacade.showPagedCompany();
+				cliMenuFacade.showPagedCompany();
 			} else if ("find computer".equals(input)) {
 				logger.info("find computer");
-				uiLauncherFacade.findComputerById();
+				cliMenuFacade.findComputerById();
 			} else if ("create computer".equals(input)) {
 				logger.info("create computer");
-				uiLauncherFacade.createComputer();
+				cliMenuFacade.createComputer();
 			} else if ("update computer".equals(input)) {
 				logger.info("update computer");
-				uiLauncherFacade.updateComputer();
+				cliMenuFacade.updateComputer();
 			} else if ("delete computer".equals(input)) {
 				logger.info("delete computer");
-				uiLauncherFacade.deleteComputer();
+				cliMenuFacade.deleteComputer();
 			} else if ("help".equals(input)) {
 				logger.info("helper");
-				uiLauncherFacade.helper();
+				cliMenuFacade.helper();
 			} else if ("exit".equals(input)) {
 				logger.info("exit");
 				printUtil.printn("Exit!");
