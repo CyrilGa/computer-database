@@ -19,7 +19,7 @@ import fr.cgaiton611.service.ComputerService;
  * @author cyril
  * @version 1.0
  */
-public class Facade {
+public class UILauncherFacade {
 
 	ScanUtil scanUtil = new ScanUtil();
 	PrintUtil printUtil = new PrintUtil();
@@ -29,7 +29,7 @@ public class Facade {
 	/**
 	 * Use pagination to return a list of computers
 	 */
-	public void findPagedComputer() {
+	public void showPagedComputer() {
 		int page = 0;
 		while (true) {
 			List<Computer> computers = computerService.findPaged(page);
@@ -54,7 +54,7 @@ public class Facade {
 	/**
 	 * Use pagination to return a list of companies
 	 */
-	public void findPagedCompany() {
+	public void showPagedCompany() {
 		int page = 0;
 		while (true) {
 			List<Company> company = companyService.findPaged(page);

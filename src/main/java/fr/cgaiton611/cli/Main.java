@@ -23,7 +23,7 @@ public class Main {
 
 		ScanUtil scanUtil = new ScanUtil();
 		PrintUtil printUtil = new PrintUtil();
-		Facade facade = new Facade();
+		UILauncherFacade uiLauncherFacade = new UILauncherFacade();
 		final Logger logger = LoggerFactory.getLogger(Main.class);
 		String input;
 
@@ -34,25 +34,25 @@ public class Main {
 
 			if ("ls computer".equals(input)) {
 				logger.info("ls computer");
-				facade.findPagedComputer();
+				uiLauncherFacade.showPagedComputer();
 			} else if ("ls company".equals(input)) {
 				logger.info("ls computer");
-				facade.findPagedCompany();
+				uiLauncherFacade.showPagedCompany();
 			} else if ("find computer".equals(input)) {
 				logger.info("find computer");
-				facade.findComputerById();
+				uiLauncherFacade.findComputerById();
 			} else if ("create computer".equals(input)) {
 				logger.info("create computer");
-				facade.createComputer();
+				uiLauncherFacade.createComputer();
 			} else if ("update computer".equals(input)) {
 				logger.info("update computer");
-				facade.updateComputer();
+				uiLauncherFacade.updateComputer();
 			} else if ("delete computer".equals(input)) {
 				logger.info("delete computer");
-				facade.deleteComputer();
+				uiLauncherFacade.deleteComputer();
 			} else if ("help".equals(input)) {
 				logger.info("helper");
-				facade.helper();
+				uiLauncherFacade.helper();
 			} else if ("exit".equals(input)) {
 				logger.info("exit");
 				printUtil.printn("Exit!");
