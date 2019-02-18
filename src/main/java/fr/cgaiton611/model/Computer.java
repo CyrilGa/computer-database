@@ -14,23 +14,23 @@ public class Computer {
 	private String name;
 	private Timestamp introduced;
 	private Timestamp discontinued;
-	private long companyId;
+	private Company company;
 
-	public Computer(long id, String name, Timestamp introduced, Timestamp discontinued, long company_id) {
+	public Computer(long id, String name, Timestamp introduced, Timestamp discontinued, Company company) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.companyId = company_id;
+		this.company = company;
 	}
 
-	public Computer(String name, Timestamp introduced, Timestamp discontinued, long company_id) {
+	public Computer(String name, Timestamp introduced, Timestamp discontinued, Company company) {
 		super();
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.companyId = company_id;
+		this.company = company;
 	}
 
 	public Computer(long id) {
@@ -74,18 +74,18 @@ public class Computer {
 		this.discontinued = discontinued;
 	}
 
-	public long getCompany_id() {
-		return companyId;
+	public Company getCompany() {
+		return company;
 	}
 
-	public void setCompany_id(long company_id) {
-		this.companyId = company_id;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 	@Override
 	public String toString() {
 		return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
-				+ ", company_id=" + companyId + "]";
+				+ ", company=" + company + "]";
 	}
 
 	@Override

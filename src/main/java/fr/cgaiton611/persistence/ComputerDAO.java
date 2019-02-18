@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 
 /**
@@ -24,11 +25,12 @@ public class ComputerDAO extends DAO<Computer> {
 	private static final String SQL_DELETE = "DELETE FROM computer WHERE id = ? ";
 	private static final String SQL_FIND_PAGED = "SELECT * FROM computer LIMIT ? OFFSET ? ";
 	private static final String SQL_COUNT = "SELECT COUNT(*) as count FROM computer";
-	
+
 	private static ComputerDAO instance = new ComputerDAO();
-	
-	private ComputerDAO() {};
-	
+
+	private ComputerDAO() {
+	};
+
 	public static ComputerDAO getInstance() {
 		return instance;
 	}
@@ -41,7 +43,7 @@ public class ComputerDAO extends DAO<Computer> {
 			prepare.setString(1, obj.getName());
 			prepare.setTimestamp(2, obj.getIntroduced());
 			prepare.setTimestamp(3, obj.getDiscontinued());
-			prepare.setLong(4, obj.getCompany_id());
+			prepare.setLong(4, obj.getCompany().getId());
 
 			prepare.executeUpdate();
 
@@ -49,7 +51,7 @@ public class ComputerDAO extends DAO<Computer> {
 			if (rs.next()) {
 				int generated_id = rs.getInt(1);
 				computer = new Computer(generated_id, obj.getName(), obj.getIntroduced(), obj.getDiscontinued(),
-						obj.getCompany_id());
+						obj.getCompany());
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -65,7 +67,7 @@ public class ComputerDAO extends DAO<Computer> {
 			ResultSet rs = prepare.executeQuery();
 			if (rs.next()) {
 				computer = new Computer(rs.getInt("id"), rs.getString("name"), rs.getTimestamp("introduced"),
-						rs.getTimestamp("discontinued"), rs.getLong("company_id"));
+						rs.getTimestamp("discontinued"), new Company(rs.getLong("company_id")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -79,7 +81,7 @@ public class ComputerDAO extends DAO<Computer> {
 			prepare.setString(1, obj.getName());
 			prepare.setTimestamp(2, obj.getIntroduced());
 			prepare.setTimestamp(3, obj.getDiscontinued());
-			prepare.setLong(4, obj.getCompany_id());
+			prepare.setLong(4, obj.getCompany().getId());
 			prepare.setLong(5, obj.getId());
 			prepare.executeUpdate();
 		} catch (SQLException e) {
@@ -106,7 +108,7 @@ public class ComputerDAO extends DAO<Computer> {
 			ResultSet rs = prepare.executeQuery();
 			while (rs.next()) {
 				computers.add(new Computer(rs.getLong("id"), rs.getString("name"), rs.getTimestamp("introduced"),
-						rs.getTimestamp("discontinued"), rs.getLong("company_id")));
+						rs.getTimestamp("discontinued"), new Company(rs.getLong("company_id"))));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
