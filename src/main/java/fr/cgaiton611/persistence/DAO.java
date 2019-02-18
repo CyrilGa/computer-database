@@ -1,6 +1,7 @@
 package fr.cgaiton611.persistence;
 
 import java.sql.Connection;
+import java.util.Optional;
 
 /**
  * Abstract Class getting the connection with the database and define CRUD
@@ -20,7 +21,7 @@ public abstract class DAO<T> {
 	 * @param obj
 	 * @return
 	 */
-	public abstract T create(T obj);
+	public abstract Optional<T> create(T obj);
 
 	/**
 	 * Find an object in the database
@@ -28,7 +29,7 @@ public abstract class DAO<T> {
 	 * @param obj
 	 * @return
 	 */
-	public abstract T find(T obj);
+	public abstract Optional<T> find(T obj);
 
 	/**
 	 * Update an object in the database
@@ -36,7 +37,7 @@ public abstract class DAO<T> {
 	 * @param obj
 	 * @return
 	 */
-	public abstract T update(T obj);
+	public abstract Optional<T> update(T obj);
 
 	/**
 	 * Delete an object in the database

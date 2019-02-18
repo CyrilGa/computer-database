@@ -1,9 +1,10 @@
 package fr.cgaiton611.cli.util;
 
 import java.sql.Timestamp;
+import java.util.Optional;
 import java.util.Scanner;
 
-import fr.cgaiton611.cli.Validator;
+import fr.cgaiton611.cli.TypeValidator;
 
 /**
  * Ask, verify, cast and return the user input.
@@ -14,7 +15,7 @@ import fr.cgaiton611.cli.Validator;
 public class ScanUtil {
 
 	Scanner scanner = new Scanner(System.in);
-	Validator validator = new Validator();
+	TypeValidator typeValidator = new TypeValidator();
 	PrintUtil printUtil = new PrintUtil();
 	ConvertUtil convertUtil = new ConvertUtil();
 
@@ -26,30 +27,30 @@ public class ScanUtil {
 	 * @param t    Generic variable used to test the type of T
 	 * @return An integer or null if user has skip or the 3 tries were failed
 	 */
-	public <T> String askSomething(String msg, boolean skip, T t) {
+	public Optional<String> askSomething(String msg, boolean skip, Type type) {
 		String skipMsg = "";
 		if (skip)
 			skipMsg = "(enter to skip)";
 		printUtil.print(msg + " " + skipMsg + " : ");
 		String input = getLine();
 		if ("".equals(input) && skip)
-			return null;
+			return Optional.empty();
 		int cnt = 0;
 		int max_cnt = 3;
 		while (cnt++ < max_cnt) {
 			if ("e".equals(input))
-				return null;
-			else if (validator.isType(input, t)) {
-				return input;
+				return Optional.empty();
+			else if (typeValidator.isType(input, type)) {
+				return Optional.of(input);
 			}
 			if (cnt == max_cnt)
 				break;
-			System.out.println(msg + " must be an " + t.getClass().getCanonicalName() + " (e for exit)");
+			System.out.println(msg + " must be an " + type.toString() + " (e for exit)");
 			System.out.printf(msg + " : ");
 			input = getLine();
 		}
 		System.out.println("exit...");
-		return null;
+		return Optional.empty();
 	}
 
 	/**
@@ -59,8 +60,8 @@ public class ScanUtil {
 	 * @param skip Define if the user can skip the asked entry
 	 * @return An integer or null if user has skip or the 3 tries were failed
 	 */
-	public Integer askInteger(String msg, boolean skip) {
-		return convertUtil.stringToInt(askSomething(msg, skip, new Integer(0)));
+	public Optional<Integer> askInteger(String msg, boolean skip) {
+		return convertUtil.stringToInt(askSomething(msg, skip, Type.Integer));
 	}
 
 	/**
@@ -70,8 +71,8 @@ public class ScanUtil {
 	 * @param skip Define if the user can skip the asked entry
 	 * @return An integer or null if user has skip or the 3 tries were failed
 	 */
-	public Timestamp askTimestamp(String msg, boolean skip) {
-		return convertUtil.stringToTimastamp(askSomething(msg, skip, new Timestamp(0)));
+	public Optional<Timestamp> askTimestamp(String msg, boolean skip) {
+		return convertUtil.stringToTimastamp(askSomething(msg, skip, Type.Timestamp));
 	}
 
 	/**
@@ -81,8 +82,8 @@ public class ScanUtil {
 	 * @param skip Define if the user can skip the asked entry
 	 * @return An integer or null if user has skip or the 3 tries were failed
 	 */
-	public String askString(String msg, boolean skip) {
-		return askSomething(msg, skip, new String(""));
+	public Optional<String> askString(String msg, boolean skip) {
+		return askSomething(msg, skip, Type.String);
 	}
 
 	public String getLine() {

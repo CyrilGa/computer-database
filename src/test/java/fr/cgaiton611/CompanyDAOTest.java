@@ -2,41 +2,57 @@ package fr.cgaiton611;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.persistence.CompanyDAO;
 
 class CompanyDAOTest {
-	CompanyDAO companyDAO = new CompanyDAO();
+	CompanyDAO companyDAO = CompanyDAO.getInstance();
 
 	@Test
 	void find() {
-		Company company = companyDAO.find(new Company(1));
-		assertNotEquals(company.getName(), "");
+		Optional<Company> c1 = companyDAO.find(new Company(1));
+		if (! c1.isPresent())
+			fail();
+		assertNotEquals(c1.get().getName(), "");
 	}
 
 	@Test
 	void create() {
-		Company c1 = companyDAO.create(new Company("test company"));
-		Company c2 = companyDAO.find(c1);
-		assertEquals(c1, c2);
+		Optional<Company> c1 = companyDAO.create(new Company("test company"));
+		if (! c1.isPresent())
+			fail();
+		Optional<Company> c2 = companyDAO.find(c1.get());
+		if (! c2.isPresent())
+			fail();
+		assertEquals(c1.get(), c2.get());
 	}
 
 	@Test
 	void update() {
-		Company c1 = companyDAO.create(new Company("test company"));
-		companyDAO.update(new Company(c1.getId(), "modified"));
-		c1 = companyDAO.find(c1);
-		assertEquals("modified", c1.getName());
+		Optional<Company> c1 = companyDAO.create(new Company("test company"));
+		if (! c1.isPresent())
+			fail();
+		companyDAO.update(new Company(c1.get().getId(), "modified"));
+		c1 = companyDAO.find(c1.get());
+		if (! c1.isPresent())
+			fail();
+		assertEquals("modified", c1.get().getName());
 	}
 
 	@Test
 	void delete() {
-		Company c1 = companyDAO.create(new Company("test company"));
-		companyDAO.delete(c1);
-		c1 = companyDAO.find(c1);
-		assertEquals(null, c1);
+		Optional<Company> c1 = companyDAO.create(new Company("test company"));
+		if (! c1.isPresent())
+			fail();
+		companyDAO.delete(c1.get());
+		c1 = companyDAO.find(c1.get());
+		if (! c1.isPresent())
+			fail();
+		assertEquals(null, c1.get());
 	}
 
 }

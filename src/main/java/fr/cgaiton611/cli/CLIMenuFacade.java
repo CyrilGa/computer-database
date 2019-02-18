@@ -5,11 +5,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 import fr.cgaiton611.cli.util.PrintUtil;
 import fr.cgaiton611.cli.util.ScanUtil;
 import fr.cgaiton611.model.Company;
+import fr.cgaiton611.model.CompanyPage;
 import fr.cgaiton611.model.Computer;
+import fr.cgaiton611.model.ComputerPage;
 import fr.cgaiton611.service.CompanyService;
 import fr.cgaiton611.service.ComputerService;
 
@@ -23,16 +26,16 @@ public class CLIMenuFacade {
 
 	ScanUtil scanUtil = new ScanUtil();
 	PrintUtil printUtil = new PrintUtil();
-	ComputerService computerService = new ComputerService();
-	CompanyService companyService = new CompanyService();
+	ComputerService computerService = ComputerService.getInstance();
+	CompanyService companyService = CompanyService.getInstance();
 
 	/**
 	 * Use pagination to return a list of computers
 	 */
 	public void showPagedComputer() {
-		int page = 0;
+		ComputerPage computerPage = new ComputerPage();
+		List<Computer> computers = computerPage.next();
 		while (true) {
-			List<Computer> computers = computerService.findPaged(page);
 			printUtil.printEntities(computers);
 			printUtil.printn("p for previous, n for next, e for exit");
 			printUtil.print("--> ");
@@ -43,9 +46,9 @@ public class CLIMenuFacade {
 				input = scanUtil.getLine();
 			}
 			if (input.equals("p"))
-				page = page == 0 ? 0 : page--;
+				computerPage.previous();
 			else if (input.equals("n"))
-				page++;
+				computerPage.next();
 			else if (input.equals("e"))
 				break;
 		}
@@ -55,10 +58,10 @@ public class CLIMenuFacade {
 	 * Use pagination to return a list of companies
 	 */
 	public void showPagedCompany() {
-		int page = 0;
 		while (true) {
-			List<Company> company = companyService.findPaged(page);
-			printUtil.printEntities(company);
+			CompanyPage companyPage = new CompanyPage();
+			List<Company> companies = companyPage.next();
+			printUtil.printEntities(companies);
 			printUtil.printn("p for previous, n for next, e for exit");
 			printUtil.print("--> ");
 			String input = scanUtil.getLine();
@@ -68,9 +71,9 @@ public class CLIMenuFacade {
 				input = scanUtil.getLine();
 			}
 			if (input.equals("p"))
-				page = page == 0 ? 0 : page--;
+				companies = companyPage.previous();
 			else if (input.equals("n"))
-				page++;
+				companies = companyPage.next();
 			else if (input.equals("e"))
 				break;
 		}
@@ -80,12 +83,12 @@ public class CLIMenuFacade {
 	 * Get the computer with the id given
 	 */
 	public void findComputerById() {
-		Integer id = scanUtil.askInteger("id", false);
-		if (id == null)
+		Optional<Integer> id = scanUtil.askInteger("id", false);
+		if (id.isPresent())
 			return;
-
-		Computer computer = computerService.find(id);
-		if (computer == null)
+		
+		Optional<Computer> computer = computerService.find(id.get());
+		if (!computer.isPresent())
 			printUtil.printn("Computer not found");
 		else
 			printUtil.printn(computer);
@@ -95,20 +98,24 @@ public class CLIMenuFacade {
 	 * Create a computer with all information given
 	 */
 	public void createComputer() {
-		String name = scanUtil.askString("name", false);
-		if (name == null)
+		Optional<String> name = scanUtil.askString("name", false);
+		if (!name.isPresent())
 			return;
 
-		Timestamp introduced = scanUtil.askTimestamp("introduced", true);
+		Optional<Timestamp> introduced = scanUtil.askTimestamp("introduced", true);
 
-		Timestamp discontinued = scanUtil.askTimestamp("discontinued", true);
+		Optional<Timestamp> discontinued = scanUtil.askTimestamp("discontinued", true);
 
-		Integer companyId = scanUtil.askInteger("company_id", false);
-		if (companyId == null)
+		Optional<Integer> companyId = scanUtil.askInteger("company_id", false);
+		if (!companyId.isPresent())
 			return;
 
-		long id = computerService.create(name, introduced, discontinued, companyId);
-		printUtil.printn("Computer sucefully created ! (id: " + id + ")");
+		Optional<Computer> computer = computerService.create(name.get(), introduced.get(), discontinued.get(),
+				companyId.get());
+		if (!computer.isPresent())
+			printUtil.printn("Computer not created");
+		else
+			printUtil.printn("Computer sucefully created ! (id: " + computer.get().getId() + ")");
 	}
 
 	/**
@@ -117,32 +124,34 @@ public class CLIMenuFacade {
 	 */
 	public void updateComputer() {
 		// id
-		Integer id = scanUtil.askInteger("id", false);
-		if (id == null)
+		Optional<Integer> id = scanUtil.askInteger("id", false);
+		if (! id.isPresent())
 			return;
 
-		String name = scanUtil.askString("name", true);
-		if (name == null)
-			return;
+		Optional<String> name = scanUtil.askString("name", true);
+	
 
-		Timestamp introduced = scanUtil.askTimestamp("introduced", true);
+		Optional<Timestamp> introduced = scanUtil.askTimestamp("introduced", true);
 
-		Timestamp discontinued = scanUtil.askTimestamp("discontinued", true);
+		Optional<Timestamp> discontinued = scanUtil.askTimestamp("discontinued", true);
 
-		Integer companyId = scanUtil.askInteger("company_id", true);
+		Optional<Integer> companyId = scanUtil.askInteger("company_id", true);
 
-		computerService.update(id, name, introduced, discontinued, companyId);
-		printUtil.printn("Computer sucefully updated !");
+		Optional<Computer> computer = computerService.update(id.get(), name.get(), introduced.get(), discontinued.get(), companyId.get());
+		if (!computer.isPresent())
+			printUtil.printn("Computer not updated");
+		else
+			printUtil.printn("Computer sucefully updated !");
 	}
 
 	/**
 	 * Delete the computer with the id given
 	 */
 	public void deleteComputer() {
-		Integer id = scanUtil.askInteger("id", false);
-		if (id == null)
+		Optional<Integer> id = scanUtil.askInteger("id", false);
+		if (! id.isPresent())
 			return;
-		computerService.delete(id);
+		computerService.delete(id.get());
 		printUtil.printn("Computer sucefully deleted !");
 	}
 

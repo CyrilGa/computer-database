@@ -1,6 +1,6 @@
 package fr.cgaiton611.cli;
 
-import java.sql.Timestamp;
+import fr.cgaiton611.cli.util.Type;
 
 /**
  * Service that validate the data in terms of type and format
@@ -8,14 +8,14 @@ import java.sql.Timestamp;
  * @author cyril
  * @version 1.0
  */
-public class Validator {
+public class TypeValidator {
 
-	public <T> boolean isType(String s, T t) {
-		if (t instanceof Integer)
+	public <T> boolean isType(String s, Type type) {
+		if (type == Type.Integer)
 			return isInteger(s);
-		else if (t instanceof Timestamp)
+		else if (type == Type.Timestamp)
 			return isTimestamp(s);
-		else if (t instanceof String)
+		else if (type == Type.String)
 			return isString(s);
 		else
 			return false;

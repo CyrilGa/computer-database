@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import fr.cgaiton611.cli.Validator;
+import fr.cgaiton611.cli.TypeValidator;
 
 class ValidatorTest {
-	Validator validator = new Validator();
+	TypeValidator validator = new TypeValidator();
 
 	@Test
 	void isInt() {

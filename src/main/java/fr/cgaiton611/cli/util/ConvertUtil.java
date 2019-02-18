@@ -4,17 +4,18 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 
 public class ConvertUtil {
-	public Integer stringToInt(String s) {
-		if (s == null)
+	public Optional<Integer> stringToInt(Optional<String> s) {
+		if (! s.isPresent())
 			return null;
-		return Integer.parseInt(s);
+		return Optional.of(Integer.parseInt(s.get()));
 	}
 
-	public Timestamp stringToTimastamp(String s) {
-		if (s == null)
-			return null;
+	public Optional<Timestamp> stringToTimastamp(Optional<String> s) {
+		if (! s.isPresent())
+			return Optional.empty();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss:SSS");
 		Date parsedDate = null;
 		try {
@@ -22,6 +23,6 @@ public class ConvertUtil {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		return new Timestamp(parsedDate.getTime());
+		return Optional.of(new Timestamp(parsedDate.getTime()));
 	}
 }

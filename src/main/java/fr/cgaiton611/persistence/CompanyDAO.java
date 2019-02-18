@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import fr.cgaiton611.model.Company;
 
@@ -16,12 +17,27 @@ import fr.cgaiton611.model.Company;
  * @version 1.0
  */
 public class CompanyDAO extends DAO<Company> {
+	
+	private static final String SQL_CREATE = "INSERT INTO company(name) VALUES(?, ?, ?, ?)";
+	private static final String SQL_FIND = "SELECT id, name FROM company WHERE id = ?";
+	private static final String SQL_UPDATE = "UPDATE company SET name = ? WHERE id = ? ";
+	private static final String SQL_DELETE = "DELETE FROM company WHERE id = ? ";
+	private static final String SQL_FIND_PAGED = "SELECT * FROM company LIMIT ? OFFSET ? ";
+	private static final String SQL_COUNT = "SELECT COUNT(*) as count FROM company";
 
+	private static CompanyDAO instance = new CompanyDAO();
+	
+	private CompanyDAO() {};
+	
+	public static CompanyDAO getInstance() {
+		return instance;
+	}
+	
 	@Override
-	public Company create(Company obj) {
-		try {
-			PreparedStatement prepare = this.connection.prepareStatement("INSERT INTO company(name) VALUES(?)",
-					Statement.RETURN_GENERATED_KEYS);
+	public Optional<Company> create(Company obj) {
+		Company company = null;
+		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_CREATE,
+				Statement.RETURN_GENERATED_KEYS)) {
 			prepare.setString(1, obj.getName());
 
 			prepare.executeUpdate();
@@ -29,54 +45,47 @@ public class CompanyDAO extends DAO<Company> {
 			ResultSet rs = prepare.getGeneratedKeys();
 			if (rs.next()) {
 				int generated_id = rs.getInt(1);
-				obj.setId(generated_id);
+				company = new Company(generated_id, obj.getName());
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return obj;
+		return Optional.of(company);
 	}
 
 	@Override
-	public Company find(Company obj) {
-		try {
-			PreparedStatement prepare = this.connection.prepareStatement("SELECT * FROM company WHERE id = ?");
+	public Optional<Company> find(Company obj) {
+		Company company = null;
+		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_FIND)) {
 			prepare.setLong(1, obj.getId());
 			ResultSet rs = prepare.executeQuery();
 			if (rs.first()) {
-				obj = new Company(obj.getId(), rs.getString("name"));
-			} else {
-				obj = null;
-			}
-
+				company = new Company(rs.getInt("id"), rs.getString("name"));
+			} 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return obj;
+		return Optional.ofNullable(company);
 	}
 
 	@Override
-	public Company update(Company obj) {
-		try {
-			PreparedStatement prepare = this.connection
-					.prepareStatement("UPDATE company SET name = ?" + " WHERE id = ? ");
+	public Optional<Company> update(Company obj) {
+		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_UPDATE)) {
 			prepare.setString(1, obj.getName());
 			prepare.setLong(2, obj.getId());
 			prepare.executeUpdate();
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return obj;
+		return find(new Company(obj.getId()));
 	}
 
 	@Override
 	public void delete(Company obj) {
-		try {
-			PreparedStatement prepare = this.connection.prepareStatement("DELETE FROM company WHERE id = ? ");
+		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_DELETE)) {
 			prepare.setLong(1, obj.getId());
 			prepare.executeUpdate();
 		} catch (SQLException e) {
@@ -86,8 +95,7 @@ public class CompanyDAO extends DAO<Company> {
 
 	public List<Company> findPaged(int page, int elements) {
 		List<Company> companies = null;
-		try {
-			PreparedStatement prepare = this.connection.prepareStatement("SELECT * FROM company LIMIT ? OFFSET ? ");
+		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_FIND_PAGED)) {
 			prepare.setInt(1, elements);
 			prepare.setInt(2, page * elements);
 			ResultSet rs = prepare.executeQuery();
@@ -100,6 +108,19 @@ public class CompanyDAO extends DAO<Company> {
 			e.printStackTrace();
 		}
 		return companies;
+	}
+	
+	public int count() {
+		int max = 0;
+		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_COUNT)) {
+			ResultSet rs = prepare.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("count");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return max;
 	}
 
 }
