@@ -1,6 +1,6 @@
 package fr.cgaiton611.service;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,11 +27,11 @@ public class ComputerService {
 		return computerDAO.find(new Computer(id));
 	}
 
-	public Optional<Computer> create(String name, Timestamp introduced, Timestamp discontinued, long companyId) {
+	public Optional<Computer> create(String name, Date introduced, Date discontinued, long companyId) {
 		return computerDAO.create(new Computer(name, introduced, discontinued, new Company(companyId)));
 	}
 
-	public Optional<Computer> update(long id, String name, Timestamp introduced, Timestamp discontinued, long companyId) {
+	public Optional<Computer> update(long id, String name, Date introduced, Date discontinued, long companyId) {
 		return computerDAO.update(new Computer(name, introduced, discontinued, new Company(companyId)));
 	}
 

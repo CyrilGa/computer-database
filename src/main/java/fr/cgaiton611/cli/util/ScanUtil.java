@@ -1,6 +1,6 @@
 package fr.cgaiton611.cli.util;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -71,8 +71,8 @@ public class ScanUtil {
 	 * @param skip Define if the user can skip the asked entry
 	 * @return An integer or null if user has skip or the 3 tries were failed
 	 */
-	public Optional<Timestamp> askTimestamp(String msg, boolean skip) {
-		return convertUtil.stringToTimastamp(askSomething(msg, skip, Type.Timestamp));
+	public Optional<Date> askDate(String msg, boolean skip) {
+		return convertUtil.stringToDate(askSomething(msg, skip, Type.Timestamp));
 	}
 
 	/**

@@ -3,7 +3,7 @@ package fr.cgaiton611.cli;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -102,9 +102,9 @@ public class CLIMenuFacade {
 		if (!name.isPresent())
 			return;
 
-		Optional<Timestamp> introduced = scanUtil.askTimestamp("introduced", true);
+		Optional<Date> introduced = scanUtil.askDate("introduced", true);
 
-		Optional<Timestamp> discontinued = scanUtil.askTimestamp("discontinued", true);
+		Optional<Date> discontinued = scanUtil.askDate("discontinued", true);
 
 		Optional<Integer> companyId = scanUtil.askInteger("company_id", false);
 		if (!companyId.isPresent())
@@ -131,9 +131,9 @@ public class CLIMenuFacade {
 		Optional<String> name = scanUtil.askString("name", true);
 	
 
-		Optional<Timestamp> introduced = scanUtil.askTimestamp("introduced", true);
+		Optional<Date> introduced = scanUtil.askDate("introduced", true);
 
-		Optional<Timestamp> discontinued = scanUtil.askTimestamp("discontinued", true);
+		Optional<Date> discontinued = scanUtil.askDate("discontinued", true);
 
 		Optional<Integer> companyId = scanUtil.askInteger("company_id", true);
 

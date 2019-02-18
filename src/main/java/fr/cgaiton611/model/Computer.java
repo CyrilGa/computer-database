@@ -1,6 +1,6 @@
 package fr.cgaiton611.model;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Represent a computer with an id, name, introduced date, discontinued date and
@@ -12,11 +12,11 @@ import java.sql.Timestamp;
 public class Computer {
 	private long id;
 	private String name;
-	private Timestamp introduced;
-	private Timestamp discontinued;
+	private Date introduced;
+	private Date discontinued;
 	private Company company;
 
-	public Computer(long id, String name, Timestamp introduced, Timestamp discontinued, Company company) {
+	public Computer(long id, String name, Date introduced, Date discontinued, Company company) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -25,7 +25,7 @@ public class Computer {
 		this.company = company;
 	}
 
-	public Computer(String name, Timestamp introduced, Timestamp discontinued, Company company) {
+	public Computer(String name, Date introduced, Date discontinued, Company company) {
 		super();
 		this.name = name;
 		this.introduced = introduced;
@@ -58,19 +58,19 @@ public class Computer {
 		this.name = name;
 	}
 
-	public Timestamp getIntroduced() {
+	public Date getIntroduced() {
 		return introduced;
 	}
 
-	public void setIntroduced(Timestamp introduced) {
+	public void setIntroduced(Date introduced) {
 		this.introduced = introduced;
 	}
 
-	public Timestamp getDiscontinued() {
+	public Date getDiscontinued() {
 		return discontinued;
 	}
 
-	public void setDiscontinued(Timestamp discontinued) {
+	public void setDiscontinued(Date discontinued) {
 		this.discontinued = discontinued;
 	}
 

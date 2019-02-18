@@ -4,7 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,8 +43,8 @@ public class ComputerDAO extends DAO<Computer> {
 		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_CREATE,
 				Statement.RETURN_GENERATED_KEYS)) {
 			prepare.setString(1, obj.getName());
-			prepare.setTimestamp(2, obj.getIntroduced());
-			prepare.setTimestamp(3, obj.getDiscontinued());
+			prepare.setTimestamp(2, (Timestamp) obj.getIntroduced());
+			prepare.setTimestamp(3, (Timestamp) obj.getDiscontinued());
 			prepare.setLong(4, obj.getCompany().getId());
 
 			prepare.executeUpdate();
@@ -50,8 +52,8 @@ public class ComputerDAO extends DAO<Computer> {
 			ResultSet rs = prepare.getGeneratedKeys();
 			if (rs.next()) {
 				int generated_id = rs.getInt(1);
-				computer = new Computer(generated_id, obj.getName(), obj.getIntroduced(), obj.getDiscontinued(),
-						obj.getCompany());
+				computer = new Computer(generated_id, obj.getName(), (Date) obj.getIntroduced(),
+						(Date) obj.getDiscontinued(), obj.getCompany());
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -79,8 +81,8 @@ public class ComputerDAO extends DAO<Computer> {
 	public Optional<Computer> update(Computer obj) {
 		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_UPDATE)) {
 			prepare.setString(1, obj.getName());
-			prepare.setTimestamp(2, obj.getIntroduced());
-			prepare.setTimestamp(3, obj.getDiscontinued());
+			prepare.setTimestamp(2, (Timestamp) obj.getIntroduced());
+			prepare.setTimestamp(3, (Timestamp) obj.getDiscontinued());
 			prepare.setLong(4, obj.getCompany().getId());
 			prepare.setLong(5, obj.getId());
 			prepare.executeUpdate();
