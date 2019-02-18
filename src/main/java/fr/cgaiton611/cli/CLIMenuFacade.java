@@ -84,9 +84,9 @@ public class CLIMenuFacade {
 	 */
 	public void findComputerById() {
 		Optional<Integer> id = scanUtil.askInteger("id", false);
-		if (! id.isPresent())
+		if (!id.isPresent())
 			return;
-		
+
 		Optional<Computer> computer = computerService.find(id.get());
 		if (!computer.isPresent())
 			printUtil.printn("Computer not found");
@@ -109,9 +109,9 @@ public class CLIMenuFacade {
 		Optional<Integer> companyId = scanUtil.askInteger("company_id", false);
 		if (!companyId.isPresent())
 			return;
-		
-		Optional<Computer> computer = computerService.create(name.get(), introduced.get(), discontinued.get(),
-				companyId.get());
+
+		Optional<Computer> computer = computerService.create(name.get(), introduced.orElse(null),
+				discontinued.orElse(null), companyId.get());
 		if (!computer.isPresent())
 			printUtil.printn("Computer not created");
 		else
@@ -125,11 +125,10 @@ public class CLIMenuFacade {
 	public void updateComputer() {
 		// id
 		Optional<Integer> id = scanUtil.askInteger("id", false);
-		if (! id.isPresent())
+		if (!id.isPresent())
 			return;
 
 		Optional<String> name = scanUtil.askString("name", true);
-	
 
 		Optional<Date> introduced = scanUtil.askDate("introduced", true);
 
@@ -137,7 +136,8 @@ public class CLIMenuFacade {
 
 		Optional<Integer> companyId = scanUtil.askInteger("company_id", true);
 
-		Optional<Computer> computer = computerService.update(id.get(), name.get(), introduced.get(), discontinued.get(), companyId.get());
+		Optional<Computer> computer = computerService.update(id.get(), name, introduced,
+				discontinued, companyId);
 		if (!computer.isPresent())
 			printUtil.printn("Computer not updated");
 		else
@@ -149,7 +149,7 @@ public class CLIMenuFacade {
 	 */
 	public void deleteComputer() {
 		Optional<Integer> id = scanUtil.askInteger("id", false);
-		if (! id.isPresent())
+		if (!id.isPresent())
 			return;
 		computerService.delete(id.get());
 		printUtil.printn("Computer sucefully deleted !");

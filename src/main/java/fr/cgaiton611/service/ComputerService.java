@@ -11,11 +11,12 @@ import fr.cgaiton611.persistence.ComputerDAO;
 
 public class ComputerService {
 	ComputerDAO computerDAO = ComputerDAO.getInstance();
-	
+
 	private static ComputerService instance = new ComputerService();
-	
-	private ComputerService() {};
-	
+
+	private ComputerService() {
+	};
+
 	public static ComputerService getInstance() {
 		return instance;
 	}
@@ -30,15 +31,24 @@ public class ComputerService {
 
 	public Optional<Computer> create(String name, Date introduced, Date discontinued, long companyId) {
 		Computer computer = new Computer(name, introduced, discontinued, new Company(companyId));
-		if (! ComputerValidator.validate(computer)) {
+		if (!ComputerValidator.validate(computer)) {
 			return Optional.empty();
 		}
 		return computerDAO.create(computer);
 	}
 
-	public Optional<Computer> update(long id, String name, Date introduced, Date discontinued, long companyId) {
-		Computer computer = new Computer(name, introduced, discontinued, new Company(companyId));
-		if (! ComputerValidator.validate(computer)) {
+	public Optional<Computer> update(long id, Optional<String> name, Optional<Date> introduced,
+			Optional<Date> discontinued, Optional<Long> companyId) {
+		
+		Optional<Computer> old = find(id);
+		if (! old.isPresent()) return Optional.empty();
+		Computer computer = old.get();
+		if (! name.isPresent()) computer.setName(name.get());
+		if (! introduced.isPresent()) computer.setIntroduced(introduced.get());
+		if (! discontinued.isPresent()) computer.setDiscontinued(discontinued.get());
+		if (! companyId.isPresent()) computer.setCompany(new Company(companyId.get()));
+		
+		if (!ComputerValidator.validate(computer)) {
 			return Optional.empty();
 		}
 		return computerDAO.update(computer);
@@ -47,7 +57,7 @@ public class ComputerService {
 	public void delete(long id) {
 		computerDAO.delete(new Computer(id));
 	}
-	
+
 	public int count() {
 		return computerDAO.count();
 	}

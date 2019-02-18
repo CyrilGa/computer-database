@@ -22,9 +22,9 @@ class TypeValidatorTest {
 	}
 
 	@Test
-	void isTimestamp() {
-		String s1 = "2012:00:01 22:22";
-		String s2 = "2012-00-01 32:22";
+	void isDate() {
+		String s1 = "2012:00:01 22:229";
+		String s2 = "2012-00-01-32:22";
 		String s3 = "0010-01-01 22:22";
 		assertFalse(validator.isDate(s1));
 		assertFalse(validator.isDate(s2));
