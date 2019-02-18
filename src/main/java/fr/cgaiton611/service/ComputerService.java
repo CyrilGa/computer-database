@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
+import fr.cgaiton611.model.ComputerValidator;
 import fr.cgaiton611.persistence.ComputerDAO;
 
 public class ComputerService {
@@ -28,11 +29,19 @@ public class ComputerService {
 	}
 
 	public Optional<Computer> create(String name, Date introduced, Date discontinued, long companyId) {
-		return computerDAO.create(new Computer(name, introduced, discontinued, new Company(companyId)));
+		Computer computer = new Computer(name, introduced, discontinued, new Company(companyId));
+		if (! ComputerValidator.validate(computer)) {
+			return Optional.empty();
+		}
+		return computerDAO.create(computer);
 	}
 
 	public Optional<Computer> update(long id, String name, Date introduced, Date discontinued, long companyId) {
-		return computerDAO.update(new Computer(name, introduced, discontinued, new Company(companyId)));
+		Computer computer = new Computer(name, introduced, discontinued, new Company(companyId));
+		if (! ComputerValidator.validate(computer)) {
+			return Optional.empty();
+		}
+		return computerDAO.update(computer);
 	}
 
 	public void delete(long id) {

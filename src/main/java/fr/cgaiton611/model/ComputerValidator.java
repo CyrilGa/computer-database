@@ -3,13 +3,26 @@ package fr.cgaiton611.model;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
+/**
+ * Validator for all field of class Computer
+ * @author cyril
+ *
+ */
 public class ComputerValidator {
 	public static boolean validate(Computer computer) {
-		return validateDate(computer.getIntroduced())
-				&& validateDate(computer.getDiscontinued());
+		return validateDate(computer.getIntroduced()) && validateDate(computer.getDiscontinued());
 	}
-
+	
+	/**
+	 * Validate the format a Date : yyyy-MM-dd hh:mm
+	 * @param date
+	 * @return
+	 * @throws ComputerValidatorException 
+	 */
 	private static boolean validateDate(Date date) {
+		if (date == null) return true;
+		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 		String s = dateFormat.format(date);
 		

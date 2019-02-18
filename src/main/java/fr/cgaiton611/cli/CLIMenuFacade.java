@@ -109,7 +109,7 @@ public class CLIMenuFacade {
 		Optional<Integer> companyId = scanUtil.askInteger("company_id", false);
 		if (!companyId.isPresent())
 			return;
-
+		
 		Optional<Computer> computer = computerService.create(name.get(), introduced.get(), discontinued.get(),
 				companyId.get());
 		if (!computer.isPresent())
