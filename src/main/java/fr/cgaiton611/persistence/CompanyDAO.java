@@ -18,7 +18,7 @@ import fr.cgaiton611.model.Company;
  */
 public class CompanyDAO extends DAO<Company> {
 	
-	private static final String SQL_CREATE = "INSERT INTO company(name) VALUES(?, ?, ?, ?)";
+	private static final String SQL_CREATE = "INSERT INTO company(name) VALUES(?)";
 	private static final String SQL_FIND = "SELECT id, name FROM company WHERE id = ?";
 	private static final String SQL_UPDATE = "UPDATE company SET name = ? WHERE id = ? ";
 	private static final String SQL_DELETE = "DELETE FROM company WHERE id = ? ";
@@ -43,7 +43,7 @@ public class CompanyDAO extends DAO<Company> {
 			prepare.executeUpdate();
 
 			ResultSet rs = prepare.getGeneratedKeys();
-			if (rs.next()) {
+			if (rs.first()) {
 				int generated_id = rs.getInt(1);
 				company = new Company(generated_id, obj.getName());
 			}
@@ -52,7 +52,7 @@ public class CompanyDAO extends DAO<Company> {
 			e.printStackTrace();
 		}
 
-		return Optional.of(company);
+		return Optional.ofNullable(company);
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class CompanyDAO extends DAO<Company> {
 		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_FIND)) {
 			prepare.setLong(1, obj.getId());
 			ResultSet rs = prepare.executeQuery();
-			if (rs.first()) {
+			if (rs.next()) {
 				company = new Company(rs.getInt("id"), rs.getString("name"));
 			} 
 		} catch (SQLException e) {
@@ -115,6 +115,7 @@ public class CompanyDAO extends DAO<Company> {
 		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_COUNT)) {
 			ResultSet rs = prepare.executeQuery();
 			if (rs.next()) {
+				System.out.println("salut");
 				return rs.getInt("count");
 			}
 		} catch (SQLException e) {

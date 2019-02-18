@@ -54,7 +54,7 @@ public class ComputerDAO extends DAO<Computer> {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return Optional.of(computer);
+		return Optional.ofNullable(computer);
 	}
 
 	@Override

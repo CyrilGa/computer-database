@@ -46,9 +46,9 @@ public class CLIMenuFacade {
 				input = scanUtil.getLine();
 			}
 			if (input.equals("p"))
-				computerPage.previous();
+				computers = computerPage.previous();
 			else if (input.equals("n"))
-				computerPage.next();
+				computers = computerPage.next();
 			else if (input.equals("e"))
 				break;
 		}
@@ -58,9 +58,9 @@ public class CLIMenuFacade {
 	 * Use pagination to return a list of companies
 	 */
 	public void showPagedCompany() {
+		CompanyPage companyPage = new CompanyPage();
+		List<Company> companies = companyPage.next();
 		while (true) {
-			CompanyPage companyPage = new CompanyPage();
-			List<Company> companies = companyPage.next();
 			printUtil.printEntities(companies);
 			printUtil.printn("p for previous, n for next, e for exit");
 			printUtil.print("--> ");
@@ -84,7 +84,7 @@ public class CLIMenuFacade {
 	 */
 	public void findComputerById() {
 		Optional<Integer> id = scanUtil.askInteger("id", false);
-		if (id.isPresent())
+		if (! id.isPresent())
 			return;
 		
 		Optional<Computer> computer = computerService.find(id.get());

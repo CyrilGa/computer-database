@@ -132,6 +132,11 @@
         </plugin>
       </plugins>
     </pluginManagement>
+    <resources>
+        <resource>
+            <directory>ressources/logs</directory>
+        </resource>
+    </resources>
   </build>
   
   <reporting>
