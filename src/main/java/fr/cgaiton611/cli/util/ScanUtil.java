@@ -60,19 +60,19 @@ public class ScanUtil {
 	 * @param skip Define if the user can skip the asked entry
 	 * @return An integer or null if user has skip or the 3 tries were failed
 	 */
-	public Optional<Integer> askInteger(String msg, boolean skip) {
-		return convertUtil.stringToInt(askSomething(msg, skip, Type.Integer));
+	public Optional<Long> askLong(String msg, boolean skip) {
+		return convertUtil.stringToLong(askSomething(msg, skip, Type.Long));
 	}
 
 	/**
-	 * Ask the user the give a certain input (here: an Timestamp)
+	 * Ask the user the give a certain input (here: a Date)
 	 * 
 	 * @param msg  The entry asked to the user
 	 * @param skip Define if the user can skip the asked entry
 	 * @return An integer or null if user has skip or the 3 tries were failed
 	 */
 	public Optional<Date> askDate(String msg, boolean skip) {
-		return convertUtil.stringToDate(askSomething(msg, skip, Type.Timestamp));
+		return convertUtil.stringToDate(askSomething(msg, skip, Type.Date));
 	}
 
 	/**

@@ -1,8 +1,7 @@
 package fr.cgaiton611.cli.util;
 
 public enum Type {
-	Integer,
+	Long,
 	String,
-	Timestamp,
 	Date;
 }

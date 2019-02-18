@@ -11,9 +11,9 @@ import fr.cgaiton611.cli.util.Type;
 public class TypeValidator {
 
 	public <T> boolean isType(String s, Type type) {
-		if (type == Type.Integer)
+		if (type == Type.Long)
 			return isInteger(s);
-		else if (type == Type.Timestamp)
+		else if (type == Type.Date)
 			return isDate(s);
 		else if (type == Type.String)
 			return isString(s);

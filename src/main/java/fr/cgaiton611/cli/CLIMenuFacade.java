@@ -83,7 +83,7 @@ public class CLIMenuFacade {
 	 * Get the computer with the id given
 	 */
 	public void findComputerById() {
-		Optional<Integer> id = scanUtil.askInteger("id", false);
+		Optional<Long> id = scanUtil.askLong("id", false);
 		if (!id.isPresent())
 			return;
 
@@ -106,7 +106,7 @@ public class CLIMenuFacade {
 
 		Optional<Date> discontinued = scanUtil.askDate("discontinued", true);
 
-		Optional<Integer> companyId = scanUtil.askInteger("company_id", false);
+		Optional<Long> companyId = scanUtil.askLong("company_id", false);
 		if (!companyId.isPresent())
 			return;
 
@@ -124,7 +124,7 @@ public class CLIMenuFacade {
 	 */
 	public void updateComputer() {
 		// id
-		Optional<Integer> id = scanUtil.askInteger("id", false);
+		Optional<Long> id = scanUtil.askLong("id", false);
 		if (!id.isPresent())
 			return;
 
@@ -134,9 +134,9 @@ public class CLIMenuFacade {
 
 		Optional<Date> discontinued = scanUtil.askDate("discontinued", true);
 
-		Optional<Integer> companyId = scanUtil.askInteger("company_id", true);
+		Optional<Long> companyId = scanUtil.askLong("company_id", true);
 
-		Optional<Computer> computer = computerService.update(id.get(), name, introduced,
+		Optional<Computer> computer = computerService.update(id.get().longValue(), name, introduced,
 				discontinued, companyId);
 		if (!computer.isPresent())
 			printUtil.printn("Computer not updated");
@@ -148,7 +148,7 @@ public class CLIMenuFacade {
 	 * Delete the computer with the id given
 	 */
 	public void deleteComputer() {
-		Optional<Integer> id = scanUtil.askInteger("id", false);
+		Optional<Long> id = scanUtil.askLong("id", false);
 		if (!id.isPresent())
 			return;
 		computerService.delete(id.get());

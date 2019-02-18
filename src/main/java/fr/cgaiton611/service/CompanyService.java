@@ -1,6 +1,7 @@
 package fr.cgaiton611.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.persistence.CompanyDAO;
@@ -19,6 +20,10 @@ public class CompanyService {
 
 	public List<Company> findPaged(int page, int elements) {
 		return companyDAO.findPaged(page, elements);
+	}
+	
+	public Optional<Company> find(long id) {
+		return companyDAO.find(new Company(id));
 	}
 	
 	public int count() {

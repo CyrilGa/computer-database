@@ -4,12 +4,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import fr.cgaiton611.cli.util.ConvertUtil;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 
@@ -20,6 +20,8 @@ import fr.cgaiton611.model.Computer;
  * @version 1.0
  */
 public class ComputerDAO extends DAO<Computer> {
+	
+	private ConvertUtil convertUtil = new ConvertUtil();
 
 	private static final String SQL_CREATE = "INSERT INTO computer(name, introduced, discontinued, company_id) VALUES(?, ?, ?, ?)";
 	private static final String SQL_FIND = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE id = ?";
@@ -43,8 +45,8 @@ public class ComputerDAO extends DAO<Computer> {
 		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_CREATE,
 				Statement.RETURN_GENERATED_KEYS)) {
 			prepare.setString(1, obj.getName());
-			prepare.setTimestamp(2, (Timestamp) obj.getIntroduced());
-			prepare.setTimestamp(3, (Timestamp) obj.getDiscontinued());
+			prepare.setTimestamp(2, convertUtil.DateToTimestamp(obj.getIntroduced()));
+			prepare.setTimestamp(3, convertUtil.DateToTimestamp(obj.getDiscontinued()));
 			prepare.setLong(4, obj.getCompany().getId());
 
 			prepare.executeUpdate();
@@ -81,8 +83,8 @@ public class ComputerDAO extends DAO<Computer> {
 	public Optional<Computer> update(Computer obj) {
 		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_UPDATE)) {
 			prepare.setString(1, obj.getName());
-			prepare.setTimestamp(2, (Timestamp) obj.getIntroduced());
-			prepare.setTimestamp(3, (Timestamp) obj.getDiscontinued());
+			prepare.setTimestamp(2, convertUtil.DateToTimestamp(obj.getIntroduced()));
+			prepare.setTimestamp(3, convertUtil.DateToTimestamp(obj.getDiscontinued()));
 			prepare.setLong(4, obj.getCompany().getId());
 			prepare.setLong(5, obj.getId());
 			prepare.executeUpdate();
