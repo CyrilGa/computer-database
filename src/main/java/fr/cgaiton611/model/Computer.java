@@ -17,7 +17,6 @@ public class Computer {
 	private Company company;
 
 	public Computer(long id, String name, Date introduced, Date discontinued, Company company) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
@@ -26,7 +25,6 @@ public class Computer {
 	}
 
 	public Computer(String name, Date introduced, Date discontinued, Company company) {
-		super();
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;

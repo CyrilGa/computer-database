@@ -8,26 +8,42 @@ import java.util.Optional;
 
 public class ConvertUtil {
 	public Optional<Long> stringToLong(Optional<String> s) {
-		if (! s.isPresent())
+		if (!s.isPresent())
 			return Optional.empty();
 		return Optional.of(Long.parseLong(s.get()));
 	}
+	
+	public Optional<Long> stringToLong(String s) {
+		return stringToLong(Optional.of(s));
+	}
 
 	public Optional<Date> stringToDate(Optional<String> s) {
-		if (! s.isPresent())
+		if (!s.isPresent())
 			return Optional.empty();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 		Date parsedDate = null;
 		try {
-			parsedDate = dateFormat.parse(s.get()+":00:000");
+			parsedDate = dateFormat.parse(s.get() + ":00:000");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		return Optional.of(new Date(parsedDate.getTime()));
 	}
-	
+
+	public String dateToSting(Date date) {
+		if (date == null)
+			return "";
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+		return dateFormat.format(date);
+	}
+
+	public Optional<Date> stringToDate(String s) {
+		return stringToDate(Optional.of(s));
+	}
+
 	public Timestamp DateToTimestamp(Date date) {
-		if (date == null) return null;
+		if (date == null)
+			return null;
 		return new Timestamp(date.getTime());
 	}
 }

@@ -26,6 +26,10 @@ public class CompanyService {
 		return companyDAO.find(new Company(id));
 	}
 	
+	public Optional<Company> findByName(String name) {
+		return companyDAO.findByName(name);
+	}
+	
 	public int count() {
 		return companyDAO.count();
 	}

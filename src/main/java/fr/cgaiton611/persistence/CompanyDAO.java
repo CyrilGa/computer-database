@@ -24,6 +24,7 @@ public class CompanyDAO extends DAO<Company> {
 	private static final String SQL_DELETE = "DELETE FROM company WHERE id = ? ";
 	private static final String SQL_FIND_PAGED = "SELECT * FROM company LIMIT ? OFFSET ? ";
 	private static final String SQL_COUNT = "SELECT COUNT(*) as count FROM company";
+	private static final String SQL_FIND_BY_NAME = "SELECT id, name FROM company WHERE name = ?";
 
 	private static CompanyDAO instance = new CompanyDAO();
 	
@@ -122,6 +123,20 @@ public class CompanyDAO extends DAO<Company> {
 			e.printStackTrace();
 		}
 		return max;
+	}
+	
+	public Optional<Company> findByName(String name) {
+		Company company = null;
+		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_FIND_BY_NAME)) {
+			prepare.setString(1, name);
+			ResultSet rs = prepare.executeQuery();
+			if (rs.next()) {
+				company = new Company(rs.getInt("id"), rs.getString("name"));
+			} 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Optional.ofNullable(company);
 	}
 
 }
