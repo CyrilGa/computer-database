@@ -6,6 +6,7 @@ import fr.cgaiton611.cli.util.ConvertUtil;
 import fr.cgaiton611.model.Company;
 
 public class CompanyMapper {
+	
 	private static ConvertUtil convertUtil = new ConvertUtil();
 	
 	public static Optional<Company> toCompany(CompanyDTO companyDTO) {
