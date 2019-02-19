@@ -7,16 +7,7 @@
 	<display-name>cdb</display-name>
 	
 	<welcome-file-list>
-  	<welcome-file>IndexServlet</welcome-file>
+  	<welcome-file>DashboardServlet</welcome-file>
  	</welcome-file-list>
-  	<servlet>
-        <servlet-name>IndexServlet</servlet-name>
-        <servlet-class>fr.cgaiton611.servlet.IndexServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>IndexServlet</servlet-name>
-        <url-pattern>/IndexServlet</url-pattern>
-    </servlet-mapping>
 	
 </web-app>
