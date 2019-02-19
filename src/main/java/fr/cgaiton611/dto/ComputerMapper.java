@@ -1,6 +1,8 @@
 package fr.cgaiton611.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import fr.cgaiton611.cli.util.ConvertUtil;
@@ -12,45 +14,57 @@ public class ComputerMapper {
 	
 	private static ConvertUtil convertUtil = new ConvertUtil();
 	private static CompanyService companyService = CompanyService.getInstance();
-	
+
 	public static Optional<Computer> toComputer(ComputerDTO computerDTO) {
 		Computer computer = new Computer();
-		
+
 		Optional<Long> id = convertUtil.stringToLong(computerDTO.getId());
-		if (! id.isPresent()) return Optional.empty();
+		if (!id.isPresent())
+			return Optional.empty();
 		computer.setId(id.get());
-		
+
 		computer.setName(computerDTO.getName());
-		
+
 		Optional<Date> introduced = convertUtil.stringToDate(computerDTO.getIntroduced());
-		if (! introduced.isPresent()) return Optional.empty();
+		if (!introduced.isPresent())
+			return Optional.empty();
 		computer.setIntroduced(introduced.get());
-		
+
 		Optional<Date> discontinued = convertUtil.stringToDate(computerDTO.getDiscontinued());
-		if (! discontinued.isPresent()) return Optional.empty();
+		if (!discontinued.isPresent())
+			return Optional.empty();
 		computer.setDiscontinued(discontinued.get());
-		
+
 		Optional<Company> company = companyService.findByName(computerDTO.getCompanyName());
-		if (! company.isPresent()) return Optional.empty();
+		if (!company.isPresent())
+			return Optional.empty();
 		computer.setCompany(company.get());
-		
+
 		return Optional.of(computer);
 	}
-	
+
 	public static ComputerDTO toComputerDTO(Computer computer) {
 		ComputerDTO computerDTO = new ComputerDTO();
-		
+
 		computerDTO.setId(String.valueOf(computer.getId()));
-		
+
 		computerDTO.setName(computerDTO.getName());
-		
+
 		computerDTO.setIntroduced(convertUtil.dateToSting(computer.getIntroduced()));
-		
+
 		computerDTO.setDiscontinued(convertUtil.dateToSting(computer.getDiscontinued()));
-		
+
 		computerDTO.setCompanyName(computer.getCompany().getName());
-		
+
 		return computerDTO;
 	}
-	
+
+	public static List<ComputerDTO> toComputerDTOList(List<Computer> computers) {
+		List<ComputerDTO> computerDTOs = new ArrayList<>();
+		for (Computer computer : computers) {
+			computerDTOs.add(toComputerDTO(computer));
+		}
+		return computerDTOs;
+	}
+
 }

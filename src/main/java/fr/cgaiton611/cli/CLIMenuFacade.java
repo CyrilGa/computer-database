@@ -33,7 +33,7 @@ public class CLIMenuFacade {
 	 * Use pagination to return a list of computers
 	 */
 	public void showPagedComputer() {
-		ComputerPage computerPage = new ComputerPage();
+		ComputerPage computerPage = new ComputerPage(15);
 		List<Computer> computers = computerPage.next();
 		while (true) {
 			printUtil.printEntities(computers);
