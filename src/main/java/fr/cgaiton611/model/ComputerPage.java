@@ -8,14 +8,14 @@ public class ComputerPage {
 	private ComputerService computerService = ComputerService.getInstance();
 	private int elements = 15;
 	private int page = -1;
-	public int getPage() {
-		return page;
-	}
-
 	private int max = 0;
 
 	public int getMax() {
 		return max;
+	}
+
+	public int getPage() {
+		return page;
 	}
 
 	public ComputerPage(int elements) {
@@ -37,14 +37,24 @@ public class ComputerPage {
 		return computerService.findPaged(page, elements);
 	}
 
-	public List<Computer> get(int page){
-		if (page <=0) page = 0;
-		else if (page >= max) page = max;
+	public List<Computer> get(int page) {
+		if (page <= 0)
+			page = 0;
+		else if (page >= max)
+			page = max;
 		return computerService.findPaged(page, elements);
 	}
-	
+
 	public void calculateMax() {
 		max = (computerService.count() / elements);
 	}
-	
+
+	public void setElements(int elements) {
+		if (this.elements != elements) {
+			page = 0;
+		}
+		this.elements = elements;
+		calculateMax();
+	}
+
 }

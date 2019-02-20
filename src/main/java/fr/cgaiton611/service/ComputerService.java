@@ -23,16 +23,29 @@ public class ComputerService {
 	}
 
 	public List<Computer> findPaged(int page, int elements) {
-		return computerDAO.findPaged(page, elements);
+		List<Computer> computers = computerDAO.findPaged(page, elements);
+		for (Computer computer : computers) {
+			Optional<Company> company = companyService.find(computer.getId());
+			if (company.isPresent())
+				computer.setCompany(company.get());
+		}
+		return computers;
 	}
 
 	public Optional<Computer> find(long id) {
-		return computerDAO.find(new Computer(id));
+		Optional<Computer> computer = computerDAO.find(new Computer(id));
+		if (!computer.isPresent())
+			return Optional.empty();
+		Optional<Company> company = companyService.find(computer.get().getId());
+		if (company.isPresent())
+			computer.get().setCompany(company.get());
+		return computer;
 	}
 
 	public Optional<Computer> create(String name, Date introduced, Date discontinued, long companyId) {
 		Optional<Company> company = companyService.find(companyId);
-		if (! company.isPresent()) return Optional.empty();
+		if (!company.isPresent())
+			return Optional.empty();
 		Computer computer = new Computer(name, introduced, discontinued, company.get());
 		if (!ComputerValidator.validate(computer)) {
 			return Optional.empty();
@@ -42,15 +55,20 @@ public class ComputerService {
 
 	public Optional<Computer> update(long id, Optional<String> name, Optional<Date> introduced,
 			Optional<Date> discontinued, Optional<Long> companyId) {
-		
+
 		Optional<Computer> old = find(id);
-		if (! old.isPresent()) return Optional.empty();
+		if (!old.isPresent())
+			return Optional.empty();
 		Computer computer = old.get();
-		if (name.isPresent()) computer.setName(name.get());
-		if (introduced.isPresent()) computer.setIntroduced(introduced.get());
-		if (discontinued.isPresent()) computer.setDiscontinued(discontinued.get());
-		if (companyId.isPresent()) computer.setCompany(new Company(companyId.get()));
-		
+		if (name.isPresent())
+			computer.setName(name.get());
+		if (introduced.isPresent())
+			computer.setIntroduced(introduced.get());
+		if (discontinued.isPresent())
+			computer.setDiscontinued(discontinued.get());
+		if (companyId.isPresent())
+			computer.setCompany(new Company(companyId.get()));
+
 		if (!ComputerValidator.validate(computer)) {
 			return Optional.empty();
 		}

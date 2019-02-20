@@ -1,2 +1,2 @@
-DELETE FROM company;
 DELETE FROM computer;
+DELETE FROM company;

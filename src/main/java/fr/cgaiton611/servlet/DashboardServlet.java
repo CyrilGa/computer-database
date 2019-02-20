@@ -17,31 +17,34 @@ import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.model.ComputerPage;
 import fr.cgaiton611.service.ComputerService;
 
-@WebServlet(urlPatterns = { "/dashboard", "/dashboard.html" })
+@WebServlet(urlPatterns = {"/dashboard"})
 public class DashboardServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
 	private ComputerService computerService = ComputerService.getInstance();
-	private final int ELEMENTS = 10;
-	private final int PAGE = 0;
+	private int elements = 10;
+	private int page = 0;
+	private ComputerPage computerPage = new ComputerPage(elements);
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Integer elementsAttribute = Integer.parseInt(request.getParameter("elements"));
-		int elements = ELEMENTS;
+		
+		String elementsAttribute = request.getParameter("elements");
 		if (elementsAttribute != null)
-			elements = elementsAttribute;
+			elements = Integer.parseInt(elementsAttribute);
 
-		Integer pageAttribute = Integer.parseInt(request.getParameter("page"));
-		int page = PAGE;
-		if (elementsAttribute != null)
-			page = pageAttribute;
+		String pageAttribute = request.getParameter("page");
+		if (pageAttribute != null)
+			page = Integer.parseInt(pageAttribute);
 
-		ComputerPage computerPage = new ComputerPage(elements);
+		computerPage.setElements(elements);
+		
 		List<Computer> computers = computerPage.get(page);
+
 		List<ComputerDTO> computersDTO = ComputerMapper.toComputerDTOList(computers);
+		
 		request.setAttribute("computers", computersDTO);
 
 		List<Integer> navigationPages = getNavigationPages(computerPage);
@@ -65,17 +68,19 @@ public class DashboardServlet extends HttpServlet {
 		}
 		
 		while (navigationPages.size() < 5 && inf) {
-			int ajout= navigationPages.get(0);
+			int ajout = navigationPages.get(0)-1;
 			if (ajout >= 0) navigationPages.add(0, ajout);
 			else inf = false;
 		}
 		
 		while (navigationPages.size() < 5 && sup) {
-			int ajout= navigationPages.get(max);
+			int ajout = navigationPages.get(navigationPages.size()-1)+1;
 			if (ajout >= 0) navigationPages.add(navigationPages.size(), ajout);
 			else sup = false;
 		}
-		
+		for (Integer integer : navigationPages) {
+			System.out.println(integer);
+		}
 		return navigationPages;
 	}
 	

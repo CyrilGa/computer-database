@@ -14,7 +14,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="dashboard.html"> Application -
+			<a class="navbar-brand" href="/cdb/dashboard"> Application -
 				Computer Database </a>
 		</div>
 	</header>
@@ -33,7 +33,7 @@
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addComputer.html">Add
+					<a class="btn btn-success" id="addComputer" href="/cdb/addComputer.html">Add
 						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
@@ -69,11 +69,11 @@
 				</thead>
 				<!-- Browse attribute computers -->
 				<tbody id="results">
-					<c:forEach items=$(computers) var="computer">
+					<c:forEach items="${computers}" var="computer">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="${computer.id}"></td>
-							<td><a href="editComputer?computerId=${computer.id}"
+							<td><a href="/cdb/editComputer?computerId=${computer.id}"
 								onclick="">${computer.name}</a></td>
 							<td>${computer.introduced}</td>
 							<td>${computer.discontinued}</td>
@@ -93,8 +93,8 @@
 						aria-hidden="true">&laquo;</span>
 				</a></li>
 
-				<c:forEach items=$(navigationPages) var="page">
-					<li><a href="/dashboard?page=${page}&search=${search}">1</a></li>
+				<c:forEach items="${navigationPages}" var="page">
+					<li><a href="/cdb/dashboard?page=${page}">${page}</a></li>
 				</c:forEach>
 
 				<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
@@ -102,12 +102,9 @@
 			</ul>
 
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<button href="/dashboard?elements=10" type="button"
-					class="btn btn-default">10</button>
-				<button href="/dashboard?elements=50" type="button"
-					class="btn btn-default">50</button>
-				<button href="/dashboard?elements=100" type="button"
-					class="btn btn-default">100</button>
+				<a href="/cdb/dashboard?elements=10" class="btn btn-default">10</a>
+				<a href="/cdb/dashboard?elements=50" class="btn btn-default">50</a> 
+				<a href="/cdb/dashboard?elements=100" class="btn btn-default">100</a>
 			</div>
 		</div>
 	</footer>

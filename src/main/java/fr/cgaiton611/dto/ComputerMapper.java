@@ -48,7 +48,7 @@ public class ComputerMapper {
 
 		computerDTO.setId(String.valueOf(computer.getId()));
 
-		computerDTO.setName(computerDTO.getName());
+		computerDTO.setName(computer.getName());
 
 		computerDTO.setIntroduced(convertUtil.dateToSting(computer.getIntroduced()));
 
