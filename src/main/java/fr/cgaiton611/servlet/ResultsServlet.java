@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,7 @@ import fr.cgaiton611.dto.ComputerMapper;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.ComputerService;
 
+@WebServlet(urlPatterns= {"/results"})
 public class ResultsServlet extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
@@ -26,7 +28,7 @@ public class ResultsServlet extends HttpServlet{
 
 		String name = request.getParameter("scearch");
 		if (name == null) {
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/views/dashboard.jsp");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/ressources/views/dashboard.jsp");
 			dispatcher.forward(request, response);
 		}
 
@@ -39,7 +41,7 @@ public class ResultsServlet extends HttpServlet{
 
 		request.setAttribute("count", computersDTO.size());
 
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/views/results.jsp");
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/ressources/views/results.jsp");
 		dispatcher.forward(request, response);
 	}
 	
