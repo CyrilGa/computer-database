@@ -82,4 +82,15 @@ public class ComputerService {
 	public int count() {
 		return computerDAO.count();
 	}
+	
+	public List<Computer> findByName(String name) {
+		List<Computer> computers = computerDAO.findByName(name);
+		for (Computer computer : computers) {
+			Optional<Company> company = companyService.find(computer.getId());
+			if (company.isPresent())
+				computer.setCompany(company.get());
+		}
+		return computers;
+	}
+		
 }

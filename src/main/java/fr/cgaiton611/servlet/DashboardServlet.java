@@ -17,8 +17,10 @@ import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.model.ComputerPage;
 import fr.cgaiton611.service.ComputerService;
 
-@WebServlet(urlPatterns = {"/dashboard"})
+@WebServlet(urlPatterns = { "/dashboard" })
 public class DashboardServlet extends HttpServlet {
+
+	private int[] ELEMENTS_AUTORISED = { 10, 50, 100 };
 
 	private static final long serialVersionUID = 1L;
 
@@ -30,21 +32,27 @@ public class DashboardServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		String elementsAttribute = request.getParameter("elements");
-		if (elementsAttribute != null)
-			elements = Integer.parseInt(elementsAttribute);
 
 		String pageAttribute = request.getParameter("page");
 		if (pageAttribute != null)
 			page = Integer.parseInt(pageAttribute);
+		
+		String elementsAttribute = request.getParameter("elements");
+		if (elementsAttribute != null) {
+			int temp = Integer.parseInt(elementsAttribute);
+			if (elementsIsValid(temp)) {
+				elements = temp;
+				page = 0;
+			}
+		}
+
 
 		computerPage.setElements(elements);
-		
+
 		List<Computer> computers = computerPage.get(page);
 
 		List<ComputerDTO> computersDTO = ComputerMapper.toComputerDTOList(computers);
-		
+
 		request.setAttribute("computers", computersDTO);
 
 		List<Integer> navigationPages = getNavigationPages(computerPage);
@@ -52,37 +60,51 @@ public class DashboardServlet extends HttpServlet {
 
 		request.setAttribute("count", computerService.count());
 
+		request.setAttribute("page", computerPage.getPage());
+
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/views/dashboard.jsp");
 		dispatcher.forward(request, response);
 	}
 
-	public List<Integer> getNavigationPages(ComputerPage computerPage){
+	public List<Integer> getNavigationPages(ComputerPage computerPage) {
 		List<Integer> navigationPages = new ArrayList<>();
 		int max = computerPage.getMax();
 		int page = computerPage.getPage();
 		boolean inf = true, sup = true;
-		for (int i=page-2; i<page+3; i++) {
-			if (i<0) inf = false;
-			else if (i>max) sup = false;
-			else navigationPages.add(i);
+		for (int i = page - 2; i < page + 3; i++) {
+			if (i < 0)
+				inf = false;
+			else if (i > max)
+				sup = false;
+			else
+				navigationPages.add(i);
 		}
-		
+
 		while (navigationPages.size() < 5 && inf) {
-			int ajout = navigationPages.get(0)-1;
-			if (ajout >= 0) navigationPages.add(0, ajout);
-			else inf = false;
+			int ajout = navigationPages.get(0) - 1;
+			if (ajout >= 0)
+				navigationPages.add(0, ajout);
+			else
+				inf = false;
+		}
+
+		while (navigationPages.size() < 5 && sup) {
+			int ajout = navigationPages.get(navigationPages.size() - 1) + 1;
+			if (ajout >= 0)
+				navigationPages.add(navigationPages.size(), ajout);
+			else
+				sup = false;
 		}
 		
-		while (navigationPages.size() < 5 && sup) {
-			int ajout = navigationPages.get(navigationPages.size()-1)+1;
-			if (ajout >= 0) navigationPages.add(navigationPages.size(), ajout);
-			else sup = false;
-		}
-		for (Integer integer : navigationPages) {
-			System.out.println(integer);
-		}
 		return navigationPages;
 	}
-	
+
+	public boolean elementsIsValid(int elements) {
+		for (int i : ELEMENTS_AUTORISED) {
+			if (i == elements)
+				return true;
+		}
+		return false;
+	}
 
 }

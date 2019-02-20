@@ -37,7 +37,8 @@ public class ComputerPage {
 		return computerService.findPaged(page, elements);
 	}
 
-	public List<Computer> get(int page) {
+	public List<Computer> get(int ppage) {
+		page = ppage;
 		if (page <= 0)
 			page = 0;
 		else if (page >= max)
@@ -51,7 +52,7 @@ public class ComputerPage {
 
 	public void setElements(int elements) {
 		if (this.elements != elements) {
-			page = 0;
+			page = -1;
 		}
 		this.elements = elements;
 		calculateMax();

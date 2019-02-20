@@ -29,6 +29,7 @@ public class ComputerDAO extends DAO<Computer> {
 	private static final String SQL_DELETE = "DELETE FROM computer WHERE id = ? ";
 	private static final String SQL_FIND_PAGED = "SELECT * FROM computer LIMIT ? OFFSET ? ";
 	private static final String SQL_COUNT = "SELECT COUNT(*) as count FROM computer";
+	private static final String SQL_FIND_BY_NAME = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE name = ?";
 
 	private static ComputerDAO instance = new ComputerDAO();
 
@@ -131,6 +132,21 @@ public class ComputerDAO extends DAO<Computer> {
 			e.printStackTrace();
 		}
 		return max;
+	}
+	
+	public List<Computer> findByName(String name) {
+		List<Computer> computers = new ArrayList<>();
+		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_FIND_BY_NAME)) {
+			prepare.setString(1, name);
+			ResultSet rs = prepare.executeQuery();
+			while (rs.next()) {
+				computers.add(new Computer(rs.getLong("id"), rs.getString("name"), rs.getTimestamp("introduced"),
+						rs.getTimestamp("discontinued"), new Company(rs.getLong("company_id"))));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return computers;
 	}
 
 }

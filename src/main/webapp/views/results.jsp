@@ -22,29 +22,12 @@
 	<section id="main">
 		<div class="container">
 			<h1 id="homeTitle">${count} Computers found</h1>
-			<div id="actions" class="form-horizontal">
-				<div class="pull-left">
-					<form id="searchForm" action="/cdb/dashboard" method="POST" class="form-inline">
-						<input type="search" id="searchbox" name="search"
-							class="form-control" placeholder="Search name" />
-						<input type="submit" id="searchsubmit" value="Filter by name"
-							class="btn btn-primary" />
-					</form>
+			<div class="pull-right">
+					<a class="btn btn-outline-primary" id="Back"
+						href="/cdb/dashboard"><i class="fas fa-angle-left"></i>Back</a>
 				</div>
-				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer"
-						href="/cdb/addComputer">Add Computer</a> 
-					<a class="btn btn-default" id="editComputer"
-						href="/cdb/editComputer">Edit</a>
-					<a class="btn btn-danger" id="removeComputer"
-						href="/cdb/addComputer<">Remove</a>
-				</div>
-			</div>
 		</div>
 
-		<form id="deleteForm" action="#" method="POST">
-			<input type="hidden" name="selection" value="">
-		</form>
 
 		<div class="container" style="margin-top: 10px;">
 			<table class="table table-striped table-bordered">
@@ -86,29 +69,6 @@
 		</div>
 	</section>
 
-	<footer class="navbar-fixed-bottom">
-		<div class="container text-center">
-			<ul class="pagination">
-				<li><a href="/cdb/dashboard?page=${page - 1}"
-					aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-				</a></li>
-
-				<c:forEach items="${navigationPages}" var="page">
-					<li><a href="/cdb/dashboard?page=${page}">${page}</a></li>
-				</c:forEach>
-
-				<li><a href="/cdb/dashboard?page=${page + 1}" aria-label="Next">
-						<span aria-hidden="true">&raquo;</span>
-				</a></li>
-			</ul>
-
-			<div class="btn-group btn-group-sm pull-right" role="group">
-				<a href="/cdb/dashboard?elements=10" class="btn btn-default">10</a>
-				<a href="/cdb/dashboard?elements=50" class="btn btn-default">50</a>
-				<a href="/cdb/dashboard?elements=100" class="btn btn-default">100</a>
-			</div>
-		</div>
-	</footer>
 	<script src="../js/jquery.min.js"></script>
 	<script src="../js/bootstrap.min.js"></script>
 	<script src="../js/dashboard.js"></script>
