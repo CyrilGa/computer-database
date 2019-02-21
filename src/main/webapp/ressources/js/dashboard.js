@@ -82,11 +82,9 @@ $(document).keydown(function(e) {
                 $.fn.deleteSelected();
             }   
             break;
-        //E key (CTRL+E will switch to edit mode)
+        //E key (E will switch to edit mode)
         case 69:
-            if(e.ctrlKey) {
-                $.fn.toggleEditMode();
-            }
+        	$.fn.toggleEditMode();
             break;
     }
 });

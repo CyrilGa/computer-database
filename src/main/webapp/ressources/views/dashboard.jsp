@@ -34,6 +34,9 @@
 						</c:if>
 					</form>
 				</div>
+				<div class="pull-left">
+					<span class="btn" id="custom-p">e : toggle edit mode, del : delete selected computer(s)</span>
+				</div>
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer" href="/cdb/addComputer">Add Computer</a> 
 					<a class="btn btn-default" id="editComputer" href="#" 
@@ -42,7 +45,7 @@
 			</div>
 		</div>
 
-		<form id="deleteForm" action="#" method="POST">
+		<form id="deleteForm" action="/cdb/dashboard" method="POST">
 			<input type="hidden" name="selection" value="">
 		</form>
 

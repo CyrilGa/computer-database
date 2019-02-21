@@ -27,3 +27,8 @@ input[type='checkbox'] {
     border-radius: 5px;
     white-space: nowrap;
 }
+
+#custom-p{
+	color: #888888;
+	margin-left: 100px;
+}
