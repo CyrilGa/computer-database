@@ -33,4 +33,8 @@ public class CompanyService {
 	public int count() {
 		return companyDAO.count();
 	}
+	
+	public List<String> findAllName(){
+		return companyDAO.findAllName();
+	}
 }

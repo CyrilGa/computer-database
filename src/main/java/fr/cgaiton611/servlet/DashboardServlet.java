@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import fr.cgaiton611.dto.ComputerDTO;
 import fr.cgaiton611.dto.ComputerMapper;
@@ -33,6 +34,12 @@ private int[] ELEMENTS_AUTORISED = { 10, 50, 100 };
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		HttpSession session = request.getSession(false);
+		String dashboardMsg = (String) session.getAttribute("dashboardMsg");
+		if (dashboardMsg != null)
+			request.setAttribute("dashboardMsg", dashboardMsg);
+			session.removeAttribute("dashboardMsg");
 
 		name = request.getParameter("search");	
 		computerByNamePage.setName(name);
@@ -121,9 +128,10 @@ private int[] ELEMENTS_AUTORISED = { 10, 50, 100 };
 			String[] ids = selection.split(",");
 			for (int i=0; i<ids.length; i++) {
 				computerService.delete(Integer.parseInt(ids[i]));
-				
 			}
 		}
+		HttpSession session = request.getSession(false);
+		session.setAttribute("dashboardMsg", "Computer successfully deleted");
 		response.sendRedirect(request.getContextPath() + "/dashboard");
 	}
 

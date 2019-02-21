@@ -48,8 +48,8 @@ public class ComputerDAO extends DAO<Computer> {
 		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_CREATE,
 				Statement.RETURN_GENERATED_KEYS)) {
 			prepare.setString(1, obj.getName());
-			prepare.setTimestamp(2, convertUtil.DateToTimestamp(obj.getIntroduced()));
-			prepare.setTimestamp(3, convertUtil.DateToTimestamp(obj.getDiscontinued()));
+			prepare.setTimestamp(2, convertUtil.dateToTimestamp(obj.getIntroduced()));
+			prepare.setTimestamp(3, convertUtil.dateToTimestamp(obj.getDiscontinued()));
 			prepare.setLong(4, obj.getCompany().getId());
 
 			prepare.executeUpdate();
@@ -86,8 +86,8 @@ public class ComputerDAO extends DAO<Computer> {
 	public Optional<Computer> update(Computer obj) {
 		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_UPDATE)) {
 			prepare.setString(1, obj.getName());
-			prepare.setTimestamp(2, convertUtil.DateToTimestamp(obj.getIntroduced()));
-			prepare.setTimestamp(3, convertUtil.DateToTimestamp(obj.getDiscontinued()));
+			prepare.setTimestamp(2, convertUtil.dateToTimestamp(obj.getIntroduced()));
+			prepare.setTimestamp(3, convertUtil.dateToTimestamp(obj.getDiscontinued()));
 			prepare.setLong(4, obj.getCompany().getId());
 			prepare.setLong(5, obj.getId());
 			prepare.executeUpdate();

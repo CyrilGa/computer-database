@@ -53,6 +53,11 @@ public class ComputerService {
 		return computerDAO.create(computer);
 	}
 
+	public Optional<Computer> create(Computer computer) {
+		return create(computer.getName(), computer.getIntroduced(), computer.getDiscontinued(),
+				computer.getCompany().getId());
+	}
+
 	public Optional<Computer> update(long id, Optional<String> name, Optional<Date> introduced,
 			Optional<Date> discontinued, Optional<Long> companyId) {
 
@@ -82,7 +87,7 @@ public class ComputerService {
 	public int count() {
 		return computerDAO.count();
 	}
-	
+
 	public List<Computer> findByNamePaged(int page, int elements, String name) {
 		List<Computer> computers = computerDAO.findByNamePaged(page, elements, name);
 		for (Computer computer : computers) {
@@ -92,9 +97,9 @@ public class ComputerService {
 		}
 		return computers;
 	}
-	
+
 	public int countByName(String name) {
 		return computerDAO.countByName(name);
 	}
-		
+
 }

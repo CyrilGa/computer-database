@@ -17,27 +17,22 @@ public class ComputerMapper {
 
 	public static Optional<Computer> toComputer(ComputerDTO computerDTO) {
 		Computer computer = new Computer();
-
-		Optional<Long> id = convertUtil.stringToLong(computerDTO.getId());
-		if (!id.isPresent())
+		String name = computerDTO.getName();
+		if(name == null || "".equals(name)) {
 			return Optional.empty();
-		computer.setId(id.get());
-
-		computer.setName(computerDTO.getName());
+		}
+		computer.setName(name);
 
 		Optional<Date> introduced = convertUtil.stringToDate(computerDTO.getIntroduced());
-		if (!introduced.isPresent())
-			return Optional.empty();
-		computer.setIntroduced(introduced.get());
-
+		computer.setIntroduced(introduced.orElse(null));
+		
 		Optional<Date> discontinued = convertUtil.stringToDate(computerDTO.getDiscontinued());
-		if (!discontinued.isPresent())
-			return Optional.empty();
-		computer.setDiscontinued(discontinued.get());
+		computer.setDiscontinued(discontinued.orElse(null));
 
 		Optional<Company> company = companyService.findByName(computerDTO.getCompanyName());
-		if (!company.isPresent())
+		if(! company.isPresent()) {
 			return Optional.empty();
+		}
 		computer.setCompany(company.get());
 
 		return Optional.of(computer);

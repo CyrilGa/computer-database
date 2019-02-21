@@ -20,7 +20,10 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${count} Computers found</h1>
+			<div id="container-title">
+				<h1 id="homeTitle">${count} Computers found </h1>
+				<span id="dashmsg">${dashboardMsg}</span>
+			</div>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="/cdb/dashboard" method="GET" class="form-inline">

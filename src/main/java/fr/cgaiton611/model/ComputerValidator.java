@@ -3,29 +3,33 @@ package fr.cgaiton611.model;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 /**
  * Validator for all field of class Computer
+ * 
  * @author cyril
  *
  */
 public class ComputerValidator {
 	public static boolean validate(Computer computer) {
+		if (computer==null)
+			return false;
 		return validateDate(computer.getIntroduced()) && validateDate(computer.getDiscontinued());
 	}
-	
+
 	/**
 	 * Validate the format a Date : yyyy-MM-dd hh:mm
+	 * 
 	 * @param date
 	 * @return
-	 * @throws ComputerValidatorException 
+	 * @throws ComputerValidatorException
 	 */
 	private static boolean validateDate(Date date) {
-		if (date == null) return true;
-		
+		if (date == null)
+			return true;
+
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 		String s = dateFormat.format(date);
-		
+
 		String year = s.substring(0, 4);
 		String month = s.substring(5, 7);
 		String day = s.substring(8, 10);
@@ -37,7 +41,7 @@ public class ComputerValidator {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Test if a String (converted to an integer) if included between two integer
 	 * 

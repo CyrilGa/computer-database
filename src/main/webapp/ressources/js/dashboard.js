@@ -22,6 +22,14 @@ $(function() {
         }
     });
 
+    // Delete dashboard msg after 3 sec
+    setTimeout(
+    		  function() 
+    		  {
+    			 $("#dashmsg").text("");
+    		  }, 2500);
+    
+
 });
 
 

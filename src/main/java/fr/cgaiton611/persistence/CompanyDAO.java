@@ -22,9 +22,10 @@ public class CompanyDAO extends DAO<Company> {
 	private static final String SQL_FIND = "SELECT id, name FROM company WHERE id = ?";
 	private static final String SQL_UPDATE = "UPDATE company SET name = ? WHERE id = ? ";
 	private static final String SQL_DELETE = "DELETE FROM company WHERE id = ? ";
-	private static final String SQL_FIND_PAGED = "SELECT * FROM company LIMIT ? OFFSET ? ";
+	private static final String SQL_FIND_PAGED = "SELECT id, name FROM company LIMIT ? OFFSET ? ";
 	private static final String SQL_COUNT = "SELECT COUNT(*) as count FROM company";
 	private static final String SQL_FIND_BY_NAME = "SELECT id, name FROM company WHERE name = ?";
+	private static final String SQL_FIND_ALL_NAME = "SELECT name FROM company";
 
 	private static CompanyDAO instance = new CompanyDAO();
 	
@@ -138,5 +139,19 @@ public class CompanyDAO extends DAO<Company> {
 		}
 		return Optional.ofNullable(company);
 	}
+	
+	public List<String> findAllName(){
+		List<String> names = new ArrayList<>();
+		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_FIND_ALL_NAME)) {
+			ResultSet rs = prepare.executeQuery();
+			while (rs.next()) {
+				names.add(rs.getString("name"));
+			} 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return names;
+	}
+
 
 }

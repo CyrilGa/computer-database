@@ -13,19 +13,23 @@ public class ComputerDTO {
 		super();
 	}
 
-	public ComputerDTO(String id, String name, String introduced, String discontinued, String companyName) {
-		this.id = id;
+	public ComputerDTO(String name, String introduced, String discontinued, String companyName) {
 		this.name = name;
 		this.introduced = introduced;
+		if (introduced != null && ! "".equals(introduced)) this.introduced +=" 00:00";
 		this.discontinued = discontinued;
+		if (discontinued != null && ! "".equals(discontinued)) this.discontinued +=" 00:00";
 		this.companyName = companyName;
 	}
+	
 	public String getId() {
 		return id;
 	}
+
 	public void setId(String id) {
 		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}
@@ -53,8 +57,10 @@ public class ComputerDTO {
 
 	@Override
 	public String toString() {
-		return "ComputerDTO [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued="
-				+ discontinued + ", companyName=" + companyName + "]";
+		return "ComputerDTO [name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
+				+ ", companyName=" + companyName + "]";
 	}
+
+	
 	
 }
