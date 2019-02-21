@@ -5,10 +5,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import fr.cgaiton611.cli.util.ConvertUtil;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.CompanyService;
+import fr.cgaiton611.util.ConvertUtil;
 
 public class ComputerMapper {
 	

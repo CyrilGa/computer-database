@@ -3,9 +3,6 @@ package fr.cgaiton611.cli;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.cgaiton611.cli.util.PrintUtil;
-import fr.cgaiton611.cli.util.ScanUtil;
-
 /**
  * Main class for the cli Used like a stateless automaton
  * 

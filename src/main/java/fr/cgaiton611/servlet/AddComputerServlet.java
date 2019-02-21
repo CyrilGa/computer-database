@@ -1,6 +1,7 @@
 package fr.cgaiton611.servlet;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.cgaiton611.service.ComputerService;
+import fr.cgaiton611.util.ConvertUtil;
 
 @WebServlet(urlPatterns = { "addComputer" })
 public class AddComputerServlet extends HttpServlet {
@@ -30,9 +32,9 @@ public class AddComputerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String name = request.getParameter("computerName");
-		String introduced = request.getParameter("introduced");
-		String discontinued = request.getParameter("discontinued");
-		String companyId = request.getParameter("companyId");
+		Optional<Date> introduced = request.getParameter("introduced");
+		Optional<Date> discontinued = request.getParameter("discontinued");
+		Optional<Long> companyId = ConvertUtilrequest.getParameter("companyId");
 		if (name != null) {
 			computerService.create(name, introduced, discontinued, companyId)
 		}

@@ -1,10 +1,12 @@
-package fr.cgaiton611.cli.util;
+package fr.cgaiton611.cli;
 
 import java.util.Date;
 import java.util.Optional;
 import java.util.Scanner;
 
-import fr.cgaiton611.cli.TypeValidator;
+import fr.cgaiton611.util.ConvertUtil;
+import fr.cgaiton611.util.Type;
+import fr.cgaiton611.util.TypeValidator;
 
 /**
  * Ask, verify, cast and return the user input.

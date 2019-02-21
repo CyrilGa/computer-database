@@ -7,8 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import fr.cgaiton611.cli.util.PrintUtil;
-import fr.cgaiton611.cli.util.ScanUtil;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.CompanyPage;
 import fr.cgaiton611.model.Computer;

@@ -1,4 +1,4 @@
-package fr.cgaiton611.cli.util;
+package fr.cgaiton611.util;
 
 public enum Type {
 	Long,

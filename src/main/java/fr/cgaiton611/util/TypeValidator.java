@@ -1,6 +1,4 @@
-package fr.cgaiton611.cli;
-
-import fr.cgaiton611.cli.util.Type;
+package fr.cgaiton611.util;
 
 /**
  * Service that validate the data in terms of type and format

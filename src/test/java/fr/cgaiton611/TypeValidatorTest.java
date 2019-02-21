@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import fr.cgaiton611.cli.TypeValidator;
+import fr.cgaiton611.util.TypeValidator;
 
 class TypeValidatorTest {
 	TypeValidator validator = new TypeValidator();
