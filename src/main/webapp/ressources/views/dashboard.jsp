@@ -14,8 +14,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="/cdb/dashboard"> Application -
-				Computer Database </a>
+			<a class="navbar-brand" href="/cdb/dashboard"> Application - Computer Database </a>
 		</div>
 	</header>
 
@@ -24,20 +23,21 @@
 			<h1 id="homeTitle">${count} Computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
-					<form id="searchForm" action="/cdb/results" method="POST" class="form-inline">
-						<input type="search" id="searchbox" name="search"
-							class="form-control" placeholder="Search name" />
-						<input type="submit" id="searchsubmit" value="Filter by name"
-							class="btn btn-primary" />
+					<form id="searchForm" action="/cdb/dashboard" method="GET" class="form-inline">
+						<input type="search" id="searchbox" name="search" class="form-control" 
+							placeholder="Search name" value="${valueSearch}" />
+						<input type="submit" id="searchsubmit" value="Filter by name" class="btn btn-primary" />
+						<c:if test="${!\"\".equals(valueSearch)}">
+							 <button class="btn btn-danger" onClick="$.fn.resetSearch();">
+							 	<span class="glyphicon glyphicon-remove-sign"></span>
+							 </button>
+						</c:if>
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer"
-						href="/cdb/addComputer">Add Computer</a> 
-					<a class="btn btn-default" id="editComputer"
-						href="/cdb/editComputer">Edit</a>
-					<a class="btn btn-danger" id="removeComputer"
-						href="/cdb/addComputer<">Remove</a>
+					<a class="btn btn-success" id="addComputer" href="/cdb/addComputer">Add Computer</a> 
+					<a class="btn btn-default" id="editComputer" href="#" 
+						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
 			</div>
 		</div>
@@ -53,11 +53,14 @@
 						<!-- Variable declarations for passing labels as parameters -->
 						<!-- Table header for Computer Name -->
 
-						<th class="editMode" style="width: 30px; height: 22px;"><input
-							type="checkbox" id="selectall" /> <!-- 							<span --> <!-- 							style="vertical-align: top;"> - <a href="#" -->
-							<!-- 								id="deleteSelected" onclick="$.fn.deleteSelected();"> <i -->
-							<!-- 									class="fa fa-trash-o fa-lg"></i> --> <!-- 							</a> -->
-							<!-- 						</span> --></th>
+						<th class="editMode" style="width: 70px; height: 22px;">
+							<input type="checkbox" id="selectall" /> 
+							<span style="vertical-align: top;"> - <a href="#" id="deleteSelected" 
+								onclick="$.fn.deleteSelected();">
+									<i class="fa fa-trash-o fa-lg"></i> 
+								</a>
+							</span>
+						</th>
 						<th>Computer name</th>
 						<th>Introduced date</th>
 						<!-- Table header for Discontinued Date -->
@@ -107,6 +110,7 @@
 				<a href="/cdb/dashboard?elements=50" class="btn btn-default">50</a>
 				<a href="/cdb/dashboard?elements=100" class="btn btn-default">100</a>
 			</div>
+			
 		</div>
 	</footer>
 	<script src="ressources/js/jquery.min.js"></script>

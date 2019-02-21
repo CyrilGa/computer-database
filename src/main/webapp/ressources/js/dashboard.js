@@ -91,3 +91,15 @@ $(document).keydown(function(e) {
     }
 });
 
+
+//Function setCheckboxValues
+(function ( $ ) {
+
+    $.fn.resetSearch = function() {
+    	
+    	$("#searchForm input[name=search]").val("")
+    	$('#searchForm').submit();
+        
+    };
+
+}( jQuery ));

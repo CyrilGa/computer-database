@@ -27,10 +27,12 @@ public class ComputerDAO extends DAO<Computer> {
 	private static final String SQL_FIND = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE id = ?";
 	private static final String SQL_UPDATE = "UPDATE computer SET name = ? ,introduced = ? ,discontinued = ? ,company_id = ?  WHERE id = ? ";
 	private static final String SQL_DELETE = "DELETE FROM computer WHERE id = ? ";
-	private static final String SQL_FIND_PAGED = "SELECT * FROM computer LIMIT ? OFFSET ? ";
+	private static final String SQL_FIND_PAGED = "SELECT id, name, introduced, discontinued, company_id FROM computer LIMIT ? OFFSET ? ";
 	private static final String SQL_COUNT = "SELECT COUNT(*) as count FROM computer";
-	private static final String SQL_FIND_BY_NAME = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE name = ?";
+	private static final String SQL_FIND_BY_NAME_PAGED = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE name LIKE ? LIMIT ? OFFSET ? ";
+	private static final String SQL_COUNT_BY_NAME = "SELECT COUNT(*) as count FROM computer WHERE name LIKE ? ";
 
+	
 	private static ComputerDAO instance = new ComputerDAO();
 
 	private ComputerDAO() {
@@ -134,10 +136,12 @@ public class ComputerDAO extends DAO<Computer> {
 		return max;
 	}
 	
-	public List<Computer> findByName(String name) {
+	public List<Computer> findByNamePaged(int page, int elements, String name) {
 		List<Computer> computers = new ArrayList<>();
-		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_FIND_BY_NAME)) {
-			prepare.setString(1, name);
+		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_FIND_BY_NAME_PAGED)) {
+			prepare.setString(1, "%"+name+"%");
+			prepare.setInt(2, elements);
+			prepare.setInt(3, page * elements);
 			ResultSet rs = prepare.executeQuery();
 			while (rs.next()) {
 				computers.add(new Computer(rs.getLong("id"), rs.getString("name"), rs.getTimestamp("introduced"),
@@ -148,5 +152,20 @@ public class ComputerDAO extends DAO<Computer> {
 		}
 		return computers;
 	}
+	
+	public int countByName(String name) {
+		int max = 0;
+		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_COUNT_BY_NAME)) {
+			prepare.setString(1, "%"+name+"%");
+			ResultSet rs = prepare.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("count");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return max;
+	}
+	
 
 }

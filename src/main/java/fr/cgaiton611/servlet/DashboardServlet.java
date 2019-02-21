@@ -2,6 +2,8 @@ package fr.cgaiton611.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -14,24 +16,29 @@ import javax.servlet.http.HttpServletResponse;
 import fr.cgaiton611.dto.ComputerDTO;
 import fr.cgaiton611.dto.ComputerMapper;
 import fr.cgaiton611.model.Computer;
-import fr.cgaiton611.model.ComputerPage;
+import fr.cgaiton611.model.ComputerByNamePage;
 import fr.cgaiton611.service.ComputerService;
 
 @WebServlet(urlPatterns = { "/dashboard" })
 public class DashboardServlet extends HttpServlet {
 
-	private int[] ELEMENTS_AUTORISED = { 10, 50, 100 };
-
+private int[] ELEMENTS_AUTORISED = { 10, 50, 100 };
+	
 	private static final long serialVersionUID = 1L;
 
 	private ComputerService computerService = ComputerService.getInstance();
 	private int elements = 10;
 	private int page = 0;
-	private ComputerPage computerPage = new ComputerPage(elements);
+	private String name = "";
+	private ComputerByNamePage computerByNamePage = new ComputerByNamePage(elements, name);
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		name = request.getParameter("search");	
+		computerByNamePage.setName(name);
+		request.setAttribute("valueSearch", computerByNamePage.getName());
 
 		String pageAttribute = request.getParameter("page");
 		if (pageAttribute != null)
@@ -47,29 +54,30 @@ public class DashboardServlet extends HttpServlet {
 		}
 
 
-		computerPage.setElements(elements);
+		computerByNamePage.setElements(elements);
 
-		List<Computer> computers = computerPage.get(page);
+		List<Computer> computers = computerByNamePage.get(page);
 
 		List<ComputerDTO> computersDTO = ComputerMapper.toComputerDTOList(computers);
 
 		request.setAttribute("computers", computersDTO);
 
-		List<Integer> navigationPages = getNavigationPages(computerPage);
+		List<Integer> navigationPages = getNavigationPages(computerByNamePage);
 		request.setAttribute("navigationPages", navigationPages);
 
-		request.setAttribute("count", computerService.count());
+		request.setAttribute("count", computerService.countByName(computerByNamePage.getName()));
 
-		request.setAttribute("page", computerPage.getPage());
+		request.setAttribute("page", computerByNamePage.getPage());
 
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/ressources/views/dashboard.jsp");
 		dispatcher.forward(request, response);
+		 
 	}
 
-	public List<Integer> getNavigationPages(ComputerPage computerPage) {
+	public List<Integer> getNavigationPages(ComputerByNamePage computerByNamePage) {
 		List<Integer> navigationPages = new ArrayList<>();
-		int max = computerPage.getMax();
-		int page = computerPage.getPage();
+		int max = computerByNamePage.getMax();
+		int page = computerByNamePage.getPage();
 		boolean inf = true, sup = true;
 		for (int i = page - 2; i < page + 3; i++) {
 			if (i < 0)
@@ -105,6 +113,21 @@ public class DashboardServlet extends HttpServlet {
 				return true;
 		}
 		return false;
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Enumeration<String> enumeration = request.getParameterNames();
+		for (String s : Collections.list(enumeration)) {
+			System.out.println(s);
+		}
+		String selection = request.getParameter("selection");
+		if (selection == null) {
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/ressources/views/dashboard.jsp");
+			dispatcher.forward(request, response);
+		}
+		String[] selections;
 	}
 
 }
