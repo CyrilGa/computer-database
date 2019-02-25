@@ -8,7 +8,7 @@ package fr.cgaiton611.model;
  */
 public class Company {
 	private long id;
-	private String name;
+	private String name = null;
 
 	public Company(long id, String name) {
 		this.id = id;
@@ -24,7 +24,7 @@ public class Company {
 	}
 
 	public Company() {
-		super();
+		id = -1l;
 	}
 
 	public long getId() {

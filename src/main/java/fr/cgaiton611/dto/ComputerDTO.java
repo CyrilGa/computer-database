@@ -16,12 +16,20 @@ public class ComputerDTO {
 	public ComputerDTO(String name, String introduced, String discontinued, String companyName) {
 		this.name = name;
 		this.introduced = introduced;
-		if (introduced != null && ! "".equals(introduced)) this.introduced +=" 00:00";
 		this.discontinued = discontinued;
-		if (discontinued != null && ! "".equals(discontinued)) this.discontinued +=" 00:00";
 		this.companyName = companyName;
 	}
 	
+	
+	
+	public ComputerDTO(String id, String name, String introduced, String discontinued, String companyName) {
+		this.id = id;
+		this.name = name;
+		this.introduced = introduced;
+		this.discontinued = discontinued;
+		this.companyName = companyName;
+	}
+
 	public String getId() {
 		return id;
 	}

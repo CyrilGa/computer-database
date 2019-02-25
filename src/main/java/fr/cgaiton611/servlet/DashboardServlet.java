@@ -18,11 +18,11 @@ import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.model.ComputerByNamePage;
 import fr.cgaiton611.service.ComputerService;
 
-@WebServlet(urlPatterns = {"/dashboard", ""})
+@WebServlet(urlPatterns = { "/dashboard", "" })
 public class DashboardServlet extends HttpServlet {
 
-private int[] ELEMENTS_AUTORISED = { 10, 50, 100 };
-	
+	private int[] ELEMENTS_AUTORISED = { 10, 50, 100 };
+
 	private static final long serialVersionUID = 1L;
 
 	private ComputerService computerService = ComputerService.getInstance();
@@ -34,21 +34,23 @@ private int[] ELEMENTS_AUTORISED = { 10, 50, 100 };
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		HttpSession session = request.getSession(false);
-		String dashboardMsg = (String) session.getAttribute("dashboardMsg");
-		if (dashboardMsg != null)
-			request.setAttribute("dashboardMsg", dashboardMsg);
-			session.removeAttribute("dashboardMsg");
 
-		name = request.getParameter("search");	
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+			String dashboardMsg = (String) session.getAttribute("dashboardMsg");
+			if (dashboardMsg != null)
+				request.setAttribute("dashboardMsg", dashboardMsg);
+			session.removeAttribute("dashboardMsg");
+		}
+
+		name = request.getParameter("search");
 		computerByNamePage.setName(name);
 		request.setAttribute("valueSearch", computerByNamePage.getName());
 
 		String pageAttribute = request.getParameter("page");
 		if (pageAttribute != null)
 			page = Integer.parseInt(pageAttribute);
-		
+
 		String elementsAttribute = request.getParameter("elements");
 		if (elementsAttribute != null) {
 			int temp = Integer.parseInt(elementsAttribute);
@@ -57,7 +59,6 @@ private int[] ELEMENTS_AUTORISED = { 10, 50, 100 };
 				page = 0;
 			}
 		}
-
 
 		computerByNamePage.setElements(elements);
 
@@ -76,7 +77,7 @@ private int[] ELEMENTS_AUTORISED = { 10, 50, 100 };
 
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/ressources/views/dashboard.jsp");
 		dispatcher.forward(request, response);
-		 
+
 	}
 
 	public List<Integer> getNavigationPages(ComputerByNamePage computerByNamePage) {
@@ -108,7 +109,7 @@ private int[] ELEMENTS_AUTORISED = { 10, 50, 100 };
 			else
 				sup = false;
 		}
-		
+
 		return navigationPages;
 	}
 
@@ -119,14 +120,14 @@ private int[] ELEMENTS_AUTORISED = { 10, 50, 100 };
 		}
 		return false;
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String selection = request.getParameter("selection");
-			if (selection != null) {
+		if (selection != null) {
 			String[] ids = selection.split(",");
-			for (int i=0; i<ids.length; i++) {
+			for (int i = 0; i < ids.length; i++) {
 				computerService.delete(Integer.parseInt(ids[i]));
 			}
 		}

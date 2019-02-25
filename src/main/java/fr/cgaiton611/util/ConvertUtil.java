@@ -23,12 +23,11 @@ public class ConvertUtil {
 		if (!s.isPresent())
 			return Optional.empty();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-		System.out.println("---> "+s.get());
 		Date parsedDate = null;
 		try {
-			parsedDate = dateFormat.parse(s.get() + ":00:000" );
+			parsedDate = dateFormat.parse(s.get());
 		} catch (ParseException e) {
-			e.printStackTrace();
+			return Optional.empty();
 		}
 		return Optional.of(new Date(parsedDate.getTime()));
 	}

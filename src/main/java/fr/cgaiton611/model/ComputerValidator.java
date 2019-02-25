@@ -15,6 +15,27 @@ public class ComputerValidator {
 			return false;
 		return validateDate(computer.getIntroduced()) && validateDate(computer.getDiscontinued());
 	}
+	
+	public static boolean validateForAdd(Computer computer) {
+		return stringNotEmpty(computer.getName())
+				&& validateDate(computer.getIntroduced())
+				&& validateDate(computer.getDiscontinued());
+	}
+	
+	public static boolean validateForEdit(Computer computer) {
+		return longNotZero(computer.getId())
+				&& stringNotEmpty(computer.getName())
+				&& validateDate(computer.getIntroduced())
+				&& validateDate(computer.getDiscontinued());
+	}
+	
+	private static boolean stringNotEmpty(String s) {
+		return s!=null && s!="";
+	}
+	
+	private static boolean longNotZero(long i) {
+		return i!=0;
+	}
 
 	/**
 	 * Validate the format a Date : yyyy-MM-dd hh:mm
@@ -41,7 +62,7 @@ public class ComputerValidator {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Test if a String (converted to an integer) if included between two integer
 	 * 
@@ -51,6 +72,13 @@ public class ComputerValidator {
 	 * @return True or false if s between c1 and c2 or not
 	 */
 	public static boolean isIn(String s, int c1, int c2) {
-		return c1 <= Integer.parseInt(s) && Integer.parseInt(s) <= c2;
+		int test;
+		try {
+			test = Integer.parseInt(s);
+		}
+		catch (NumberFormatException e) {
+			return false;
+		}
+		return c1 <= test && test <= c2;
 	}
 }

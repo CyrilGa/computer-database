@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +21,7 @@ import fr.cgaiton611.util.ConvertUtil;
  * @version 1.0
  */
 public class ComputerDAO extends DAO<Computer> {
-	
+
 	private ConvertUtil convertUtil = new ConvertUtil();
 
 	private static final String SQL_CREATE = "INSERT INTO computer(name, introduced, discontinued, company_id) VALUES(?, ?, ?, ?)";
@@ -32,7 +33,6 @@ public class ComputerDAO extends DAO<Computer> {
 	private static final String SQL_FIND_BY_NAME_PAGED = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE name LIKE ? LIMIT ? OFFSET ? ";
 	private static final String SQL_COUNT_BY_NAME = "SELECT COUNT(*) as count FROM computer WHERE name LIKE ? ";
 
-	
 	private static ComputerDAO instance = new ComputerDAO();
 
 	private ComputerDAO() {
@@ -44,13 +44,17 @@ public class ComputerDAO extends DAO<Computer> {
 
 	@Override
 	public Optional<Computer> create(Computer obj) {
+		System.out.println(obj);
 		Computer computer = null;
 		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_CREATE,
 				Statement.RETURN_GENERATED_KEYS)) {
 			prepare.setString(1, obj.getName());
 			prepare.setTimestamp(2, convertUtil.dateToTimestamp(obj.getIntroduced()));
 			prepare.setTimestamp(3, convertUtil.dateToTimestamp(obj.getDiscontinued()));
-			prepare.setLong(4, obj.getCompany().getId());
+			if (obj.getCompany().getId() != -1)
+				prepare.setLong(4, obj.getCompany().getId());
+			else
+				prepare.setNull(4, Types.INTEGER);
 
 			prepare.executeUpdate();
 
@@ -135,11 +139,11 @@ public class ComputerDAO extends DAO<Computer> {
 		}
 		return max;
 	}
-	
+
 	public List<Computer> findByNamePaged(int page, int elements, String name) {
 		List<Computer> computers = new ArrayList<>();
 		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_FIND_BY_NAME_PAGED)) {
-			prepare.setString(1, "%"+name+"%");
+			prepare.setString(1, "%" + name + "%");
 			prepare.setInt(2, elements);
 			prepare.setInt(3, page * elements);
 			ResultSet rs = prepare.executeQuery();
@@ -152,11 +156,11 @@ public class ComputerDAO extends DAO<Computer> {
 		}
 		return computers;
 	}
-	
+
 	public int countByName(String name) {
 		int max = 0;
 		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_COUNT_BY_NAME)) {
-			prepare.setString(1, "%"+name+"%");
+			prepare.setString(1, "%" + name + "%");
 			ResultSet rs = prepare.executeQuery();
 			if (rs.next()) {
 				return rs.getInt("count");
@@ -166,6 +170,5 @@ public class ComputerDAO extends DAO<Computer> {
 		}
 		return max;
 	}
-	
 
 }

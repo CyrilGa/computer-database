@@ -36,7 +36,7 @@ public class ComputerService {
 		Optional<Computer> computer = computerDAO.find(new Computer(id));
 		if (!computer.isPresent())
 			return Optional.empty();
-		Optional<Company> company = companyService.find(computer.get().getId());
+		Optional<Company> company = companyService.find(computer.get().getCompany().getId());
 		if (company.isPresent())
 			computer.get().setCompany(company.get());
 		return computer;
@@ -44,9 +44,9 @@ public class ComputerService {
 
 	public Optional<Computer> create(String name, Date introduced, Date discontinued, long companyId) {
 		Optional<Company> company = companyService.find(companyId);
-		if (!company.isPresent())
-			return Optional.empty();
-		Computer computer = new Computer(name, introduced, discontinued, company.get());
+//		if (!company.isPresent())
+//			return Optional.empty();
+		Computer computer = new Computer(name, introduced, discontinued, company.orElse(null));
 		if (!ComputerValidator.validate(computer)) {
 			return Optional.empty();
 		}
@@ -80,6 +80,12 @@ public class ComputerService {
 		return computerDAO.update(computer);
 	}
 
+	public Optional<Computer> update(Computer computer) {
+		return update(computer.getId(), Optional.ofNullable(computer.getName()),
+				Optional.ofNullable(computer.getIntroduced()), Optional.ofNullable(computer.getDiscontinued()),
+				Optional.ofNullable(computer.getCompany().getId()));
+	}
+
 	public void delete(long id) {
 		computerDAO.delete(new Computer(id));
 	}
@@ -91,9 +97,10 @@ public class ComputerService {
 	public List<Computer> findByNamePaged(int page, int elements, String name) {
 		List<Computer> computers = computerDAO.findByNamePaged(page, elements, name);
 		for (Computer computer : computers) {
-			Optional<Company> company = companyService.find(computer.getId());
-			if (company.isPresent())
+			Optional<Company> company = companyService.find(computer.getCompany().getId());
+			if (company.isPresent()) {
 				computer.setCompany(company.get());
+			}
 		}
 		return computers;
 	}

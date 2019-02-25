@@ -16,35 +16,39 @@
             <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
         </div>
     </header>
-
     <section id="main">
         <div class="container">
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
-                    <h1>Add Computer</h1>
-                    <form action="/cdb/addComputer" method="POST">
+                    <div class="label label-default pull-right" id="container-id">
+                        id: ${id}
+                    </div>
+                    <h1>Edit Computer</h1>
+
+                    <form action="/cdb/editComputer" method="POST">
+                        <input type="hidden" value="${id}" name="id"/>
                         <fieldset>
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" id="computerName" name="computerName" 
-                                	placeholder="Computer name">
+                                <input type="text" class="form-control" id="computerName" name="computerName"
+                                	placeholder="Computer name" value="${name}">
                             </div>
                             <div class="form-group">
                                 <label for="introducedDate">Introduced date</label>
                             	<div class="form-inline">
                                 	<input type="date" class="form-control" id="introducedDate" name="introducedDate" 
-                                		placeholder="Introduced date">
+                                		placeholder="Introduced date" value="${introducedDate}">
                                		<input type="time" class="form-control" id="introducedTime" name="introducedTime" 
-                               			placeholder="Introduced date">
+                               			placeholder="Introduced date" value="${introducedTime}">
                             	</div>
                             </div>
                             <div class="form-group">
                                 <label for="discontinuedDate">Discontinued date</label>
                                 <div class="form-inline">
                                 <input type="date" class="form-control" id="discontinuedDate" name="discontinuedDate"
-                                	placeholder="Discontinued date">
+                                	placeholder="Discontinued date" value="${discontinuedDate}">
                                 <input type="time" class="form-control" id="discontinuedTime" name="discontinuedTime"
-                                	placeholder="Discontinued date">
+                                	placeholder="Discontinued date" value="${discontinuedTime}">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -52,15 +56,22 @@
                                 <select class="form-control" id="companyName" name="companyName" >
                                 	<option value="select-option-default" selected disabled hidden="true">Choose here</option>
                                 	<c:forEach items="${names}" var="name">
-                                    	<option value="${name}">${name}</option>
+                                		<c:choose>
+                                			<c:when test="${name.equals(companyName)}">
+                                    			<option value="${name}" selected>${name}</option>
+                                    		</c:when>
+                                    		<c:otherwise>
+                                    			<option value="${name}">${name}</option>
+                                    		</c:otherwise>
+                                    	</c:choose>
                                     </c:forEach>
                                 </select>
-                            </div>                  
+                            </div>            
                         </fieldset>
                         <div class="actions pull-right">
-                            <input type="submit" value="Add" class="btn btn-primary">
+                            <input type="submit" value="Edit" class="btn btn-primary">
                             &nbsp&nbsp or &nbsp&nbsp
-                            <a href="/cdb/dashboard" class="btn btn-default">Cancel</a>
+                            <a href="dashboard" class="btn btn-default">Cancel</a>
                         </div>
                     </form>
                 </div>

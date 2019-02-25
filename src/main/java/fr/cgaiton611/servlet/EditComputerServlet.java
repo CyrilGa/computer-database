@@ -19,8 +19,8 @@ import fr.cgaiton611.model.ComputerValidator;
 import fr.cgaiton611.service.CompanyService;
 import fr.cgaiton611.service.ComputerService;
 
-@WebServlet(urlPatterns = { "/addComputer" })
-public class AddComputerServlet extends HttpServlet {
+@WebServlet(urlPatterns = { "/editComputer" })
+public class EditComputerServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,44 +34,67 @@ public class AddComputerServlet extends HttpServlet {
 		List<String> names = companyService.findAllName();
 		request.setAttribute("names", names);
 
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/ressources/views/addComputer.jsp");
+		String id = (String) request.getParameter("computerId");
+		request.setAttribute("id", id);
+
+		Optional<Computer> computer = computerService.find(Long.parseLong(id));
+		if (!computer.isPresent()) {
+			response.sendRedirect(request.getContextPath() + "/dashboard");
+			return;
+		}
+		ComputerDTO computerDTO = ComputerMapper.toComputerDTO(computer.get());
+		request.setAttribute("name", computerDTO.getName());
+
+		String introduced = computerDTO.getIntroduced();
+		if (introduced != null && ! "".equals(introduced)) {
+			request.setAttribute("introducedDate", introduced.substring(0, 10));
+			request.setAttribute("introducedTime", introduced.substring(11));
+		}
+		String discontinued = computerDTO.getDiscontinued();
+		if (discontinued != null && ! "".equals(discontinued)) {
+			request.setAttribute("discontinuedDate", discontinued.substring(0, 10));
+			request.setAttribute("discontinuedTime", discontinued.substring(11));
+		}
+		request.setAttribute("companyName", computerDTO.getCompanyName());
+
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/ressources/views/editComputer.jsp");
 		dispatcher.forward(request, response);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String id = request.getParameter("id");
 		String name = request.getParameter("computerName");
 		String introducedDate = request.getParameter("introducedDate");
 		String introducedTime = request.getParameter("introducedTime");
-		String introduced = introducedDate + " " + introducedTime;
-		String discontinuedDate = request.getParameter("discontinuedDate");
+		String introduced = introducedDate+" "+introducedTime;
+		String discontinuedDate= request.getParameter("discontinuedDate");
 		String discontinuedTime = request.getParameter("discontinuedTime");
-		String discontinued = discontinuedDate + " " + discontinuedTime;
+		String discontinued = discontinuedDate+" "+discontinuedTime;
 		String companyName = request.getParameter("companyName");
 		if ("select-option-default".equals(companyName))
 			companyName = null;
-		ComputerDTO computerDTO = new ComputerDTO(name, introduced, discontinued, companyName);
+		ComputerDTO computerDTO = new ComputerDTO(id, name, introduced, discontinued, companyName);
 		Optional<Computer> computer = ComputerMapper.toComputer(computerDTO);
 		String dashboardMsg;
 		if (computer.isPresent()) {
-			if (ComputerValidator.validateForAdd(computer.get())) {
-				computer = computerService.create(computer.get());
+			if (ComputerValidator.validateForEdit(computer.get())) {
+				computer = computerService.update(computer.get());
 				if (computer.isPresent())
-					dashboardMsg = "Computer successfully created";
+					dashboardMsg = "Computer successfully updated";
 				else
-					dashboardMsg = "Computer not created, bad entries (service)";
+					dashboardMsg = "Computer not updated, bad entries (service)";
 			}
 			else {
-				dashboardMsg = "Computer not created, bad entries (validator)";
+				dashboardMsg = "Computer not updated, bad entries (validator)";
 			}
 		} else {
-			dashboardMsg = "Computer not created, bad entries (mapping)";
+			dashboardMsg = "Computer not updated, bad entries (mapping)";
 		}
 		HttpSession session = request.getSession(true);
 		session.setAttribute("dashboardMsg", dashboardMsg);
 		response.sendRedirect(request.getContextPath() + "/dashboard");
 
 	}
-
 }

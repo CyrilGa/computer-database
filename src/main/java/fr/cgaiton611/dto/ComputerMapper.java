@@ -11,30 +11,38 @@ import fr.cgaiton611.service.CompanyService;
 import fr.cgaiton611.util.ConvertUtil;
 
 public class ComputerMapper {
-	
+
 	private static ConvertUtil convertUtil = new ConvertUtil();
 	private static CompanyService companyService = CompanyService.getInstance();
 
 	public static Optional<Computer> toComputer(ComputerDTO computerDTO) {
 		Computer computer = new Computer();
-		String name = computerDTO.getName();
-		if(name == null || "".equals(name)) {
-			return Optional.empty();
+
+		String idS = computerDTO.getId();
+		Long id = 0l;
+		if (idS != null) {
+			id = Long.parseLong(idS);
 		}
-		computer.setName(name);
+		computer.setId(id);
+
+		computer.setName(computerDTO.getName());
 
 		Optional<Date> introduced = convertUtil.stringToDate(computerDTO.getIntroduced());
 		computer.setIntroduced(introduced.orElse(null));
-		
+
 		Optional<Date> discontinued = convertUtil.stringToDate(computerDTO.getDiscontinued());
 		computer.setDiscontinued(discontinued.orElse(null));
 
-		Optional<Company> company = companyService.findByName(computerDTO.getCompanyName());
-		if(! company.isPresent()) {
-			return Optional.empty();
+		if (computerDTO.getCompanyName() != null) {
+			Optional<Company> company = companyService.findByName(computerDTO.getCompanyName());
+			if (!company.isPresent()) {
+				computer.setCompany(null);
+			}
+			computer.setCompany(company.get());
 		}
-		computer.setCompany(company.get());
-
+		else {
+			computer.setCompany(null);
+		}
 		return Optional.of(computer);
 	}
 

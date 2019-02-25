@@ -73,7 +73,10 @@ public class Computer {
 	}
 
 	public Company getCompany() {
-		return company;
+		if (company == null) {
+			return new Company();
+		}
+ 		return company;
 	}
 
 	public void setCompany(Company company) {
