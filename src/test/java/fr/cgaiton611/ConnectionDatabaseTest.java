@@ -1,4 +1,4 @@
-package fr.cgaiton611.junit;
+package fr.cgaiton611;
 
 import static org.junit.jupiter.api.Assertions.*;
 
