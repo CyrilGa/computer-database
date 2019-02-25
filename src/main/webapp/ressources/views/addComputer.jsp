@@ -21,7 +21,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
-                    <h1>Add Computer</h1>
+                    <h1 id="page-title">Add Computer</h1>
                     <form id="validForm" action="/cdb/addComputer" method="POST">
                         <fieldset>
                             <div class="form-group">

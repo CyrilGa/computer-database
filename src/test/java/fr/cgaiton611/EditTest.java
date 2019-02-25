@@ -1,6 +1,5 @@
 package fr.cgaiton611;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.concurrent.TimeUnit;
@@ -14,7 +13,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
-public class AddTest {
+public class EditTest {
 	private static WebDriver driver;
 
 	@BeforeAll
@@ -25,16 +24,15 @@ public class AddTest {
 
 	@BeforeEach
 	public void beforeAll() {
-		driver.get("http://localhost:8080/cdb/addComputer");
+		driver.get("http://localhost:8080/cdb/dashboard");
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
 
 
 	@Test
 	public void computerNameAndCompanyName() {
-		driver.findElement(By.id("btnSubmit")).click();
-		driver.findElement(By.id("computerName")).sendKeys("computer");
-		assertFalse(driver.findElement(By.id("btnSubmit")).isEnabled());
+		driver.findElement(By.xpath("//table/tbody/tr[1]/td[2]/a")).click();
+		driver.findElement(By.id("computerName")).sendKeys(" edited");
 		new Select(driver.findElement(By.id("companyName"))).selectByVisibleText("Commodore International");
 		driver.findElement(By.id("computerName")).click();
 		driver.findElement(By.id("page-title")).click();
@@ -45,17 +43,17 @@ public class AddTest {
 		System.out.println(url);
 		assertTrue("http://localhost:8080/cdb/dashboard".equals(url));
 		String dashMsg = driver.findElement(By.id("dashMsg")).getText();
-		assertTrue("Computer successfully created".equals(dashMsg));
+		assertTrue("Computer successfully updated".equals(dashMsg));
 	}
 
 	public void computerNameAndIntroduced() {
+		driver.findElement(By.xpath("//table/tbody/tr[1]/td[2]/a")).click();
 		driver.findElement(By.id("btnSubmit")).click();
+		driver.findElement(By.id("computerName")).sendKeys(" edited");
 		driver.findElement(By.id("computerName")).sendKeys("computer");
-		assertFalse(driver.findElement(By.id("btnSubmit")).isEnabled());
 		driver.findElement(By.id("introducedDate")).sendKeys("20012012");
-		assertFalse(driver.findElement(By.id("btnSubmit")).isEnabled());
 		driver.findElement(By.id("introducedTime")).sendKeys("2222");
-		assertFalse(driver.findElement(By.id("btnSubmit")).isEnabled());
+		assertTrue(driver.findElement(By.id("btnSubmit")).isEnabled());
 		new Select(driver.findElement(By.id("companyName"))).selectByVisibleText("Commodore International");
 		driver.findElement(By.id("computerName")).click();
 		driver.findElement(By.id("page-title")).click();
@@ -66,7 +64,7 @@ public class AddTest {
 		System.out.println(url);
 		assertTrue("http://localhost:8080/cdb/dashboard".equals(url));
 		String dashMsg = driver.findElement(By.id("dashMsg")).getText();
-		assertTrue("Computer successfully created".equals(dashMsg));
+		assertTrue("Computer successfully updated".equals(dashMsg));
 	}
 	
 	@AfterAll

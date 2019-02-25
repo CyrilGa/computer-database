@@ -23,7 +23,7 @@
                     <div class="label label-default pull-right" id="container-id">
                         id: ${id}
                     </div>
-                    <h1>Edit Computer</h1>
+                    <h1 id="page-title">Edit Computer</h1>
 
                     <form id="validForm" action="/cdb/editComputer" method="POST">
                         <input type="hidden" value="${id}" name="id"/>
