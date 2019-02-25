@@ -12,8 +12,7 @@ $(document).ready(function() {
 	$("#validForm").validate({
 		rules : {
 			computerName: {
-				required: true,
-				minlength: 5
+				required: true
 			},
 			introducedDate: {
 				required: function(element){

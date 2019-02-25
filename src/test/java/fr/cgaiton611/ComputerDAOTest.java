@@ -16,7 +16,7 @@ class ComputerDAOTest {
 
 	@Test
 	void find() {
-		Optional<Computer> c1 = computerDAO.find(new Computer(1));
+		Optional<Computer> c1 = computerDAO.find(new Computer(50));
 		assertTrue(c1.isPresent());
 		assertNotEquals(c1.get().getName(), "");
 	}

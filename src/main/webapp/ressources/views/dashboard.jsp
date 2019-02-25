@@ -22,7 +22,7 @@
 		<div class="container">
 			<div id="container-title">
 				<h1 id="homeTitle">${count} Computers found </h1>
-				<span id="dashmsg">${dashboardMsg}</span>
+				<span id="dashMsg">${dashboardMsg}</span>
 			</div>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
