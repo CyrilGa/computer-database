@@ -22,7 +22,7 @@ public class ConvertUtil {
 	public Optional<Date> stringToDate(Optional<String> s) {
 		if (!s.isPresent())
 			return Optional.empty();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Date parsedDate = null;
 		try {
 			parsedDate = dateFormat.parse(s.get());
@@ -32,10 +32,10 @@ public class ConvertUtil {
 		return Optional.of(new Date(parsedDate.getTime()));
 	}
 
-	public String dateToSting(Date date) {
+	public String dateToString(Date date) {
 		if (date == null)
 			return "";
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		return dateFormat.format(date);
 	}
 

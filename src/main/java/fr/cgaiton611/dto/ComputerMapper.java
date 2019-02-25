@@ -53,9 +53,9 @@ public class ComputerMapper {
 
 		computerDTO.setName(computer.getName());
 
-		computerDTO.setIntroduced(convertUtil.dateToSting(computer.getIntroduced()));
+		computerDTO.setIntroduced(convertUtil.dateToString(computer.getIntroduced()));
 
-		computerDTO.setDiscontinued(convertUtil.dateToSting(computer.getDiscontinued()));
+		computerDTO.setDiscontinued(convertUtil.dateToString(computer.getDiscontinued()));
 
 		computerDTO.setCompanyName(computer.getCompany().getName());
 

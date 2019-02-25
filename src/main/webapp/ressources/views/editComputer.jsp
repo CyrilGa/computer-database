@@ -25,7 +25,7 @@
                     </div>
                     <h1>Edit Computer</h1>
 
-                    <form action="/cdb/editComputer" method="POST">
+                    <form id="validForm" action="/cdb/editComputer" method="POST">
                         <input type="hidden" value="${id}" name="id"/>
                         <fieldset>
                             <div class="form-group">
@@ -37,7 +37,8 @@
                                 <label for="introducedDate">Introduced date</label>
                             	<div class="form-inline">
                                 	<input type="date" class="form-control" id="introducedDate" name="introducedDate" 
-                                		placeholder="Introduced date" value="${introducedDate}">
+                                		placeholder="Introduced date" value="${introducedDate}"
+                                		min="0000-01-01" max="9999-01-01">
                                		<input type="time" class="form-control" id="introducedTime" name="introducedTime" 
                                			placeholder="Introduced date" value="${introducedTime}">
                             	</div>
@@ -46,7 +47,8 @@
                                 <label for="discontinuedDate">Discontinued date</label>
                                 <div class="form-inline">
                                 <input type="date" class="form-control" id="discontinuedDate" name="discontinuedDate"
-                                	placeholder="Discontinued date" value="${discontinuedDate}">
+                                	placeholder="Discontinued date" value="${discontinuedDate}"
+                                	min="0000-01-01" max="9999-01-01">
                                 <input type="time" class="form-control" id="discontinuedTime" name="discontinuedTime"
                                 	placeholder="Discontinued date" value="${discontinuedTime}">
                                 </div>
@@ -78,5 +80,8 @@
             </div>
         </div>
     </section>
+    <script src="ressources/js/jquery.min.js"></script>
+    <script src="ressources/js/jquery.validate.min.js"></script>
+    <script src="ressources/js/validation.js"></script>
 </body>
 </html>

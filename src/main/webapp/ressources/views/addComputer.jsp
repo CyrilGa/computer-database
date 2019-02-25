@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <h1>Add Computer</h1>
-                    <form action="/cdb/addComputer" method="POST">
+                    <form id="validForm" action="/cdb/addComputer" method="POST">
                         <fieldset>
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
@@ -30,22 +30,18 @@
                                 	placeholder="Computer name">
                             </div>
                             <div class="form-group">
-                                <label for="introducedDate">Introduced date</label>
-                            	<div class="form-inline">
+                                <label for="introducedDate">Introduced in:</label>
                                 	<input type="date" class="form-control" id="introducedDate" name="introducedDate" 
                                 		placeholder="Introduced date">
                                		<input type="time" class="form-control" id="introducedTime" name="introducedTime" 
-                               			placeholder="Introduced date">
-                            	</div>
+                               			placeholder="Introduced time">
                             </div>
                             <div class="form-group">
-                                <label for="discontinuedDate">Discontinued date</label>
-                                <div class="form-inline">
+                                <label for="discontinuedDate">Discontinued in:</label>
                                 <input type="date" class="form-control" id="discontinuedDate" name="discontinuedDate"
                                 	placeholder="Discontinued date">
                                 <input type="time" class="form-control" id="discontinuedTime" name="discontinuedTime"
-                                	placeholder="Discontinued date">
-                                </div>
+                                	placeholder="Discontinued time">
                             </div>
                             <div class="form-group">
                                 <label for="companyName">Company</label>
@@ -58,7 +54,7 @@
                             </div>                  
                         </fieldset>
                         <div class="actions pull-right">
-                            <input type="submit" value="Add" class="btn btn-primary">
+                            <input type="submit" id="btnSubmit" value="Add" class="btn btn-primary">
                             &nbsp&nbsp or &nbsp&nbsp
                             <a href="/cdb/dashboard" class="btn btn-default">Cancel</a>
                         </div>
@@ -67,5 +63,8 @@
             </div>
         </div>
     </section>
+    <script src="ressources/js/jquery.min.js"></script>
+    <script src="ressources/js/jquery.validate.min.js"></script>
+    <script src="ressources/js/validation.js"></script>
 </body>
 </html>

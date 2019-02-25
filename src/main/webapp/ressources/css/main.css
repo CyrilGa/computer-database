@@ -49,5 +49,10 @@ input[type='checkbox'] {
 	font-size: 20px;
 }
 
+#introducedDate{
+	margin-bottom: 5px;
+}
 
-
+#discontinuedDate{
+	margin-bottom: 5px;
+}

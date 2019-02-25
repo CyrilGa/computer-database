@@ -35,7 +35,7 @@ public class DashboardServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		HttpSession session = request.getSession(false);
+		HttpSession session = request.getSession(true);
 		if (session != null) {
 			String dashboardMsg = (String) session.getAttribute("dashboardMsg");
 			if (dashboardMsg != null)
