@@ -24,7 +24,7 @@ public class EditTest {
 
 	@BeforeEach
 	public void beforeAll() {
-		driver.get("http://localhost:8080/cdb/dashboard");
+		driver.get("http://localhost:8888/cdb/dashboard");
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
 
@@ -41,7 +41,7 @@ public class EditTest {
 		
 		String url = driver.getCurrentUrl();
 		System.out.println(url);
-		assertTrue("http://localhost:8080/cdb/dashboard".equals(url));
+		assertTrue("http://localhost:8888/cdb/dashboard".equals(url));
 		String dashMsg = driver.findElement(By.id("dashMsg")).getText();
 		assertTrue("Computer successfully updated".equals(dashMsg));
 	}
@@ -62,7 +62,7 @@ public class EditTest {
 
 		String url = driver.getCurrentUrl();
 		System.out.println(url);
-		assertTrue("http://localhost:8080/cdb/dashboard".equals(url));
+		assertTrue("http://localhost:8888/cdb/dashboard".equals(url));
 		String dashMsg = driver.findElement(By.id("dashMsg")).getText();
 		assertTrue("Computer successfully updated".equals(dashMsg));
 	}

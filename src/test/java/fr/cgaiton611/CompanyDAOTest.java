@@ -14,14 +14,7 @@ class CompanyDAOTest {
 	CompanyDAO companyDAO = CompanyDAO.getInstance();
 
 	@Test
-	void find() {
-		Optional<Company> c1 = companyDAO.find(new Company(1));
-		assertTrue(c1.isPresent());
-		assertNotEquals(c1.get().getName(), "");
-	}
-
-	@Test
-	void create() {
+	void createAdnFind() {
 		Optional<Company> c1 = companyDAO.create(new Company("test company"));
 		assertTrue(c1.isPresent());
 		Optional<Company> c2 = companyDAO.find(c1.get());

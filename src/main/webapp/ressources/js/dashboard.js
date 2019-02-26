@@ -26,7 +26,7 @@ $(function() {
     setTimeout(
     		  function() 
     		  {
-    			 $("#dashmsg").text("");
+    			 $("#dashMsg").text("");
     		  }, 2500);
     
 

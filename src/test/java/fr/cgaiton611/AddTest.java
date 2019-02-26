@@ -25,7 +25,7 @@ public class AddTest {
 
 	@BeforeEach
 	public void beforeAll() {
-		driver.get("http://localhost:8080/cdb/addComputer");
+		driver.get("http://localhost:8888/cdb/addComputer");
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
 
@@ -43,7 +43,7 @@ public class AddTest {
 		
 		String url = driver.getCurrentUrl();
 		System.out.println(url);
-		assertTrue("http://localhost:8080/cdb/dashboard".equals(url));
+		assertTrue("http://localhost:8888/cdb/dashboard".equals(url));
 		String dashMsg = driver.findElement(By.id("dashMsg")).getText();
 		assertTrue("Computer successfully created".equals(dashMsg));
 	}
@@ -64,7 +64,7 @@ public class AddTest {
 
 		String url = driver.getCurrentUrl();
 		System.out.println(url);
-		assertTrue("http://localhost:8080/cdb/dashboard".equals(url));
+		assertTrue("http://localhost:8888/cdb/dashboard".equals(url));
 		String dashMsg = driver.findElement(By.id("dashMsg")).getText();
 		assertTrue("Computer successfully created".equals(dashMsg));
 	}

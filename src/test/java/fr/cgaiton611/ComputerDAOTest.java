@@ -15,14 +15,7 @@ class ComputerDAOTest {
 	ComputerDAO computerDAO = ComputerDAO.getInstance();
 
 	@Test
-	void find() {
-		Optional<Computer> c1 = computerDAO.find(new Computer(50));
-		assertTrue(c1.isPresent());
-		assertNotEquals(c1.get().getName(), "");
-	}
-
-	@Test
-	void create() {
+	void createAndFind() {
 		Optional<Computer> c1 = computerDAO.create(new Computer("test computer", null, null, new Company(1)));
 		assertTrue(c1.isPresent());
 		Optional<Computer> c2 = computerDAO.find(c1.get());

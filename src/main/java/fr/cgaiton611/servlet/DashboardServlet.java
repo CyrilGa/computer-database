@@ -35,12 +35,14 @@ public class DashboardServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		HttpSession session = request.getSession(true);
+		HttpSession session = request.getSession(false);
 		if (session != null) {
 			String dashboardMsg = (String) session.getAttribute("dashboardMsg");
-			if (dashboardMsg != null)
+			System.out.println("DZSH------->"+dashboardMsg+"<------DAH");
+			if (dashboardMsg != null) {
 				request.setAttribute("dashboardMsg", dashboardMsg);
-			session.removeAttribute("dashboardMsg");
+				session.removeAttribute("dashboardMsg");
+			}
 		}
 
 		name = request.getParameter("search");
@@ -131,7 +133,7 @@ public class DashboardServlet extends HttpServlet {
 				computerService.delete(Integer.parseInt(ids[i]));
 			}
 		}
-		HttpSession session = request.getSession(false);
+		HttpSession session = request.getSession(true);
 		session.setAttribute("dashboardMsg", "Computer successfully deleted");
 		response.sendRedirect(request.getContextPath() + "/dashboard");
 	}
