@@ -1,6 +1,7 @@
 package fr.cgaiton611.persistence;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Optional;
 
 /**
@@ -13,7 +14,15 @@ import java.util.Optional;
  */
 public abstract class DAO<T> {
 
-	public Connection connection = ConnectionDatabase.getInstance();
+	public Connection connection;
+	
+	public DAO() {
+		try {
+			connection = ConnectionDatabase.getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Create an object in the database

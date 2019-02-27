@@ -1,8 +1,10 @@
 package fr.cgaiton611.persistence;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 /**
  * Singleton Create the connection with the database with the given constants
@@ -16,23 +18,19 @@ public class ConnectionDatabase {
 	private final static String user = "admincdb";
 	private final static String password = "qwerty1234";
 
-	private static Connection connection;
-
-	/**
-	 * Initialize the connection with the database then, return the created instance
-	 * 
-	 * @return
-	 */
-	public static Connection getInstance() {
-		if (connection == null) {
-			try {
-				connection = DriverManager.getConnection(url, user, password);
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return connection;
-	}
+    private static HikariConfig config = new HikariConfig();
+    private static HikariDataSource ds;
+ 
+    static {
+        config.setJdbcUrl( url );
+        config.setUsername( user );
+        config.setPassword( password );
+        ds = new HikariDataSource( config );
+    }
+ 
+    private ConnectionDatabase() {}
+ 
+    public static Connection getConnection() throws SQLException {
+        return ds.getConnection();
+    }
 }

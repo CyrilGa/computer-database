@@ -36,7 +36,7 @@ public class ComputerDAO extends DAO<Computer> {
 	private static ComputerDAO instance = new ComputerDAO();
 
 	private ComputerDAO() {
-	};
+	}
 
 	public static ComputerDAO getInstance() {
 		return instance;
