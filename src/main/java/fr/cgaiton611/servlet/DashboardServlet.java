@@ -38,7 +38,6 @@ public class DashboardServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		if (session != null) {
 			String dashboardMsg = (String) session.getAttribute("dashboardMsg");
-			System.out.println("DZSH------->"+dashboardMsg+"<------DAH");
 			if (dashboardMsg != null) {
 				request.setAttribute("dashboardMsg", dashboardMsg);
 				session.removeAttribute("dashboardMsg");
