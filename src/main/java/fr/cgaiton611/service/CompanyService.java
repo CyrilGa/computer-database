@@ -37,4 +37,8 @@ public class CompanyService {
 	public List<String> findAllName(){
 		return companyDAO.findAllName();
 	}
+	
+	public void delete(long id) {
+		companyDAO.delete(new Company(id));
+	}
 }

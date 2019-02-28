@@ -152,6 +152,15 @@ public class CLIMenuFacade {
 		computerService.delete(id.get());
 		printUtil.printn("Computer sucefully deleted !");
 	}
+	
+	public void deleteCompany() {
+		Optional<Long> id = scanUtil.askLong("id", false);
+		if (!id.isPresent())
+			return;
+		companyService.delete(id.get());
+		printUtil.printn("Company and computers sucefully deleted !");
+	}
+
 
 	/**
 	 * Display the file containing the helping text

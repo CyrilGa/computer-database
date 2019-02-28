@@ -1,8 +1,5 @@
 package fr.cgaiton611.persistence;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -20,6 +17,7 @@ public class ConnectionDatabase {
 
     private static HikariConfig config = new HikariConfig();
     private static HikariDataSource ds;
+    
  
     static {
         config.setJdbcUrl( url );
@@ -30,7 +28,7 @@ public class ConnectionDatabase {
  
     private ConnectionDatabase() {}
  
-    public static Connection getConnection() throws SQLException {
-        return ds.getConnection();
+    public static HikariDataSource getDataSource() {
+        return ds;
     }
 }

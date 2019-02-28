@@ -47,6 +47,9 @@ public class Main {
 			} else if ("delete computer".equals(input)) {
 				logger.info("delete computer");
 				cliMenuFacade.deleteComputer();
+			} else if ("delete company".equals(input)) {
+				logger.info("delete company");
+				cliMenuFacade.deleteCompany();
 			} else if ("help".equals(input)) {
 				logger.info("helper");
 				cliMenuFacade.helper();

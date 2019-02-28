@@ -1,5 +1,6 @@
 package fr.cgaiton611.persistence;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -55,7 +56,8 @@ public class ComputerDAO extends DAO<Computer> {
 	@Override
 	public Optional<Computer> create(Computer obj) {
 		Computer computer = null;
-		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_CREATE,
+		try (Connection connection = ds.getConnection();
+				PreparedStatement prepare = connection.prepareStatement(SQL_CREATE,
 				Statement.RETURN_GENERATED_KEYS)) {
 			prepare.setString(1, obj.getName());
 			prepare.setTimestamp(2, convertUtil.dateToTimestamp(obj.getIntroduced()));
@@ -82,7 +84,8 @@ public class ComputerDAO extends DAO<Computer> {
 	@Override
 	public Optional<Computer> find(Computer obj) {
 		Computer computer = null;
-		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_FIND)) {
+		try (Connection connection = ds.getConnection();
+				PreparedStatement prepare = connection.prepareStatement(SQL_FIND)) {
 			prepare.setLong(1, obj.getId());
 			ResultSet rs = prepare.executeQuery();
 			if (rs.next()) {
@@ -97,7 +100,8 @@ public class ComputerDAO extends DAO<Computer> {
 
 	@Override
 	public Optional<Computer> update(Computer obj) {
-		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_UPDATE)) {
+		try (Connection connection = ds.getConnection();
+				PreparedStatement prepare = connection.prepareStatement(SQL_UPDATE)) {
 			prepare.setString(1, obj.getName());
 			prepare.setTimestamp(2, convertUtil.dateToTimestamp(obj.getIntroduced()));
 			prepare.setTimestamp(3, convertUtil.dateToTimestamp(obj.getDiscontinued()));
@@ -112,7 +116,8 @@ public class ComputerDAO extends DAO<Computer> {
 
 	@Override
 	public void delete(Computer obj) {
-		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_DELETE)) {
+		try (Connection connection = ds.getConnection();
+				PreparedStatement prepare = connection.prepareStatement(SQL_DELETE)) {
 			prepare.setLong(1, obj.getId());
 			prepare.executeUpdate();
 		} catch (SQLException e) {
@@ -122,7 +127,8 @@ public class ComputerDAO extends DAO<Computer> {
 
 	public List<Computer> findPaged(int page, int elements) {
 		List<Computer> computers = new ArrayList<>();
-		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_FIND_PAGED)) {
+		try (Connection connection = ds.getConnection();
+				PreparedStatement prepare = connection.prepareStatement(SQL_FIND_PAGED)) {
 			prepare.setInt(1, elements);
 			prepare.setInt(2, page * elements);
 			ResultSet rs = prepare.executeQuery();
@@ -138,7 +144,8 @@ public class ComputerDAO extends DAO<Computer> {
 
 	public int count() {
 		int max = 0;
-		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_COUNT)) {
+		try (Connection connection = ds.getConnection();
+				PreparedStatement prepare = connection.prepareStatement(SQL_COUNT)) {
 			ResultSet rs = prepare.executeQuery();
 			if (rs.next()) {
 				return rs.getInt("count");
@@ -158,7 +165,8 @@ public class ComputerDAO extends DAO<Computer> {
 			SQL = SQL_FIND_BY_NAME_PAGED_WITH_COMPANY_NAME;
 		}
 
-		try (PreparedStatement prepare = this.connection.prepareStatement(SQL)) {
+		try (Connection connection = ds.getConnection();
+				PreparedStatement prepare = connection.prepareStatement(SQL)) {
 
 			if ("".equals(companyName)) {
 				prepare.setString(1, "%" + computerName + "%");
@@ -190,7 +198,8 @@ public class ComputerDAO extends DAO<Computer> {
 		} else {
 			SQL = SQL_COUNT_BY_NAME_WITH_COMPANY_NAME;
 		}
-		try (PreparedStatement prepare = this.connection.prepareStatement(SQL)) {
+		try (Connection connection = ds.getConnection();
+				PreparedStatement prepare = connection.prepareStatement(SQL)) {
 			if ("".equals(companyName)) {
 				prepare.setString(1, "%" + computerName + "%");
 			} else {

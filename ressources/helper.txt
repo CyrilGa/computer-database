@@ -5,4 +5,5 @@ Commands available :
     'create computer'   : Create a computer
     'update computer'   : Update a computer
     'delete computer'   : Delete a computer
-
+    'delete company'   	: Delete a company and computer associated with
+    	

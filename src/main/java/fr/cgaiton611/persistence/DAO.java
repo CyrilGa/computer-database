@@ -1,8 +1,8 @@
 package fr.cgaiton611.persistence;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Optional;
+
+import com.zaxxer.hikari.HikariDataSource;
 
 /**
  * Abstract Class getting the connection with the database and define CRUD
@@ -14,15 +14,8 @@ import java.util.Optional;
  */
 public abstract class DAO<T> {
 
-	public Connection connection;
+	public HikariDataSource ds = ConnectionDatabase.getDataSource() ;
 	
-	public DAO() {
-		try {
-			connection = ConnectionDatabase.getConnection();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * Create an object in the database

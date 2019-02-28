@@ -1,5 +1,6 @@
 package fr.cgaiton611.persistence;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +18,7 @@ import fr.cgaiton611.model.Company;
  * @version 1.0
  */
 public class CompanyDAO extends DAO<Company> {
-	
+
 	private static final String SQL_CREATE = "INSERT INTO company(name) VALUES(?)";
 	private static final String SQL_FIND = "SELECT id, name FROM company WHERE id = ?";
 	private static final String SQL_UPDATE = "UPDATE company SET name = ? WHERE id = ? ";
@@ -26,20 +27,22 @@ public class CompanyDAO extends DAO<Company> {
 	private static final String SQL_COUNT = "SELECT COUNT(*) as count FROM company";
 	private static final String SQL_FIND_BY_NAME = "SELECT id, name FROM company WHERE name = ?";
 	private static final String SQL_FIND_ALL_NAME = "SELECT name FROM company";
+	private static final String SQL_DELETE_COMPUTER_CASCADE = "DELETE FROM computer WHERE company_id = ? ";
 
 	private static CompanyDAO instance = new CompanyDAO();
-	
-	private CompanyDAO() {};
-	
+
+	private CompanyDAO() {
+	};
+
 	public static CompanyDAO getInstance() {
 		return instance;
 	}
-	
+
 	@Override
 	public Optional<Company> create(Company obj) {
 		Company company = null;
-		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_CREATE,
-				Statement.RETURN_GENERATED_KEYS)) {
+		try (Connection connection = ds.getConnection();
+				PreparedStatement prepare = connection.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS)) {
 			prepare.setString(1, obj.getName());
 
 			prepare.executeUpdate();
@@ -60,12 +63,13 @@ public class CompanyDAO extends DAO<Company> {
 	@Override
 	public Optional<Company> find(Company obj) {
 		Company company = null;
-		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_FIND)) {
+		try (Connection connection = ds.getConnection();
+				PreparedStatement prepare = connection.prepareStatement(SQL_FIND)) {
 			prepare.setLong(1, obj.getId());
 			ResultSet rs = prepare.executeQuery();
 			if (rs.next()) {
 				company = new Company(rs.getInt("id"), rs.getString("name"));
-			} 
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -74,7 +78,8 @@ public class CompanyDAO extends DAO<Company> {
 
 	@Override
 	public Optional<Company> update(Company obj) {
-		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_UPDATE)) {
+		try (Connection connection = ds.getConnection();
+				PreparedStatement prepare = connection.prepareStatement(SQL_UPDATE)) {
 			prepare.setString(1, obj.getName());
 			prepare.setLong(2, obj.getId());
 			prepare.executeUpdate();
@@ -87,17 +92,28 @@ public class CompanyDAO extends DAO<Company> {
 
 	@Override
 	public void delete(Company obj) {
-		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_DELETE)) {
-			prepare.setLong(1, obj.getId());
-			prepare.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		try (Connection connection = ds.getConnection()) {
+			connection.setAutoCommit(false);
+			try (PreparedStatement prepare1 = connection.prepareStatement(SQL_DELETE_COMPUTER_CASCADE);
+					PreparedStatement prepare2 = connection.prepareStatement(SQL_DELETE)) {
+				prepare1.setLong(1, obj.getId());
+				prepare1.executeUpdate();
+				prepare2.setLong(1, obj.getId());
+				prepare2.executeUpdate();
+			} catch (SQLException e) {
+				connection.rollback();
+				e.printStackTrace();
+			}
+			connection.commit();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
 		}
 	}
 
 	public List<Company> findPaged(int page, int elements) {
 		List<Company> companies = null;
-		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_FIND_PAGED)) {
+		try (Connection connection = ds.getConnection();
+				PreparedStatement prepare = connection.prepareStatement(SQL_FIND_PAGED)) {
 			prepare.setInt(1, elements);
 			prepare.setInt(2, page * elements);
 			ResultSet rs = prepare.executeQuery();
@@ -111,10 +127,11 @@ public class CompanyDAO extends DAO<Company> {
 		}
 		return companies;
 	}
-	
+
 	public int count() {
 		int max = 0;
-		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_COUNT)) {
+		try (Connection connection = ds.getConnection();
+				PreparedStatement prepare = connection.prepareStatement(SQL_COUNT)) {
 			ResultSet rs = prepare.executeQuery();
 			if (rs.next()) {
 				System.out.println("salut");
@@ -125,33 +142,34 @@ public class CompanyDAO extends DAO<Company> {
 		}
 		return max;
 	}
-	
+
 	public Optional<Company> findByName(String name) {
 		Company company = null;
-		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_FIND_BY_NAME)) {
+		try (Connection connection = ds.getConnection();
+				PreparedStatement prepare = connection.prepareStatement(SQL_FIND_BY_NAME)) {
 			prepare.setString(1, name);
 			ResultSet rs = prepare.executeQuery();
 			if (rs.next()) {
 				company = new Company(rs.getInt("id"), rs.getString("name"));
-			} 
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return Optional.ofNullable(company);
 	}
-	
-	public List<String> findAllName(){
+
+	public List<String> findAllName() {
 		List<String> names = new ArrayList<>();
-		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_FIND_ALL_NAME)) {
+		try (Connection connection = ds.getConnection();
+				PreparedStatement prepare = connection.prepareStatement(SQL_FIND_ALL_NAME)) {
 			ResultSet rs = prepare.executeQuery();
 			while (rs.next()) {
 				names.add(rs.getString("name"));
-			} 
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return names;
 	}
-
 
 }
