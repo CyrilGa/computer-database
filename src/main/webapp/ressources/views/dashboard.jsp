@@ -24,23 +24,33 @@
 				<h1 id="homeTitle">${count} Computers found </h1>
 				<span id="dashMsg">${dashboardMsg}</span>
 			</div>
-			<div id="actions" class="form-horizontal">
-				<div class="pull-left">
+			<div id="actions" class="">
+				<div class="">
 					<form id="searchForm" action="/cdb/dashboard" method="GET" class="form-inline">
-						<input type="search" id="searchbox" name="search" class="form-control" 
-							placeholder="Search name" value="${valueSearch}" />
+						<i class="btn btn-secondary" onClick="$.fn.showSecondSearch();">
+							<span id="spanSecondSearch" class="glyphicon glyphicon-plus-sign"></span>
+						</i>
+						<input type="search" id="searchbox" name="computerName" class="form-control" 
+							placeholder="Computer name" value="${computerName}" />
 						<input type="submit" id="searchsubmit" value="Filter by name" class="btn btn-primary" />
-						<c:if test="${!\"\".equals(valueSearch)}">
+						<c:if test="${!\"\".equals(computerName) || !\"\".equals(companyName)}">
 							 <button class="btn btn-danger" onClick="$.fn.resetSearch();">
 							 	<span class="glyphicon glyphicon-remove-sign"></span>
 							 </button>
 						</c:if>
+						<div id="secondDiv" class="form-inline">
+							<a class="btn" class="hiddenElement">
+							 	<span class="glyphicon glyphicon-remove-sign hiddenElement"></span>
+							 </a>
+							<input type="search" name="companyName" id="companyName" class="form-control" 
+								placeholder="Company name" value="${companyName}" />	
+						</div>
 					</form>
 				</div>
-				<div class="pull-left">
-					<span class="btn" id="custom-p">e : toggle edit mode, del : delete selected computer(s)</span>
+				<div class="">
+					<span class="btn" id="custom-p">CTRL+Y : toggle edit mode, del : delete selected computer(s)</span>
 				</div>
-				<div class="pull-right">
+				<div class="">
 					<a class="btn btn-success" id="addComputer" href="/cdb/addComputer">Add Computer</a> 
 					<a class="btn btn-default" id="editComputer" href="#" 
 						onclick="$.fn.toggleEditMode();">Edit</a>

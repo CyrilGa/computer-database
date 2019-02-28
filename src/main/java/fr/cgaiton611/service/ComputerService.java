@@ -94,19 +94,11 @@ public class ComputerService {
 		return computerDAO.count();
 	}
 
-	public List<Computer> findByNamePaged(int page, int elements, String name) {
-		List<Computer> computers = computerDAO.findByNamePaged(page, elements, name);
-		for (Computer computer : computers) {
-			Optional<Company> company = companyService.find(computer.getCompany().getId());
-			if (company.isPresent()) {
-				computer.setCompany(company.get());
-			}
-		}
-		return computers;
-	}
+	public List<Computer> findByNamePaged(int page, int elements, String computerName, String companyName) {
+		return computerDAO.findByNamePaged(page, elements, computerName, companyName);	}
 
-	public int countByName(String name) {
-		return computerDAO.countByName(name);
+	public int countByName(String computerName, String companyName) {
+		return computerDAO.countByName(computerName, companyName);
 	}
 
 }

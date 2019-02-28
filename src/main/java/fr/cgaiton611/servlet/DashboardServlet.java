@@ -28,8 +28,9 @@ public class DashboardServlet extends HttpServlet {
 	private ComputerService computerService = ComputerService.getInstance();
 	private int elements = 10;
 	private int page = 0;
-	private String name = "";
-	private ComputerByNamePage computerByNamePage = new ComputerByNamePage(elements, name);
+	private String computerName = "";
+	private String companyName = "";
+	private ComputerByNamePage computerByNamePage = new ComputerByNamePage(elements, computerName, companyName);
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -44,26 +45,31 @@ public class DashboardServlet extends HttpServlet {
 			}
 		}
 
-		name = request.getParameter("search");
-		computerByNamePage.setName(name);
-		request.setAttribute("valueSearch", computerByNamePage.getName());
-
 		String pageAttribute = request.getParameter("page");
 		if (pageAttribute != null)
 			page = Integer.parseInt(pageAttribute);
+		computerByNamePage.setPage(page);
+		
+		
+		computerName = request.getParameter("computerName");
+		computerByNamePage.setComputerName(computerName);
+		request.setAttribute("computerName", computerByNamePage.getComputerName());
 
+		companyName = request.getParameter("companyName");
+		computerByNamePage.setCompanyName(companyName);
+		request.setAttribute("companyName", computerByNamePage.getCompanyName());
+
+		
 		String elementsAttribute = request.getParameter("elements");
 		if (elementsAttribute != null) {
 			int temp = Integer.parseInt(elementsAttribute);
 			if (elementsIsValid(temp)) {
 				elements = temp;
-				page = 0;
 			}
 		}
-
 		computerByNamePage.setElements(elements);
 
-		List<Computer> computers = computerByNamePage.get(page);
+		List<Computer> computers = computerByNamePage.get();
 
 		List<ComputerDTO> computersDTO = ComputerMapper.toComputerDTOList(computers);
 
@@ -72,7 +78,8 @@ public class DashboardServlet extends HttpServlet {
 		List<Integer> navigationPages = getNavigationPages(computerByNamePage);
 		request.setAttribute("navigationPages", navigationPages);
 
-		request.setAttribute("count", computerService.countByName(computerByNamePage.getName()));
+		request.setAttribute("count",
+				computerService.countByName(computerByNamePage.getComputerName(), computerByNamePage.getCompanyName()));
 
 		request.setAttribute("page", computerByNamePage.getPage());
 
@@ -87,12 +94,13 @@ public class DashboardServlet extends HttpServlet {
 		int page = computerByNamePage.getPage();
 		boolean inf = true, sup = true;
 		for (int i = page - 2; i < page + 3; i++) {
-			if (i < 0)
+			if (i < 0) {
 				inf = false;
-			else if (i > max)
+			} else if (i > max) {
 				sup = false;
-			else
+			} else {
 				navigationPages.add(i);
+			}
 		}
 
 		while (navigationPages.size() < 5 && inf) {
@@ -105,12 +113,11 @@ public class DashboardServlet extends HttpServlet {
 
 		while (navigationPages.size() < 5 && sup) {
 			int ajout = navigationPages.get(navigationPages.size() - 1) + 1;
-			if (ajout >= 0)
+			if (ajout <= max)
 				navigationPages.add(navigationPages.size(), ajout);
 			else
 				sup = false;
 		}
-
 		return navigationPages;
 	}
 

@@ -29,6 +29,13 @@ $(function() {
     			 $("#dashMsg").text("");
     		  }, 2500);
     
+    // Hide secondSearch
+    $("#secondSearch").hide();
+    $("#secondDiv").hide();
+    
+    if ($("#companyName").val().length > 0) {
+    	$.fn.showSecondSearch();
+    };
 
 });
 
@@ -90,22 +97,42 @@ $(document).keydown(function(e) {
                 $.fn.deleteSelected();
             }   
             break;
-        //E key (E will switch to edit mode)
-        case 69:
-        	$.fn.toggleEditMode();
+        //Y key (Y will switch to edit mode)
+        case 89:
+        	if(e.ctrlKey) {
+        		$.fn.toggleEditMode();
+        	}
             break;
     }
 });
 
 
-//Function setCheckboxValues
 (function ( $ ) {
 
     $.fn.resetSearch = function() {
     	
-    	$("#searchForm input[name=search]").val("")
+    	$("#searchForm input[name=computerName]").val("")
+    	$("#searchForm input[name=companyName]").val("")
     	$('#searchForm').submit();
         
+    };
+
+}( jQuery ));
+
+
+(function ( $ ) {
+
+    $.fn.showSecondSearch = function() {
+    	
+    	if($("#companyName").is(":visible")) {
+    	    $("#secondDiv").hide();
+            $("#companyName").hide();
+        }
+        else {
+            $("#secondDiv").show();
+            $("#companyName").show();
+            }
+    	$("#spanSecondSearch").toggleClass("glyphicon glyphicon-minus-sign").toggleClass("glyphicon glyphicon-plus-sign");;
     };
 
 }( jQuery ));

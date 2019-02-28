@@ -30,7 +30,6 @@ input[type='checkbox'] {
 
 #custom-p {
 	color: #888888;
-	margin-left: 100px;
 }
 
 #container-title{
@@ -55,4 +54,17 @@ input[type='checkbox'] {
 
 #discontinuedDate{
 	margin-bottom: 5px;
+}
+
+#actions{
+	display: flex;
+	justify-content: space-between;
+}
+
+#secondDiv{
+	margin-top: 6px;
+}
+
+.hiddenElement{
+	visibility: collapse;
 }

@@ -7,10 +7,11 @@ import fr.cgaiton611.service.ComputerService;
 public class ComputerByNamePage {
 
 	private ComputerService computerService = ComputerService.getInstance();
-	private int elements = 15;
-	private int page = -1;
+	private int elements = 10;
+	private int page = 0;
 	private int max = 0;
-	private String name;
+	private String computerName;
+	private String companyName;
 
 	public int getMax() {
 		return max;
@@ -20,60 +21,80 @@ public class ComputerByNamePage {
 		return page;
 	}
 
-	public ComputerByNamePage(int elements, String name) {
+	public void setPage(int page) {
+		if (page <= 0)
+			this.page = 0;
+		else if (page >= max)
+			this.page = max;
+		else
+			this.page = page;
+	}
+
+	public ComputerByNamePage(int elements, String computerName, String companyName) {
 		this.elements = elements;
-		this.name = name;
+		this.computerName = computerName;
+		this.companyName = companyName;
 		calculateMax();
 	}
 
 	public List<Computer> next() {
-		page++;
 		if (page >= max)
 			page = max;
-		return computerService.findByNamePaged(page, elements, name);
+		List<Computer> computers = computerService.findByNamePaged(page, elements, computerName, companyName);
+		page++;
+		return computers;
 	}
 
 	public List<Computer> previous() {
-		page--;
 		if (page <= 0)
 			page = 0;
-		return computerService.findByNamePaged(page, elements, name);
+		List<Computer> computers = computerService.findByNamePaged(page, elements, computerName, companyName);
+		page--;
+		return computers;
 	}
 
-	public List<Computer> get(int ppage) {
-		page = ppage;
-		if (page <= 0)
-			page = 0;
-		else if (page >= max)
-			page = max;
-		return computerService.findByNamePaged(page, elements, name);
+	public List<Computer> get() {
+		return computerService.findByNamePaged(page, elements, computerName, companyName);
 	}
 
 	public void calculateMax() {
-		max = (computerService.countByName(name) / elements);
+		max = (computerService.countByName(computerName, companyName) / elements);
 	}
 
 	public void setElements(int elements) {
 		if (this.elements != elements) {
-			page = -1;
+			page = 0;
 			this.elements = elements;
 			calculateMax();
 		}
 	}
 
-	public void setName(String name) {
-		if (name != null) {
-			if (this.name != name) {
-				page = -1;
-				this.name = name;
+	public void setComputerName(String computerName) {
+		if (computerName != null) {
+			if (!computerName.equals(this.computerName)) {
+				page = 0;
+				this.computerName = computerName;
 				calculateMax();
 			}
 		}
 	}
 
-	public String getName() {
-		return name;
+	public String getComputerName() {
+		return computerName;
 	}
-	
+
+	public void setCompanyName(String companyName) {
+		if (companyName != null) {
+			if (!companyName.equals(this.companyName)) {
+				page = 0;
+				this.companyName = companyName;
+				calculateMax();
+			}
+		}
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
 
 }

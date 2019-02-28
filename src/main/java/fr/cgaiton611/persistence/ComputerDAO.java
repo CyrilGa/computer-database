@@ -30,8 +30,18 @@ public class ComputerDAO extends DAO<Computer> {
 	private static final String SQL_DELETE = "DELETE FROM computer WHERE id = ? ";
 	private static final String SQL_FIND_PAGED = "SELECT id, name, introduced, discontinued, company_id FROM computer LIMIT ? OFFSET ? ";
 	private static final String SQL_COUNT = "SELECT COUNT(*) as count FROM computer";
-	private static final String SQL_FIND_BY_NAME_PAGED = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE name LIKE ? LIMIT ? OFFSET ? ";
-	private static final String SQL_COUNT_BY_NAME = "SELECT COUNT(*) as count FROM computer WHERE name LIKE ? ";
+	private static final String SQL_FIND_BY_NAME_PAGED = "SELECT computer.id as id, computer.name as name, introduced, discontinued, company_id, company.name as companyName "
+			+ "FROM computer left JOIN company ON company_id = company.id WHERE computer.name LIKE ? "
+			+ "ORDER BY computer.id ASC " + "LIMIT ? OFFSET ? ";
+	private static final String SQL_COUNT_BY_NAME = "SELECT COUNT(*) as count FROM computer "
+			+ "WHERE name LIKE ? ";
+	private static final String SQL_FIND_BY_NAME_PAGED_WITH_COMPANY_NAME = "SELECT computer.id as id, computer.name as name, introduced, discontinued, company_id, company.name as companyName "
+			+ "FROM computer JOIN company "
+			+ "ON company.id IN (SELECT id FROM company WHERE name LIKE ? ) AND company_id = company.id "
+			+ "WHERE computer.name LIKE ? ORDER BY computer.id ASC LIMIT ? OFFSET ? ";
+	private static final String SQL_COUNT_BY_NAME_WITH_COMPANY_NAME = "SELECT COUNT(*) as count FROM computer JOIN company "
+			+ "ON company.id IN (SELECT id FROM company WHERE name LIKE ? ) AND company_id = company.id "
+			+ "WHERE computer.name LIKE ? ";
 
 	private static ComputerDAO instance = new ComputerDAO();
 
@@ -44,7 +54,6 @@ public class ComputerDAO extends DAO<Computer> {
 
 	@Override
 	public Optional<Computer> create(Computer obj) {
-		System.out.println(obj);
 		Computer computer = null;
 		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_CREATE,
 				Statement.RETURN_GENERATED_KEYS)) {
@@ -140,16 +149,32 @@ public class ComputerDAO extends DAO<Computer> {
 		return max;
 	}
 
-	public List<Computer> findByNamePaged(int page, int elements, String name) {
+	public List<Computer> findByNamePaged(int page, int elements, String computerName, String companyName) {
 		List<Computer> computers = new ArrayList<>();
-		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_FIND_BY_NAME_PAGED)) {
-			prepare.setString(1, "%" + name + "%");
-			prepare.setInt(2, elements);
-			prepare.setInt(3, page * elements);
+		String SQL;
+		if ("".equals(companyName)) {
+			SQL = SQL_FIND_BY_NAME_PAGED;
+		} else {
+			SQL = SQL_FIND_BY_NAME_PAGED_WITH_COMPANY_NAME;
+		}
+
+		try (PreparedStatement prepare = this.connection.prepareStatement(SQL)) {
+
+			if ("".equals(companyName)) {
+				prepare.setString(1, "%" + computerName + "%");
+				prepare.setInt(2, elements);
+				prepare.setInt(3, page * elements);
+			} else {
+				prepare.setString(1, "%" + companyName + "%");
+				prepare.setString(2, "%" + computerName + "%");
+				prepare.setInt(3, elements);
+				prepare.setInt(4, page * elements);
+			}
 			ResultSet rs = prepare.executeQuery();
 			while (rs.next()) {
 				computers.add(new Computer(rs.getLong("id"), rs.getString("name"), rs.getTimestamp("introduced"),
-						rs.getTimestamp("discontinued"), new Company(rs.getLong("company_id"))));
+						rs.getTimestamp("discontinued"),
+						new Company(rs.getLong("company_id"), rs.getString("companyName"))));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -157,10 +182,21 @@ public class ComputerDAO extends DAO<Computer> {
 		return computers;
 	}
 
-	public int countByName(String name) {
+	public int countByName(String computerName, String companyName) {
 		int max = 0;
-		try (PreparedStatement prepare = this.connection.prepareStatement(SQL_COUNT_BY_NAME)) {
-			prepare.setString(1, "%" + name + "%");
+		String SQL;
+		if ("".equals(companyName)) {
+			SQL = SQL_COUNT_BY_NAME;
+		} else {
+			SQL = SQL_COUNT_BY_NAME_WITH_COMPANY_NAME;
+		}
+		try (PreparedStatement prepare = this.connection.prepareStatement(SQL)) {
+			if ("".equals(companyName)) {
+				prepare.setString(1, "%" + computerName + "%");
+			} else {
+				prepare.setString(1, "%" + companyName + "%");
+				prepare.setString(2, "%" + computerName + "%");
+			}
 			ResultSet rs = prepare.executeQuery();
 			if (rs.next()) {
 				return rs.getInt("count");
