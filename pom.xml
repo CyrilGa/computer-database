@@ -180,7 +180,7 @@
 		</pluginManagement>
 		<resources>
 			<resource>
-				<directory>ressources/logs</directory>
+				<directory>resources/logs</directory>
 			</resource>
 		</resources>
 	</build>
