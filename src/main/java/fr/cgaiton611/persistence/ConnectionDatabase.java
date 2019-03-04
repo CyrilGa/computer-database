@@ -1,5 +1,8 @@
 package fr.cgaiton611.persistence;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -11,24 +14,28 @@ import com.zaxxer.hikari.HikariDataSource;
  * @version 1.0
  */
 public class ConnectionDatabase {
-	private final static String url = "jdbc:mysql://localhost/computer-database-db";
-	private final static String user = "admincdb";
-	private final static String password = "qwerty1234";
+	private static final Logger logger = LoggerFactory.getLogger(ConnectionDatabase.class);
+	private final static String configFile = "resources/db/db.properties";
+	private static HikariConfig config;
+	private static HikariDataSource ds;
 
-    private static HikariConfig config = new HikariConfig();
-    private static HikariDataSource ds;
-    
- 
-    static {
-        config.setJdbcUrl( url );
-        config.setUsername( user );
-        config.setPassword( password );
-        ds = new HikariDataSource( config );
-    }
- 
-    private ConnectionDatabase() {}
- 
-    public static HikariDataSource getDataSource() {
-        return ds;
-    }
+	static {
+		try {
+			config = new HikariConfig(configFile);
+		} catch (Exception e) {
+			logger.error("Properties file for database not found");
+		}
+		try {
+			ds = new HikariDataSource(config);
+		} catch (Exception e) {
+			logger.error("Error initializing HikariDataSource");
+		}
+	}
+
+	private ConnectionDatabase() {
+	}
+
+	public static HikariDataSource getDataSource() {
+		return ds;
+	}
 }

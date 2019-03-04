@@ -14,6 +14,7 @@ class ConnectionDatabaseTest {
 	void creation() {
 		HikariDataSource ds = ConnectionDatabase.getDataSource();
 		assertNotEquals(ds, null);
+		
 	}
 
 }
