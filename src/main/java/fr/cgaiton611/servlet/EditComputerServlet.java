@@ -57,7 +57,7 @@ public class EditComputerServlet extends HttpServlet {
 		}
 		request.setAttribute("companyName", computerDTO.getCompanyName());
 
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/ressources/views/editComputer.jsp");
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/resources/views/editComputer.jsp");
 		dispatcher.forward(request, response);
 	}
 

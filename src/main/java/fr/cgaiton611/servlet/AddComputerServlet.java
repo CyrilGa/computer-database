@@ -34,7 +34,7 @@ public class AddComputerServlet extends HttpServlet {
 		List<String> names = companyService.findAllName();
 		request.setAttribute("names", names);
 
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/ressources/views/addComputer.jsp");
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/resources/views/addComputer.jsp");
 		dispatcher.forward(request, response);
 	}
 

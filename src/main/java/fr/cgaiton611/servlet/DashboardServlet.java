@@ -86,7 +86,7 @@ public class DashboardServlet extends HttpServlet {
 
 		request.setAttribute("page", computerByNamePage.getPage());
 
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/ressources/views/dashboard.jsp");
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/resources/views/dashboard.jsp");
 		dispatcher.forward(request, response);
 
 	}
