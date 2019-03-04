@@ -6,7 +6,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import fr.cgaiton611.persistence.ConnectionDatabase;
+
 public class ConvertUtil {
+	private static final Logger logger = LoggerFactory.getLogger(ConnectionDatabase.class);
+
 	public Optional<Long> stringToLong(Optional<String> s) {
 		if (!s.isPresent())
 			return Optional.empty();
@@ -49,5 +56,17 @@ public class ConvertUtil {
 		if (date == null)
 			return null;
 		return new Timestamp(date.getTime());
+	}
+
+	public Optional<Integer> stringToInteger(String s) {
+		if (s == null)
+			return Optional.empty();
+		Integer i = null;
+		try {
+			i = Integer.parseInt(s);
+		} catch (NumberFormatException e) {
+			logger.error("Cannot convert string to int");
+		}
+		return Optional.ofNullable(i);
 	}
 }

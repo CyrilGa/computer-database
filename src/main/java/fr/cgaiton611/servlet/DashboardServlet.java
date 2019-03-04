@@ -3,6 +3,7 @@ package fr.cgaiton611.servlet;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,6 +18,7 @@ import fr.cgaiton611.dto.ComputerMapper;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.model.ComputerByNamePage;
 import fr.cgaiton611.service.ComputerService;
+import fr.cgaiton611.util.ConvertUtil;
 
 @WebServlet(urlPatterns = { "/dashboard", "" })
 public class DashboardServlet extends HttpServlet {
@@ -31,6 +33,7 @@ public class DashboardServlet extends HttpServlet {
 	private String computerName = "";
 	private String companyName = "";
 	private ComputerByNamePage computerByNamePage = new ComputerByNamePage(elements, computerName, companyName);
+	ConvertUtil convertUtil = new ConvertUtil();
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -46,11 +49,12 @@ public class DashboardServlet extends HttpServlet {
 		}
 
 		String pageAttribute = request.getParameter("page");
-		if (pageAttribute != null)
-			page = Integer.parseInt(pageAttribute);
+		Optional<Integer> pageTemp = convertUtil.stringToInteger(pageAttribute);
+		if (pageTemp.isPresent()) {
+				page = pageTemp.get();
+		}
 		computerByNamePage.setPage(page);
-		
-		
+
 		computerName = request.getParameter("computerName");
 		computerByNamePage.setComputerName(computerName);
 		request.setAttribute("computerName", computerByNamePage.getComputerName());
@@ -59,12 +63,11 @@ public class DashboardServlet extends HttpServlet {
 		computerByNamePage.setCompanyName(companyName);
 		request.setAttribute("companyName", computerByNamePage.getCompanyName());
 
-		
 		String elementsAttribute = request.getParameter("elements");
-		if (elementsAttribute != null) {
-			int temp = Integer.parseInt(elementsAttribute);
-			if (elementsIsValid(temp)) {
-				elements = temp;
+		Optional<Integer> elementsTemp = convertUtil.stringToInteger(elementsAttribute);
+		if (elementsTemp.isPresent()) {
+			if (elementsIsValid(elementsTemp.get())) {
+				elements = elementsTemp.get();
 			}
 		}
 		computerByNamePage.setElements(elements);
