@@ -1,8 +1,9 @@
 package fr.cgaiton611;
 
-import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.Assert.assertNotEquals;
+
+import org.junit.Test;
 
 import com.zaxxer.hikari.HikariDataSource;
 

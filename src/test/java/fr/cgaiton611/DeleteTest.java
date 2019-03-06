@@ -1,34 +1,40 @@
 package fr.cgaiton611;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.TimeUnit;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.cgaiton611.service.ComputerService;
 
+@RunWith(SpringJUnit4ClassRunner.class)
 public class DeleteTest {
 	
 	private static WebDriver driver;
+	@Autowired
 	private ComputerService computerService;
 
-	@BeforeAll
+	@BeforeClass
 	public static void setUp() {
 		System.setProperty("webdriver.gecko.driver", "/home/cyril/Téléchargements/geckodriver");
 		driver = new FirefoxDriver();
 	}
 
-	@BeforeEach
+	@Before
 	public void beforeAll() {
 		driver.get("http://localhost:8888/cdb/dashboard");
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -74,7 +80,7 @@ public class DeleteTest {
 		assertEquals(c1-c2, 2);
 	}
 	
-	@AfterAll
+	@AfterClass
 	public static void tearDown() {
 		driver.quit();
 	}

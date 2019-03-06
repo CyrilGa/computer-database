@@ -1,14 +1,15 @@
 package fr.cgaiton611;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.TimeUnit;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -17,13 +18,13 @@ import org.openqa.selenium.support.ui.Select;
 public class AddTest {
 	private static WebDriver driver;
 
-	@BeforeAll
+	@BeforeClass
 	public static void setUp() {
 		System.setProperty("webdriver.gecko.driver", "/home/cyril/Téléchargements/geckodriver");
 		driver = new FirefoxDriver();
 	}
 
-	@BeforeEach
+	@Before
 	public void beforeAll() {
 		driver.get("http://localhost:8888/cdb/addComputer");
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -42,7 +43,6 @@ public class AddTest {
 		driver.findElement(By.id("btnSubmit")).click();
 		
 		String url = driver.getCurrentUrl();
-		System.out.println(url);
 		assertTrue("http://localhost:8888/cdb/dashboard".equals(url));
 		String dashMsg = driver.findElement(By.id("dashMsg")).getText();
 		assertTrue("Computer successfully created".equals(dashMsg));
@@ -69,7 +69,7 @@ public class AddTest {
 		assertTrue("Computer successfully created".equals(dashMsg));
 	}
 	
-	@AfterAll
+	@AfterClass
 	public static void tearDown() {
 		driver.quit();
 	}
