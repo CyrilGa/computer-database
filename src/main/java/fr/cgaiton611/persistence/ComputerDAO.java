@@ -101,7 +101,10 @@ public class ComputerDAO extends DAO<Computer> {
 			prepare.setString(1, obj.getName());
 			prepare.setTimestamp(2, convertUtil.dateToTimestamp(obj.getIntroduced()));
 			prepare.setTimestamp(3, convertUtil.dateToTimestamp(obj.getDiscontinued()));
-			prepare.setLong(4, obj.getCompany().getId());
+			if (obj.getCompany().getId() != -1)
+				prepare.setLong(4, obj.getCompany().getId());
+			else
+				prepare.setNull(4, Types.INTEGER);
 			prepare.setLong(5, obj.getId());
 			prepare.executeUpdate();
 		} catch (SQLException e) {

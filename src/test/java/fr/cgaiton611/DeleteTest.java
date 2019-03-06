@@ -1,6 +1,5 @@
 package fr.cgaiton611;
 
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -20,13 +19,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import fr.cgaiton611.model.Company;
+import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.ComputerService;
 import fr.cgaiton611.springconfig.SpringConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes=SpringConfig.class)
+@ContextConfiguration(classes = SpringConfig.class)
 public class DeleteTest {
-	
+
 	private static WebDriver driver;
 	@Autowired
 	private ComputerService computerService;
@@ -39,29 +40,32 @@ public class DeleteTest {
 
 	@Before
 	public void beforeAll() {
+		if (!(computerService.findByNamePaged(0, 1, "TEST 1 COMPUTER DELETE", "").size() == 1)) {
+			computerService.create(new Computer("TEST 1 COMPUTER DELETE", null, null, new Company()));
+		}
+		if (!(computerService.findByNamePaged(0, 1, "TEST 2 COMPUTER DELETE", "").size() == 1)) {
+			computerService.create(new Computer("TEST 2 COMPUTER DELETE", null, null, new Company()));
+		}
 		driver.get("http://localhost:8888/cdb/dashboard");
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
-
 
 	@Test
 	public void delete() {
 		int c1 = computerService.count();
 		driver.findElement(By.id("editComputer")).click();
 		driver.findElement(By.xpath("//table/tbody/tr[1]/td[1]/input")).click();
-		driver.findElement(By.xpath("//table/tbody/tr[2]/td[1]/input")).click();
+		driver.findElement(By.xpath("//table/tbody/tr[2]/td[1]/input")).click();;
 		driver.findElement(By.id("deleteSelected")).click();
 		driver.switchTo().alert().accept();
 		new WebDriverWait(driver, 10).until(ExpectedConditions.urlToBe("http://localhost:8888/cdb/dashboard"));
 		String url = driver.getCurrentUrl();
-		System.out.println(url);
 		assertTrue("http://localhost:8888/cdb/dashboard".equals(url));
 		String dashMsg = driver.findElement(By.id("dashMsg")).getText();
-		System.out.println("DASHMSG ::::::::::::: "+dashMsg);
 		assertTrue("Computer successfully deleted".equals(dashMsg));
-		
+
 		int c2 = computerService.count();
-		assertEquals(c1-c2, 2);
+		assertEquals(c1 - c2, 2);
 	}
 
 	public void notDelete() {
@@ -74,15 +78,14 @@ public class DeleteTest {
 		driver.findElement(By.xpath("//table/tbody/tr[1]/td[1]/input")).click();
 		driver.findElement(By.xpath("//table/tbody/tr[2]/td[1]/input")).click();
 		driver.findElement(By.id("editComputer")).click();
-		
+
 		String url = driver.getCurrentUrl();
-		System.out.println(url);
 		assertTrue("http://localhost:8888/cdb/dashboard#".equals(url));
-		
+
 		int c2 = computerService.count();
-		assertEquals(c1-c2, 2);
+		assertEquals(c1 - c2, 2);
 	}
-	
+
 	@AfterClass
 	public static void tearDown() {
 		driver.quit();

@@ -146,6 +146,7 @@ public class DashboardServlet extends HttpServlet {
 		String selection = request.getParameter("selection");
 		if (selection != null) {
 			String[] ids = selection.split(",");
+			System.out.println(ids);
 			for (int i = 0; i < ids.length; i++) {
 				computerService.delete(Integer.parseInt(ids[i]));
 			}

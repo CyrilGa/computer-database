@@ -2,6 +2,7 @@ package fr.cgaiton611;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Optional;
@@ -10,7 +11,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.DisabledIf;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.cgaiton611.model.Company;
@@ -25,8 +25,8 @@ public class CompanyDAOTest {
 	CompanyDAO companyDAO;
 
 	@Test
-	public void createAdnFind() {
-		Optional<Company> c1 = companyDAO.create(new Company("test company"));
+	public void createAndFind() {
+		Optional<Company> c1 = companyDAO.create(new Company("TEST COMPANY DAO"));
 		assertTrue(c1.isPresent());
 		Optional<Company> c2 = companyDAO.find(c1.get());
 		assertTrue(c2.isPresent());
@@ -35,7 +35,7 @@ public class CompanyDAOTest {
 
 	@Test
 	public void update() {
-		Optional<Company> c1 = companyDAO.create(new Company("test company"));
+		Optional<Company> c1 = companyDAO.create(new Company("TEST COMPANY DAO"));
 		assertTrue(c1.isPresent());
 		companyDAO.update(new Company(c1.get().getId(), "modified"));
 		c1 = companyDAO.find(c1.get());
@@ -45,11 +45,11 @@ public class CompanyDAOTest {
 
 	@Test
 	public void delete() {
-		Optional<Company> c1 = companyDAO.create(new Company("test company"));
+		Optional<Company> c1 = companyDAO.create(new Company("TEST COMPANY DAO"));
 		assertTrue(c1.isPresent());
 		companyDAO.delete(c1.get());
 		c1 = companyDAO.find(c1.get());
-		assertTrue(! c1.isPresent());
+		assertFalse(c1.isPresent());
 		assertEquals(null, c1.orElse(null));
 	}
 

@@ -26,7 +26,7 @@ public class ComputerDAOTest {
 
 	@Test
 	public void createAndFind() {
-		Optional<Computer> c1 = computerDAO.create(new Computer("test computer", null, null, new Company(1)));
+		Optional<Computer> c1 = computerDAO.create(new Computer("TEST COMPUTER DAO", null, null, new Company()));
 		assertTrue(c1.isPresent());
 		Optional<Computer> c2 = computerDAO.find(c1.get());
 		assertTrue(c2.isPresent());
@@ -35,9 +35,9 @@ public class ComputerDAOTest {
 
 	@Test
 	public void update() {
-		Optional<Computer> c1 = computerDAO.create(new Computer("test computer", null, null, new Company(1)));
+		Optional<Computer> c1 = computerDAO.create(new Computer("TEST COMPUTER DAO", null, null, new Company()));
 		assertTrue(c1.isPresent());
-		computerDAO.update(new Computer(c1.get().getId(), "modified", null, null, new Company(1)));
+		computerDAO.update(new Computer(c1.get().getId(), "modified", null, null, new Company()));
 		c1 = computerDAO.find(c1.get());
 		assertTrue(c1.isPresent());
 		assertEquals("modified", c1.get().getName());
@@ -45,7 +45,7 @@ public class ComputerDAOTest {
 
 	@Test
 	public void delete() {
-		Optional<Computer> c1 = computerDAO.create(new Computer("test computer", null, null, new Company(1)));
+		Optional<Computer> c1 = computerDAO.create(new Computer("TEST COMPUTER DAO", null, null, new Company()));
 		assertTrue(c1.isPresent());
 		computerDAO.delete(c1.get());
 		c1 = computerDAO.find(c1.get());
