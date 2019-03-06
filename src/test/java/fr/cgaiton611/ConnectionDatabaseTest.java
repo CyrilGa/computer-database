@@ -9,10 +9,10 @@ import com.zaxxer.hikari.HikariDataSource;
 
 import fr.cgaiton611.persistence.ConnectionDatabase;
 
-class ConnectionDatabaseTest {
+public class ConnectionDatabaseTest {
 
 	@Test
-	void creation() {
+	public void creation() {
 		HikariDataSource ds = ConnectionDatabase.getDataSource();
 		assertNotEquals(ds, null);
 		

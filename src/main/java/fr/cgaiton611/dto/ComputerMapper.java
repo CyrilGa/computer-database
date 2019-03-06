@@ -17,11 +17,11 @@ import fr.cgaiton611.util.ConvertUtil;
 public class ComputerMapper {
 
 	@Autowired
-	private static CompanyService companyService;
+	private CompanyService companyService;
 	
-	private static ConvertUtil convertUtil = new ConvertUtil();
+	private ConvertUtil convertUtil = new ConvertUtil();
 
-	public static Optional<Computer> toComputer(ComputerDTO computerDTO) {
+	public Optional<Computer> toComputer(ComputerDTO computerDTO) {
 		Computer computer = new Computer();
 
 		String idS = computerDTO.getId();
@@ -52,7 +52,7 @@ public class ComputerMapper {
 		return Optional.of(computer);
 	}
 
-	public static ComputerDTO toComputerDTO(Computer computer) {
+	public ComputerDTO toComputerDTO(Computer computer) {
 		ComputerDTO computerDTO = new ComputerDTO();
 
 		computerDTO.setId(String.valueOf(computer.getId()));
@@ -68,7 +68,7 @@ public class ComputerMapper {
 		return computerDTO;
 	}
 
-	public static List<ComputerDTO> toComputerDTOList(List<Computer> computers) {
+	public List<ComputerDTO> toComputerDTOList(List<Computer> computers) {
 		List<ComputerDTO> computerDTOs = new ArrayList<>();
 		for (Computer computer : computers) {
 			computerDTOs.add(toComputerDTO(computer));

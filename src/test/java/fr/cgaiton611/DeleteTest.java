@@ -17,11 +17,14 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.cgaiton611.service.ComputerService;
+import fr.cgaiton611.springconfig.SpringConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes=SpringConfig.class)
 public class DeleteTest {
 	
 	private static WebDriver driver;

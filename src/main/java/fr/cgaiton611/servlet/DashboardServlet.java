@@ -33,6 +33,7 @@ public class DashboardServlet extends HttpServlet {
 
 	ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
 	private ComputerService computerService = context.getBean(ComputerService.class);
+	private ComputerMapper computerMapper = context.getBean(ComputerMapper.class);
 	private int elements = 10;
 	private int page = 0;
 	private String computerName = "";
@@ -81,7 +82,7 @@ public class DashboardServlet extends HttpServlet {
 
 		List<Computer> computers = computerByNamePage.get();
 
-		List<ComputerDTO> computersDTO = ComputerMapper.toComputerDTOList(computers);
+		List<ComputerDTO> computersDTO = computerMapper.toComputerDTOList(computers);
 
 		request.setAttribute("computers", computersDTO);
 

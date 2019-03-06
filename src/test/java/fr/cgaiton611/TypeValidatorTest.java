@@ -9,11 +9,12 @@ import org.junit.Test;
 
 import fr.cgaiton611.util.TypeValidator;
 
-class TypeValidatorTest {
+public class TypeValidatorTest {
+	
 	TypeValidator validator = new TypeValidator();
 
 	@Test
-	void isInt() {
+	public void isInt() {
 		String s1 = "33N";
 		String s2 = "N33";
 		String s3 = "3N3";
@@ -25,7 +26,7 @@ class TypeValidatorTest {
 	}
 
 	@Test
-	void isDate() {
+	public void isDate() {
 		String s1 = "2012:00:01 22:229";
 		String s2 = "2012-00-01-32:22";
 		String s3 = "0010-01-01 22:22";

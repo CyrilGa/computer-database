@@ -31,6 +31,7 @@ public class EditComputerServlet extends HttpServlet {
 	ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
 	private ComputerService computerService = context.getBean(ComputerService.class);
 	private CompanyService companyService = context.getBean(CompanyService.class);
+	private ComputerMapper computerMapper = context.getBean(ComputerMapper.class);
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -47,7 +48,7 @@ public class EditComputerServlet extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/dashboard");
 			return;
 		}
-		ComputerDTO computerDTO = ComputerMapper.toComputerDTO(computer.get());
+		ComputerDTO computerDTO = computerMapper.toComputerDTO(computer.get());
 		request.setAttribute("name", computerDTO.getName());
 
 		String introduced = computerDTO.getIntroduced();
@@ -81,7 +82,7 @@ public class EditComputerServlet extends HttpServlet {
 		if ("select-option-default".equals(companyName))
 			companyName = null;
 		ComputerDTO computerDTO = new ComputerDTO(id, name, introduced, discontinued, companyName);
-		Optional<Computer> computer = ComputerMapper.toComputer(computerDTO);
+		Optional<Computer> computer = computerMapper.toComputer(computerDTO);
 		String dashboardMsg;
 		if (computer.isPresent()) {
 			if (ComputerValidator.validateForEdit(computer.get())) {

@@ -31,6 +31,8 @@ public class AddComputerServlet extends HttpServlet {
 	ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
 	private ComputerService computerService = context.getBean(ComputerService.class);
 	private CompanyService companyService = context.getBean(CompanyService.class);
+	private ComputerMapper computerMapper = context.getBean(ComputerMapper.class);
+	
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -57,7 +59,7 @@ public class AddComputerServlet extends HttpServlet {
 		if ("select-option-default".equals(companyName))
 			companyName = null;
 		ComputerDTO computerDTO = new ComputerDTO(name, introduced, discontinued, companyName);
-		Optional<Computer> computer = ComputerMapper.toComputer(computerDTO);
+		Optional<Computer> computer = computerMapper.toComputer(computerDTO);
 		String dashboardMsg;
 		if (computer.isPresent()) {
 			if (ComputerValidator.validateForAdd(computer.get())) {
