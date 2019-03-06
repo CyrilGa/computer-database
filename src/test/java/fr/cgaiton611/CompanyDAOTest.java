@@ -11,7 +11,7 @@ import fr.cgaiton611.persistence.CompanyDAO;
 
 class CompanyDAOTest {
 	
-	CompanyDAO companyDAO = CompanyDAO.getInstance();
+	CompanyDAO companyDAO;
 
 	@Test
 	void createAdnFind() {

@@ -31,7 +31,13 @@ public class CompanyPage {
 	}
 
 	public void calculateMax() {
-		System.out.println("dvev");
 		max = (companyService.count() / elements);
+	}
+	
+	public void init() {
+		elements = 15;
+		page = -1;
+		max = 0;
+		calculateMax();
 	}
 }

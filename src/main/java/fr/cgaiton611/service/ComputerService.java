@@ -89,8 +89,7 @@ public class ComputerService {
 	}
 
 	public int count() {
-//		return computerDAO.count();
-		return 4;
+		return computerDAO.count();
 	}
 
 	public List<Computer> findByNamePaged(int page, int elements, String computerName, String companyName) {

@@ -20,6 +20,7 @@ import fr.cgaiton611.service.ComputerService;
 public class DeleteTest {
 	
 	private static WebDriver driver;
+	private ComputerService computerService;
 
 	@BeforeAll
 	public static void setUp() {
@@ -36,7 +37,7 @@ public class DeleteTest {
 
 	@Test
 	public void delete() {
-		int c1 = ComputerService.getInstance().count();
+		int c1 = computerService.count();
 		driver.findElement(By.id("editComputer")).click();
 		driver.findElement(By.xpath("//table/tbody/tr[1]/td[1]/input")).click();
 		driver.findElement(By.xpath("//table/tbody/tr[2]/td[1]/input")).click();
@@ -50,12 +51,12 @@ public class DeleteTest {
 		System.out.println("DASHMSG ::::::::::::: "+dashMsg);
 		assertTrue("Computer successfully deleted".equals(dashMsg));
 		
-		int c2 = ComputerService.getInstance().count();
+		int c2 = computerService.count();
 		assertEquals(c1-c2, 2);
 	}
 
 	public void notDelete() {
-		int c1 = ComputerService.getInstance().count();
+		int c1 = computerService.count();
 		driver.findElement(By.id("editComputer")).click();
 		driver.findElement(By.xpath("//table/tbody/tr[1]/td[1]/input")).click();
 		driver.findElement(By.xpath("//table/tbody/tr[2]/td[1]/input")).click();
@@ -69,7 +70,7 @@ public class DeleteTest {
 		System.out.println(url);
 		assertTrue("http://localhost:8888/cdb/dashboard#".equals(url));
 		
-		int c2 = ComputerService.getInstance().count();
+		int c2 = computerService.count();
 		assertEquals(c1-c2, 2);
 	}
 	

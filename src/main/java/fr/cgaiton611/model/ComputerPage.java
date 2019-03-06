@@ -15,15 +15,8 @@ public class ComputerPage {
 	private int page = -1;
 	private int max = 0;
 
-	public int getMax() {
-		return max;
-	}
-
-	public int getPage() {
-		return page;
-	}
-
 	public List<Computer> next() {
+		System.out.println(max);
 		page++;
 		if (page >= max)
 			page = max;
@@ -37,25 +30,15 @@ public class ComputerPage {
 		return computerService.findPaged(page, elements);
 	}
 
-	public List<Computer> get(int ppage) {
-		page = ppage;
-		if (page <= 0)
-			page = 0;
-		else if (page >= max)
-			page = max;
-		return computerService.findPaged(page, elements);
-	}
-
 	public void calculateMax() {
 		max = (computerService.count() / elements);
 	}
 
-	public void setElements(int elements) {
-		if (this.elements != elements) {
-			page = -1;
-			this.elements = elements;
-			calculateMax();
-		}
+	public void init() {
+		elements = 15;
+		page = -1;
+		max = 0;
+		calculateMax();
 	}
 
 }

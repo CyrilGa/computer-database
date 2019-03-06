@@ -33,13 +33,16 @@ public class CLIMenuFacade {
 	ComputerService computerService;
 	@Autowired
 	CompanyService companyService;
+	@Autowired
+	ComputerPage computerPage;
+	@Autowired
+	CompanyPage companyPage;
 
 	/**
 	 * Use pagination to return a list of computers
 	 */
 	public void showPagedComputer() {
-		ComputerPage computerPage = new ComputerPage();
-		computerPage.setElements(15);
+		computerPage.init();
 		List<Computer> computers = computerPage.next();
 		while (true) {
 			printUtil.printEntities(computers);
@@ -51,11 +54,13 @@ public class CLIMenuFacade {
 				printUtil.print("--> ");
 				input = scanUtil.getLine();
 			}
-			if (input.equals("p"))
+			if (input.equals("p")) {
+				System.out.println("p");
 				computers = computerPage.previous();
-			else if (input.equals("n"))
+			} else if (input.equals("n")) {
+				System.out.println("n");
 				computers = computerPage.next();
-			else if (input.equals("e"))
+			} else if (input.equals("e"))
 				break;
 		}
 	}
@@ -64,7 +69,7 @@ public class CLIMenuFacade {
 	 * Use pagination to return a list of companies
 	 */
 	public void showPagedCompany() {
-		CompanyPage companyPage = new CompanyPage();
+		companyPage.init();
 		List<Company> companies = companyPage.next();
 		while (true) {
 			printUtil.printEntities(companies);
@@ -142,8 +147,8 @@ public class CLIMenuFacade {
 
 		Optional<Long> companyId = scanUtil.askLong("company_id", true);
 
-		Optional<Computer> computer = computerService.update(id.get().longValue(), name, introduced,
-				discontinued, companyId);
+		Optional<Computer> computer = computerService.update(id.get().longValue(), name, introduced, discontinued,
+				companyId);
 		if (!computer.isPresent())
 			printUtil.printn("Computer not updated");
 		else
@@ -160,7 +165,7 @@ public class CLIMenuFacade {
 		computerService.delete(id.get());
 		printUtil.printn("Computer sucefully deleted !");
 	}
-	
+
 	public void deleteCompany() {
 		Optional<Long> id = scanUtil.askLong("id", false);
 		if (!id.isPresent())
@@ -168,7 +173,6 @@ public class CLIMenuFacade {
 		companyService.delete(id.get());
 		printUtil.printn("Company and computers sucefully deleted !");
 	}
-
 
 	/**
 	 * Display the file containing the helping text

@@ -12,7 +12,7 @@ import fr.cgaiton611.persistence.ComputerDAO;
 
 class ComputerDAOTest {
 
-	ComputerDAO computerDAO = ComputerDAO.getInstance();
+	ComputerDAO computerDAO;
 
 	@Test
 	void createAndFind() {
