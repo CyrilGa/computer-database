@@ -2,18 +2,19 @@ package fr.cgaiton611.model;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import fr.cgaiton611.service.CompanyService;
 
+@Service
 public class CompanyPage {
-	private CompanyService companyService = CompanyService.getInstance();
+	@Autowired
+	private CompanyService companyService;
 	private int elements = 15;
 	private int page = -1;
 	private int max = 0;
 
-	public CompanyPage() {
-		System.out.println("constructor");
-		calculateMax();
-	}
 
 	public List<Company> next() {
 		page++;

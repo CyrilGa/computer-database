@@ -2,6 +2,10 @@ package fr.cgaiton611.cli;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import fr.cgaiton611.springconfig.SpringConfig;
 
 /**
  * Main class for the cli Used like a stateless automaton
@@ -18,9 +22,11 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 
+		ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+		CLIMenuFacade cliMenuFacade = context.getBean(CLIMenuFacade.class);
+		
 		ScanUtil scanUtil = new ScanUtil();
 		PrintUtil printUtil = new PrintUtil();
-		CLIMenuFacade cliMenuFacade = new CLIMenuFacade();
 		final Logger logger = LoggerFactory.getLogger(Main.class);
 		String input;
 

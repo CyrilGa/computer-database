@@ -5,15 +5,21 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.CompanyService;
 import fr.cgaiton611.util.ConvertUtil;
 
+@Service
 public class ComputerMapper {
 
+	@Autowired
+	private static CompanyService companyService;
+	
 	private static ConvertUtil convertUtil = new ConvertUtil();
-	private static CompanyService companyService = CompanyService.getInstance();
 
 	public static Optional<Computer> toComputer(ComputerDTO computerDTO) {
 		Computer computer = new Computer();

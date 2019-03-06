@@ -13,11 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import fr.cgaiton611.dto.ComputerDTO;
 import fr.cgaiton611.dto.ComputerMapper;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.model.ComputerByNamePage;
 import fr.cgaiton611.service.ComputerService;
+import fr.cgaiton611.springconfig.SpringConfig;
 import fr.cgaiton611.util.ConvertUtil;
 
 @WebServlet(urlPatterns = { "/dashboard", "" })
@@ -27,12 +31,15 @@ public class DashboardServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	private ComputerService computerService = ComputerService.getInstance();
+	ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+	private ComputerService computerService = context.getBean(ComputerService.class);
 	private int elements = 10;
 	private int page = 0;
 	private String computerName = "";
 	private String companyName = "";
-	private ComputerByNamePage computerByNamePage = new ComputerByNamePage(elements, computerName, companyName);
+
+    
+	private ComputerByNamePage computerByNamePage = context.getBean(ComputerByNamePage.class);
 	ConvertUtil convertUtil = new ConvertUtil();
 
 	@Override

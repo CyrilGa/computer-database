@@ -2,17 +2,23 @@ package fr.cgaiton611.model;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import fr.cgaiton611.service.ComputerService;
 
+@Service
 public class ComputerByNamePage {
 
-	private ComputerService computerService = ComputerService.getInstance();
+	@Autowired
+	private ComputerService computerService;
 	private int elements = 10;
 	private int page = 0;
 	private int max = 0;
-	private String computerName;
-	private String companyName;
+	private String computerName = "";
+	private String companyName = "";
 
+	
 	public int getMax() {
 		return max;
 	}
@@ -28,13 +34,6 @@ public class ComputerByNamePage {
 			this.page = max;
 		else
 			this.page = page;
-	}
-
-	public ComputerByNamePage(int elements, String computerName, String companyName) {
-		this.elements = elements;
-		this.computerName = computerName;
-		this.companyName = companyName;
-		calculateMax();
 	}
 
 	public List<Computer> next() {

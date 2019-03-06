@@ -12,20 +12,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import fr.cgaiton611.dto.ComputerDTO;
 import fr.cgaiton611.dto.ComputerMapper;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.model.ComputerValidator;
 import fr.cgaiton611.service.CompanyService;
 import fr.cgaiton611.service.ComputerService;
+import fr.cgaiton611.springconfig.SpringConfig;
 
 @WebServlet(urlPatterns = { "/editComputer" })
 public class EditComputerServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	private ComputerService computerService = ComputerService.getInstance();
-	private CompanyService companyService = CompanyService.getInstance();
+	ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+	private ComputerService computerService = context.getBean(ComputerService.class);
+	private CompanyService companyService = context.getBean(CompanyService.class);
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

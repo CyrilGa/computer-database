@@ -7,6 +7,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.CompanyPage;
 import fr.cgaiton611.model.Computer;
@@ -20,18 +23,23 @@ import fr.cgaiton611.service.ComputerService;
  * @author cyril
  * @version 1.0
  */
+
+@Controller
 public class CLIMenuFacade {
 
 	ScanUtil scanUtil = new ScanUtil();
 	PrintUtil printUtil = new PrintUtil();
-	ComputerService computerService = ComputerService.getInstance();
-	CompanyService companyService = CompanyService.getInstance();
+	@Autowired
+	ComputerService computerService;
+	@Autowired
+	CompanyService companyService;
 
 	/**
 	 * Use pagination to return a list of computers
 	 */
 	public void showPagedComputer() {
-		ComputerPage computerPage = new ComputerPage(15);
+		ComputerPage computerPage = new ComputerPage();
+		computerPage.setElements(15);
 		List<Computer> computers = computerPage.next();
 		while (true) {
 			printUtil.printEntities(computers);

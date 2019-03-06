@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.util.ConvertUtil;
@@ -21,6 +23,8 @@ import fr.cgaiton611.util.ConvertUtil;
  * @author cyril
  * @version 1.0
  */
+
+@Repository
 public class ComputerDAO extends DAO<Computer> {
 
 	private ConvertUtil convertUtil = new ConvertUtil();
@@ -44,14 +48,6 @@ public class ComputerDAO extends DAO<Computer> {
 			+ "ON company.id IN (SELECT id FROM company WHERE name LIKE ? ) AND company_id = company.id "
 			+ "WHERE computer.name LIKE ? ";
 
-	private static ComputerDAO instance = new ComputerDAO();
-
-	private ComputerDAO() {
-	}
-
-	public static ComputerDAO getInstance() {
-		return instance;
-	}
 
 	@Override
 	public Optional<Computer> create(Computer obj) {

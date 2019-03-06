@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
 import fr.cgaiton611.model.Company;
 
 /**
@@ -17,6 +19,8 @@ import fr.cgaiton611.model.Company;
  * @author cyril
  * @version 1.0
  */
+
+@Repository
 public class CompanyDAO extends DAO<Company> {
 
 	private static final String SQL_CREATE = "INSERT INTO company(name) VALUES(?)";
@@ -29,15 +33,7 @@ public class CompanyDAO extends DAO<Company> {
 	private static final String SQL_FIND_ALL_NAME = "SELECT name FROM company";
 	private static final String SQL_DELETE_COMPUTER_CASCADE = "DELETE FROM computer WHERE company_id = ? ";
 
-	private static CompanyDAO instance = new CompanyDAO();
-
-	private CompanyDAO() {
-	};
-
-	public static CompanyDAO getInstance() {
-		return instance;
-	}
-
+	
 	@Override
 	public Optional<Company> create(Company obj) {
 		Company company = null;

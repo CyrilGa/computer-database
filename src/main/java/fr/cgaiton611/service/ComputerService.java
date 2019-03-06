@@ -4,24 +4,22 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.model.ComputerValidator;
 import fr.cgaiton611.persistence.ComputerDAO;
 
+@Service
 public class ComputerService {
-	ComputerDAO computerDAO = ComputerDAO.getInstance();
-	CompanyService companyService = CompanyService.getInstance();
+	@Autowired
+	private ComputerDAO computerDAO;
+	@Autowired
+	private CompanyService companyService;
 
-	private static ComputerService instance = new ComputerService();
-
-	private ComputerService() {
-	};
-
-	public static ComputerService getInstance() {
-		return instance;
-	}
-
+	
 	public List<Computer> findPaged(int page, int elements) {
 		List<Computer> computers = computerDAO.findPaged(page, elements);
 		for (Computer computer : computers) {
@@ -91,11 +89,13 @@ public class ComputerService {
 	}
 
 	public int count() {
-		return computerDAO.count();
+//		return computerDAO.count();
+		return 4;
 	}
 
 	public List<Computer> findByNamePaged(int page, int elements, String computerName, String companyName) {
-		return computerDAO.findByNamePaged(page, elements, computerName, companyName);	}
+		return computerDAO.findByNamePaged(page, elements, computerName, companyName);
+	}
 
 	public int countByName(String computerName, String companyName) {
 		return computerDAO.countByName(computerName, companyName);
