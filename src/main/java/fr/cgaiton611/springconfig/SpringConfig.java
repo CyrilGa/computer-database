@@ -11,18 +11,16 @@ import org.springframework.context.annotation.Configuration;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import fr.cgaiton611.persistence.ConnectionDatabase;
-
 
 @Configuration
 @ComponentScan(basePackages= {
-		"fr.cgaiton611.model",
+		"fr.cgaiton611.page",
 		"fr.cgaiton611.persistence",
 		"fr.cgaiton611.service",
 		"fr.cgaiton611.dto",
 		"fr.cgaiton611.cli"})
 public class SpringConfig {
-	private final Logger logger = LoggerFactory.getLogger(ConnectionDatabase.class);
+	private final Logger logger = LoggerFactory.getLogger(SpringConfig.class);
 	private final String configFile = "src/main/resources/db/db.properties";
 	
 	@Bean

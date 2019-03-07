@@ -9,10 +9,8 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.cgaiton611.persistence.ConnectionDatabase;
-
 public class ConvertUtil {
-	private static final Logger logger = LoggerFactory.getLogger(ConnectionDatabase.class);
+	private static final Logger logger = LoggerFactory.getLogger(ConvertUtil.class);
 
 	public Optional<Long> stringToLong(Optional<String> s) {
 		if (!s.isPresent())
