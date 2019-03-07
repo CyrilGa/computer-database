@@ -18,6 +18,21 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		<main-class>fr.cgaiton611.cli.Main</main-class>
+		<tomcat-version>2.2</tomcat-version>
+		
+		<junit-version>4.12</junit-version>
+		<mysql-version>8.0.15</mysql-version>
+		<slf4j-version>1.7.25</slf4j-version>
+		<logback-classic-version>1.2.3</logback-classic-version>
+		<logback-core-version>1.2.3</logback-core-version>
+		<servlet-version>4.0.1</servlet-version>
+		<jstl-version>1.2</jstl-version>
+		<selenium-version>3.141.59</selenium-version>
+		<hikari-version>3.3.1</hikari-version>
+		<spring-core-version>5.1.5.RELEASE</spring-core-version>
+		<spring-context-version>5.1.5.RELEASE</spring-context-version>
+		<spring-test-version>5.1.5.RELEASE</spring-test-version>
 	</properties>
 
 	<dependencies>
@@ -25,74 +40,72 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>${junit-version}</version>
 			<scope>test</scope>
 		</dependency>
-
-
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.15</version>
+			<version>${mysql-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.25</version>
+			<version>${slf4j-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.2.3</version>
+			<version>${logback-classic-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
-			<version>1.2.3</version>
+			<version>${logback-core-version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>4.0.1</version>
+			<version>${servlet-version}</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
-			<version>1.2</version>
+			<version>${jstl-version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>3.141.59</version>
+			<version>${selenium-version}</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
-			<version>3.3.1</version>
+			<version>${hikari-version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>5.1.5.RELEASE</version>
+			<version>${spring-core-version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>5.1.5.RELEASE</version>
+			<version>${spring-context-version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>5.1.5.RELEASE</version>
+			<version>${spring-test-version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -108,7 +121,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>fr.cgaiton611.cli.Main</mainClass>
+							<mainClass>${main-class}</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
@@ -138,14 +151,14 @@
 					</execution>
 				</executions>
 				<configuration>
-					<mainClass>fr.cgaiton611.cli.Main</mainClass>
+					<mainClass>${main-class}</mainClass>
 				</configuration>
 			</plugin>
 
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.2</version>
+				<version>${tomcat-version}</version>
 				<configuration>
 					<port>8888</port>
 					<path>/cdb</path>
