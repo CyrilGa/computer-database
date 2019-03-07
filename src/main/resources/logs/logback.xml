@@ -15,6 +15,7 @@
     </appender>
 
     <logger name="LogController" level="TRACE"/>
+    <logger name="com.zaxxer.hikari" level="WARN"/>
 
     <root level="debug">
 	<appender-ref ref="STDOUT" />
