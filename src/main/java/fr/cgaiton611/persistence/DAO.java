@@ -2,11 +2,13 @@ package fr.cgaiton611.persistence;
 
 import java.util.Optional;
 
-import org.slf4j.LoggerFactory;
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.zaxxer.hikari.HikariDataSource;
+
 
 /**
  * Abstract Class getting the connection with the database and define CRUD
@@ -17,12 +19,11 @@ import com.zaxxer.hikari.HikariDataSource;
  * @param <T>
  */
 
-//@Repository
+@Repository
 public abstract class DAO<T> {
 
-//	@Autowired
-	private ConnectionDatabase connectionDatabase = new ConnectionDatabase();
-	public HikariDataSource ds = connectionDatabase.getDataSource() ;
+	@Autowired
+	protected DataSource ds;
 
 	/**
 	 * Create an object in the database

@@ -11,7 +11,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.zaxxer.hikari.HikariDataSource;
 
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
@@ -25,8 +30,11 @@ import fr.cgaiton611.util.ConvertUtil;
  */
 
 @Repository
-public class ComputerDAO extends DAO<Computer> {
-
+public class ComputerDAO extends DAO<Computer>{
+	
+	@Autowired
+	DataSource ds;
+	
 	private ConvertUtil convertUtil = new ConvertUtil();
 
 	private static final String SQL_CREATE = "INSERT INTO computer(name, introduced, discontinued, company_id) VALUES(?, ?, ?, ?)";
@@ -47,7 +55,6 @@ public class ComputerDAO extends DAO<Computer> {
 	private static final String SQL_COUNT_BY_NAME_WITH_COMPANY_NAME = "SELECT COUNT(*) as count FROM computer JOIN company "
 			+ "ON company.id IN (SELECT id FROM company WHERE name LIKE ? ) AND company_id = company.id "
 			+ "WHERE computer.name LIKE ? ";
-
 
 	@Override
 	public Optional<Computer> create(Computer obj) {

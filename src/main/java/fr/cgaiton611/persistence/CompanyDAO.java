@@ -9,7 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.zaxxer.hikari.HikariDataSource;
 
 import fr.cgaiton611.model.Company;
 
@@ -21,8 +26,8 @@ import fr.cgaiton611.model.Company;
  */
 
 @Repository
-public class CompanyDAO extends DAO<Company> {
-
+public class CompanyDAO extends DAO<Company>{
+	
 	private static final String SQL_CREATE = "INSERT INTO company(name) VALUES(?)";
 	private static final String SQL_FIND = "SELECT id, name FROM company WHERE id = ?";
 	private static final String SQL_UPDATE = "UPDATE company SET name = ? WHERE id = ? ";
@@ -33,7 +38,6 @@ public class CompanyDAO extends DAO<Company> {
 	private static final String SQL_FIND_ALL_NAME = "SELECT name FROM company";
 	private static final String SQL_DELETE_COMPUTER_CASCADE = "DELETE FROM computer WHERE company_id = ? ";
 
-	
 	@Override
 	public Optional<Company> create(Company obj) {
 		Company company = null;
