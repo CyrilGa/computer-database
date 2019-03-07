@@ -1,10 +1,11 @@
-package fr.cgaiton611.model;
+package fr.cgaiton611.page;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.ComputerService;
 
 @Service

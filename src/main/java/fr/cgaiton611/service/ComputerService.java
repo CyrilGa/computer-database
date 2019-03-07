@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
-import fr.cgaiton611.model.ComputerValidator;
 import fr.cgaiton611.persistence.ComputerDAO;
+import fr.cgaiton611.validation.ComputerValidator;
 
 @Service
 public class ComputerService {

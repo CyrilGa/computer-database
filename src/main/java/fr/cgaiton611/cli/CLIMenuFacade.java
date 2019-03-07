@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import fr.cgaiton611.model.Company;
-import fr.cgaiton611.model.CompanyPage;
 import fr.cgaiton611.model.Computer;
-import fr.cgaiton611.model.ComputerPage;
+import fr.cgaiton611.page.CompanyPage;
+import fr.cgaiton611.page.ComputerPage;
 import fr.cgaiton611.service.CompanyService;
 import fr.cgaiton611.service.ComputerService;
 

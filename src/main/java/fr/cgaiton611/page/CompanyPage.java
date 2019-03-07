@@ -1,44 +1,44 @@
-package fr.cgaiton611.model;
+package fr.cgaiton611.page;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.cgaiton611.service.ComputerService;
+import fr.cgaiton611.model.Company;
+import fr.cgaiton611.service.CompanyService;
 
 @Service
-public class ComputerPage {
+public class CompanyPage {
 	@Autowired
-	private ComputerService computerService;
+	private CompanyService companyService;
 	private int elements = 15;
 	private int page = -1;
 	private int max = 0;
 
-	public List<Computer> next() {
-		System.out.println(max);
+
+	public List<Company> next() {
 		page++;
 		if (page >= max)
 			page = max;
-		return computerService.findPaged(page, elements);
+		return companyService.findPaged(page, elements);
 	}
 
-	public List<Computer> previous() {
+	public List<Company> previous() {
 		page--;
 		if (page <= 0)
 			page = 0;
-		return computerService.findPaged(page, elements);
+		return companyService.findPaged(page, elements);
 	}
 
 	public void calculateMax() {
-		max = (computerService.count() / elements);
+		max = (companyService.count() / elements);
 	}
-
+	
 	public void init() {
 		elements = 15;
 		page = -1;
 		max = 0;
 		calculateMax();
 	}
-
 }

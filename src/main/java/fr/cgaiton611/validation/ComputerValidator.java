@@ -1,7 +1,9 @@
-package fr.cgaiton611.model;
+package fr.cgaiton611.validation;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import fr.cgaiton611.model.Computer;
 
 /**
  * Validator for all field of class Computer

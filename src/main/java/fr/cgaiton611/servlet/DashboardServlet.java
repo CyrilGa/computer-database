@@ -19,7 +19,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import fr.cgaiton611.dto.ComputerDTO;
 import fr.cgaiton611.dto.ComputerMapper;
 import fr.cgaiton611.model.Computer;
-import fr.cgaiton611.model.ComputerByNamePage;
+import fr.cgaiton611.page.ComputerByNamePage;
 import fr.cgaiton611.service.ComputerService;
 import fr.cgaiton611.springconfig.SpringConfig;
 import fr.cgaiton611.util.ConvertUtil;
