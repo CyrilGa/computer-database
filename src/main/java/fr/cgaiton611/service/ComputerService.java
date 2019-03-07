@@ -42,8 +42,6 @@ public class ComputerService {
 
 	public Optional<Computer> create(String name, Date introduced, Date discontinued, long companyId) {
 		Optional<Company> company = companyService.find(companyId);
-//		if (!company.isPresent())
-//			return Optional.empty();
 		Computer computer = new Computer(name, introduced, discontinued, company.orElse(null));
 		if (!ComputerValidator.validate(computer)) {
 			return Optional.empty();

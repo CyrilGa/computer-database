@@ -73,7 +73,7 @@ public class ComputerValidator {
 	 * @param c2 The "superior" integer
 	 * @return True or false if s between c1 and c2 or not
 	 */
-	public static boolean isIn(String s, int c1, int c2) {
+	private static boolean isIn(String s, int c1, int c2) {
 		int test;
 		try {
 			test = Integer.parseInt(s);

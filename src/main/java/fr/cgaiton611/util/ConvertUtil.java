@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ConvertUtil {
-	private static final Logger logger = LoggerFactory.getLogger(ConvertUtil.class);
+	private final Logger logger = LoggerFactory.getLogger(ConvertUtil.class);
 
 	public Optional<Long> stringToLong(Optional<String> s) {
 		if (!s.isPresent())

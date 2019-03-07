@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import fr.cgaiton611.util.TypeValidator;
+import fr.cgaiton611.validation.TypeValidator;
 
 public class TypeValidatorTest {
 	

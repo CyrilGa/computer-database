@@ -5,8 +5,8 @@ import java.util.Optional;
 import java.util.Scanner;
 
 import fr.cgaiton611.util.ConvertUtil;
-import fr.cgaiton611.util.Type;
-import fr.cgaiton611.util.TypeValidator;
+import fr.cgaiton611.validation.Type;
+import fr.cgaiton611.validation.TypeValidator;
 
 /**
  * Ask, verify, cast and return the user input.

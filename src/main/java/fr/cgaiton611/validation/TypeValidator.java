@@ -1,4 +1,4 @@
-package fr.cgaiton611.util;
+package fr.cgaiton611.validation;
 
 /**
  * Service that validate the data in terms of type and format
