@@ -15,9 +15,11 @@
     </appender>
 
     <logger name="LogController" level="TRACE"/>
-    <logger name="com.zaxxer.hikari" level="WARN"/>
+    <logger name="com.zaxxer.hikari" level="INFO"/>
+    <logger name="org.springframework.beans.factory" level="INFO"/>
+    <logger name="org.springframework.context.annotation" level="INFO"/>
 
-    <root level="debug">
+    <root level="DEBUG">
 	<appender-ref ref="STDOUT" />
 	<appender-ref ref="FILE" />
     </root>

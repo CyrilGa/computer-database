@@ -18,7 +18,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @Repository
 public class ConnectionDatabase {
 	private final Logger logger = LoggerFactory.getLogger(ConnectionDatabase.class);
-	private final String configFile = "resources/db/db.properties";
+	private final String configFile = "src/main/resources/db/db.properties";
 	private HikariConfig config;
 	private HikariDataSource ds;
 
