@@ -19,12 +19,16 @@ public class ComputerValidator {
 	}
 	
 	public static boolean validateForAdd(Computer computer) {
+		if (computer==null)
+			return false;
 		return stringNotEmpty(computer.getName())
 				&& validateDate(computer.getIntroduced())
 				&& validateDate(computer.getDiscontinued());
 	}
 	
 	public static boolean validateForEdit(Computer computer) {
+		if (computer==null)
+			return false;
 		return longNotZero(computer.getId())
 				&& stringNotEmpty(computer.getName())
 				&& validateDate(computer.getIntroduced())

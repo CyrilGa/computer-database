@@ -2,9 +2,6 @@ package fr.cgaiton611.validation;
 
 import static org.junit.Assert.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.junit.Test;
 
 import fr.cgaiton611.model.Computer;
@@ -27,27 +24,27 @@ public class ComputerValidatorTest {
 	@Test
 	public void validateForAdd() {
 		Computer computer = null;
-		assertFalse(ComputerValidator.validate(computer));
+		assertFalse(ComputerValidator.validateForAdd(computer));
 		computer = new Computer("", null, null, null);
-		assertFalse(ComputerValidator.validate(computer));
+		assertFalse(ComputerValidator.validateForAdd(computer));
 		computer = new Computer("", convertUtil.stringToDate("2012-02-02 22:22").get(), null, null);
-		assertFalse(ComputerValidator.validate(computer));
+		assertFalse(ComputerValidator.validateForAdd(computer));
 		computer = new Computer("nom", convertUtil.stringToDate("2012-02-02 22:22").get(), null, null);
-		assertTrue(ComputerValidator.validate(computer));
+		assertTrue(ComputerValidator.validateForAdd(computer));
 	}
 	
 	@Test
 	public void validateForEdit() {
 		Computer computer = null;
-		assertFalse(ComputerValidator.validate(computer));
+		assertFalse(ComputerValidator.validateForEdit(computer));
 		computer = new Computer("", null, null, null);
-		assertFalse(ComputerValidator.validate(computer));
+		assertFalse(ComputerValidator.validateForEdit(computer));
 		computer = new Computer("", convertUtil.stringToDate("2012-02-02 22:22").get(), null, null);
-		assertFalse(ComputerValidator.validate(computer));
+		assertFalse(ComputerValidator.validateForEdit(computer));
 		computer = new Computer("nom", convertUtil.stringToDate("2012-02-02 22:22").get(), null, null);
-		assertFalse(ComputerValidator.validate(computer));
+		assertFalse(ComputerValidator.validateForEdit(computer));
 		computer = new Computer(1, "nom", convertUtil.stringToDate("2012-02-02 22:22").get(), null, null);
-		assertTrue(ComputerValidator.validate(computer));
+		assertTrue(ComputerValidator.validateForEdit(computer));
 	}
 	
 
