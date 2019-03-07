@@ -1,4 +1,4 @@
-package fr.cgaiton611;
+package fr.cgaiton611.dao;
 
 
 import static org.junit.Assert.assertNotEquals;
@@ -16,7 +16,7 @@ import fr.cgaiton611.springconfig.SpringConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=SpringConfig.class)
-public class ConnectionDatabaseTest {
+public class DataSourceTest {
 	
 	@Autowired
 	DataSource ds;

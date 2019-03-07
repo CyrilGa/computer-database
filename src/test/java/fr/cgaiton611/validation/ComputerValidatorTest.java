@@ -24,6 +24,7 @@ public class ComputerValidatorTest {
 		assertTrue(ComputerValidator.validate(computer));
 	}
 	
+	@Test
 	public void validateForAdd() {
 		Computer computer = null;
 		assertFalse(ComputerValidator.validate(computer));
@@ -35,6 +36,7 @@ public class ComputerValidatorTest {
 		assertTrue(ComputerValidator.validate(computer));
 	}
 	
+	@Test
 	public void validateForEdit() {
 		Computer computer = null;
 		assertFalse(ComputerValidator.validate(computer));

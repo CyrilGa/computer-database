@@ -25,7 +25,7 @@ public class TypeValidator {
 	 * @param s The string tested
 	 * @return True or false if the string is an integer or not
 	 */
-	public boolean isInteger(String s) {
+	private boolean isInteger(String s) {
 		try {
 			Integer.parseInt(s);
 		} catch (Exception e) {
@@ -40,7 +40,7 @@ public class TypeValidator {
 	 * @param s The string tested
 	 * @return True or false if the string is a Timestamp or not
 	 */
-	public boolean isDate(String s) {
+	private boolean isDate(String s) {
 		if (s.length() != 16)
 			return false;
 		if (! s.matches("\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d"))
@@ -48,7 +48,7 @@ public class TypeValidator {
 		return true;
 	}
 
-	public boolean isString(String s) {
+	private boolean isString(String s) {
 		return true;
 	}
 

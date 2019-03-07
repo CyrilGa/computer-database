@@ -1,4 +1,4 @@
-package fr.cgaiton611;
+package fr.cgaiton611.dao;
 
 
 import static org.junit.Assert.assertEquals;
