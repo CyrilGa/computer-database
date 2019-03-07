@@ -204,6 +204,9 @@
 			<resource>
 				<directory>resources/logs</directory>
 			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
 		</resources>
 	</build>
 
@@ -214,7 +217,7 @@
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>3.0.0</version>
 				<configuration>
-					<configLocation>ressources/checkstyle/checkstyle.xml</configLocation>
+					<configLocation>resources/checkstyle/checkstyle.xml</configLocation>
 				</configuration>
 			</plugin>
 		</plugins>

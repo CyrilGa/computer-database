@@ -2,6 +2,10 @@ package fr.cgaiton611.persistence;
 
 import java.util.Optional;
 
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.zaxxer.hikari.HikariDataSource;
 
 /**
@@ -12,10 +16,13 @@ import com.zaxxer.hikari.HikariDataSource;
  * @version 1.0
  * @param <T>
  */
+
+//@Repository
 public abstract class DAO<T> {
 
-	public HikariDataSource ds = ConnectionDatabase.getDataSource() ;
-	
+//	@Autowired
+	private ConnectionDatabase connectionDatabase = new ConnectionDatabase();
+	public HikariDataSource ds = connectionDatabase.getDataSource() ;
 
 	/**
 	 * Create an object in the database

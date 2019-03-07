@@ -2,6 +2,7 @@ package fr.cgaiton611.persistence;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -13,29 +14,30 @@ import com.zaxxer.hikari.HikariDataSource;
  * @author cyril
  * @version 1.0
  */
-public class ConnectionDatabase {
-	private static final Logger logger = LoggerFactory.getLogger(ConnectionDatabase.class);
-	private final static String configFile = "resources/db/db.properties";
-	private static HikariConfig config;
-	private static HikariDataSource ds;
 
-	static {
+@Repository
+public class ConnectionDatabase {
+	private final Logger logger = LoggerFactory.getLogger(ConnectionDatabase.class);
+	private final String configFile = "resources/db/db.properties";
+	private HikariConfig config;
+	private HikariDataSource ds;
+
+
+	public ConnectionDatabase() {
 		try {
 			config = new HikariConfig(configFile);
-		} catch (Exception e) {
-			logger.error("Properties file for database not found");
-		}
-		try {
-			ds = new HikariDataSource(config);
-		} catch (Exception e) {
-			logger.error("Error initializing HikariDataSource");
+			try {
+				ds = new HikariDataSource(config);
+				logger.info("Datasource initialized");
+			} catch (Exception e) {
+				logger.error("Error initializing HikariDataSource");
+			}
+		} catch (RuntimeException e) {
+			logger.error("Properties file for database not found or incorrect");			
 		}
 	}
 
-	private ConnectionDatabase() {
-	}
-
-	public static HikariDataSource getDataSource() {
+	public HikariDataSource getDataSource() {
 		return ds;
 	}
 }
