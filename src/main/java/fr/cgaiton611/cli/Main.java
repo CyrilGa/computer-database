@@ -20,6 +20,7 @@ public class Main {
 	 * 
 	 * @param args Arguments
 	 */
+	
 	public static void main(String[] args) {
 
 		ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);

@@ -12,6 +12,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
+import fr.cgaiton611.exception.DAOException;
+import fr.cgaiton611.exception.DataSourceException;
 import fr.cgaiton611.model.Company;
 
 /**
@@ -35,7 +37,8 @@ public class CompanyDAO extends DAO<Company>{
 	private static final String SQL_DELETE_COMPUTER_CASCADE = "DELETE FROM computer WHERE company_id = ? ";
 
 	@Override
-	public Optional<Company> create(Company obj) {
+	public Optional<Company> create(Company obj) throws DAOException {
+		checkDataSource();
 		Company company = null;
 		try (Connection connection = ds.getConnection();
 				PreparedStatement prepare = connection.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS)) {
@@ -50,14 +53,15 @@ public class CompanyDAO extends DAO<Company>{
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DAOException();
 		}
 
 		return Optional.ofNullable(company);
 	}
 
 	@Override
-	public Optional<Company> find(Company obj) {
+	public Optional<Company> find(Company obj) throws DAOException {
+		checkDataSource();
 		Company company = null;
 		try (Connection connection = ds.getConnection();
 				PreparedStatement prepare = connection.prepareStatement(SQL_FIND)) {
@@ -67,27 +71,29 @@ public class CompanyDAO extends DAO<Company>{
 				company = new Company(rs.getInt("id"), rs.getString("name"));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DAOException();
 		}
 		return Optional.ofNullable(company);
 	}
 
 	@Override
-	public Optional<Company> update(Company obj) {
+	public Optional<Company> update(Company obj) throws DAOException {
+		checkDataSource();
 		try (Connection connection = ds.getConnection();
 				PreparedStatement prepare = connection.prepareStatement(SQL_UPDATE)) {
 			prepare.setString(1, obj.getName());
 			prepare.setLong(2, obj.getId());
 			prepare.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DAOException();
 		}
 
 		return find(new Company(obj.getId()));
 	}
 
 	@Override
-	public void delete(Company obj) {
+	public void delete(Company obj) throws DAOException {
+		checkDataSource();
 		try (Connection connection = ds.getConnection()) {
 			connection.setAutoCommit(false);
 			try (PreparedStatement prepare1 = connection.prepareStatement(SQL_DELETE_COMPUTER_CASCADE);
@@ -102,11 +108,12 @@ public class CompanyDAO extends DAO<Company>{
 			}
 			connection.commit();
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			throw new DAOException();
 		}
 	}
 
-	public List<Company> findPaged(int page, int elements) {
+	public List<Company> findPaged(int page, int elements) throws DAOException {
+		checkDataSource();
 		List<Company> companies = null;
 		try (Connection connection = ds.getConnection();
 				PreparedStatement prepare = connection.prepareStatement(SQL_FIND_PAGED)) {
@@ -119,12 +126,13 @@ public class CompanyDAO extends DAO<Company>{
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DAOException();
 		}
 		return companies;
 	}
 
-	public int count() {
+	public int count() throws DAOException {
+		checkDataSource();
 		int max = 0;
 		try (Connection connection = ds.getConnection();
 				PreparedStatement prepare = connection.prepareStatement(SQL_COUNT)) {
@@ -134,12 +142,13 @@ public class CompanyDAO extends DAO<Company>{
 				return rs.getInt("count");
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DAOException();
 		}
 		return max;
 	}
 
-	public Optional<Company> findByName(String name) {
+	public Optional<Company> findByName(String name) throws DAOException {
+		checkDataSource();
 		Company company = null;
 		try (Connection connection = ds.getConnection();
 				PreparedStatement prepare = connection.prepareStatement(SQL_FIND_BY_NAME)) {
@@ -149,12 +158,13 @@ public class CompanyDAO extends DAO<Company>{
 				company = new Company(rs.getInt("id"), rs.getString("name"));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DAOException();
 		}
 		return Optional.ofNullable(company);
 	}
 
-	public List<String> findAllName() {
+	public List<String> findAllName() throws DAOException {
+		checkDataSource();
 		List<String> names = new ArrayList<>();
 		try (Connection connection = ds.getConnection();
 				PreparedStatement prepare = connection.prepareStatement(SQL_FIND_ALL_NAME)) {
@@ -163,9 +173,15 @@ public class CompanyDAO extends DAO<Company>{
 				names.add(rs.getString("name"));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DAOException();
 		}
 		return names;
+	}
+	
+	private void checkDataSource() throws DataSourceException {
+		if (ds == null) {
+			throw new DataSourceException();
+		}
 	}
 
 }

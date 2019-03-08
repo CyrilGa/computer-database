@@ -1,6 +1,7 @@
 package fr.cgaiton611.servlet;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -13,36 +14,40 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import fr.cgaiton611.dto.ComputerDTO;
 import fr.cgaiton611.dto.ComputerMapper;
+import fr.cgaiton611.exception.DAOException;
 import fr.cgaiton611.model.Computer;
-import fr.cgaiton611.page.ComputerByNamePage;
+import fr.cgaiton611.page.ComputerPage;
 import fr.cgaiton611.service.ComputerService;
 import fr.cgaiton611.util.ConvertUtil;
 
 @WebServlet(urlPatterns = { "/dashboard", "" })
 public class DashboardServlet extends HttpServlet {
 
+	private final Logger logger = LoggerFactory.getLogger(DashboardServlet.class);
+
 	private int[] ELEMENTS_AUTORISED = { 10, 50, 100 };
 
 	private static final long serialVersionUID = 1L;
-
 
 	@Autowired
 	private ComputerService computerService;
 	@Autowired
 	private ComputerMapper computerMapper;
-	
+
 	private int elements = 10;
 	private int page = 0;
 	private String computerName = "";
 	private String companyName = "";
 
 	@Autowired
-	private ComputerByNamePage computerByNamePage;
+	private ComputerPage computerPage;
 	ConvertUtil convertUtil = new ConvertUtil();
 
 	@Override
@@ -63,15 +68,15 @@ public class DashboardServlet extends HttpServlet {
 		if (pageTemp.isPresent()) {
 			page = pageTemp.get();
 		}
-		computerByNamePage.setPage(page);
+		computerPage.setPage(page);
 
 		computerName = request.getParameter("computerName");
-		computerByNamePage.setComputerName(computerName);
-		request.setAttribute("computerName", computerByNamePage.getComputerName());
+		computerPage.setComputerName(computerName);
+		request.setAttribute("computerName", computerPage.getComputerName());
 
 		companyName = request.getParameter("companyName");
-		computerByNamePage.setCompanyName(companyName);
-		request.setAttribute("companyName", computerByNamePage.getCompanyName());
+		computerPage.setCompanyName(companyName);
+		request.setAttribute("companyName", computerPage.getCompanyName());
 
 		String elementsAttribute = request.getParameter("elements");
 		Optional<Integer> elementsTemp = convertUtil.stringToInteger(elementsAttribute);
@@ -80,31 +85,41 @@ public class DashboardServlet extends HttpServlet {
 				elements = elementsTemp.get();
 			}
 		}
-		computerByNamePage.setElements(elements);
+		computerPage.setElements(elements);
 
-		List<Computer> computers = computerByNamePage.get();
+		List<Computer> computers = new ArrayList<>();
+		try {
+			computers = computerPage.getCurrent();
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+		}
 
 		List<ComputerDTO> computersDTO = computerMapper.toComputerDTOList(computers);
 
 		request.setAttribute("computers", computersDTO);
 
-		List<Integer> navigationPages = getNavigationPages(computerByNamePage);
+		List<Integer> navigationPages = getNavigationPages(computerPage);
 		request.setAttribute("navigationPages", navigationPages);
 
-		request.setAttribute("count",
-				computerService.countByName(computerByNamePage.getComputerName(), computerByNamePage.getCompanyName()));
+		int count = 0;
+		try {
+			count = computerService.countWithParameters(computerPage.getComputerName(), computerPage.getCompanyName());
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+		}
+		request.setAttribute("count", count);
 
-		request.setAttribute("page", computerByNamePage.getPage());
+		request.setAttribute("page", computerPage.getPage());
 
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/resources/views/dashboard.jsp");
 		dispatcher.forward(request, response);
 
 	}
 
-	public List<Integer> getNavigationPages(ComputerByNamePage computerByNamePage) {
+	public List<Integer> getNavigationPages(ComputerPage computerPage) {
 		List<Integer> navigationPages = new ArrayList<>();
-		int max = computerByNamePage.getMax();
-		int page = computerByNamePage.getPage();
+		int max = computerPage.getMax();
+		int page = computerPage.getPage();
 		boolean inf = true, sup = true;
 		for (int i = page - 2; i < page + 3; i++) {
 			if (i < 0) {
@@ -145,16 +160,25 @@ public class DashboardServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String dashboardMsg = "Computer(s) successfully deleted";
+		int count = 0;
+		int N = 0;
 		String selection = request.getParameter("selection");
 		if (selection != null) {
 			String[] ids = selection.split(",");
-			System.out.println(ids);
+			N = ids.length;
+			count = N;
 			for (int i = 0; i < ids.length; i++) {
-				computerService.delete(Integer.parseInt(ids[i]));
+				try {
+					computerService.delete(Integer.parseInt(ids[i]));
+				} catch (NumberFormatException | DAOException e) {
+					logger.warn(e.getMessage());
+					count--;
+				}
 			}
 		}
 		HttpSession session = request.getSession(true);
-		session.setAttribute("dashboardMsg", "Computer successfully deleted");
+		session.setAttribute("dashboardMsg", MessageFormat.format("{0}sur{1} {2}", count, N, dashboardMsg));
 		response.sendRedirect(request.getContextPath() + "/dashboard");
 	}
 

@@ -15,10 +15,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import fr.cgaiton611.exception.DAOException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.ComputerService;
@@ -27,6 +30,8 @@ import fr.cgaiton611.springconfig.SpringConfig;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = SpringConfig.class)
 public class DeleteTest {
+
+	private final Logger logger = LoggerFactory.getLogger(DeleteTest.class);
 
 	private static WebDriver driver;
 	@Autowired
@@ -40,11 +45,15 @@ public class DeleteTest {
 
 	@Before
 	public void beforeAll() {
-		if (!(computerService.findByNamePaged(0, 1, "TEST 1 COMPUTER DELETE", "").size() == 1)) {
-			computerService.create(new Computer("TEST 1 COMPUTER DELETE", null, null, new Company()));
-		}
-		if (!(computerService.findByNamePaged(0, 1, "TEST 2 COMPUTER DELETE", "").size() == 1)) {
-			computerService.create(new Computer("TEST 2 COMPUTER DELETE", null, null, new Company()));
+		try {
+			if (computerService.findPageWithParameters(0, 1, "TEST 1 COMPUTER DELETE", "").size() == 0) {
+				computerService.create(new Computer("TEST 1 COMPUTER DELETE", null, null, new Company()));
+			}
+			if (computerService.findPageWithParameters(0, 1, "TEST 2 COMPUTER DELETE", "").size() == 0) {
+				computerService.create(new Computer("TEST 2 COMPUTER DELETE", null, null, new Company()));
+			}
+		} catch (DAOException e) {
+			logger.error(e.getMessage());
 		}
 		driver.get("http://localhost:8888/cdb/dashboard");
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -52,24 +61,40 @@ public class DeleteTest {
 
 	@Test
 	public void delete() {
-		int c1 = computerService.count();
+		int c1 = 0;
+		try {
+			c1 = computerService.count();
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+		}
 		driver.findElement(By.id("editComputer")).click();
 		driver.findElement(By.xpath("//table/tbody/tr[1]/td[1]/input")).click();
-		driver.findElement(By.xpath("//table/tbody/tr[2]/td[1]/input")).click();;
+		driver.findElement(By.xpath("//table/tbody/tr[2]/td[1]/input")).click();
+		;
 		driver.findElement(By.id("deleteSelected")).click();
 		driver.switchTo().alert().accept();
 		new WebDriverWait(driver, 10).until(ExpectedConditions.urlToBe("http://localhost:8888/cdb/dashboard"));
 		String url = driver.getCurrentUrl();
 		assertTrue("http://localhost:8888/cdb/dashboard".equals(url));
 		String dashMsg = driver.findElement(By.id("dashMsg")).getText();
-		assertTrue("Computer successfully deleted".equals(dashMsg));
+		assertTrue(dashMsg.endsWith("Computer(s) successfully deleted"));
 
-		int c2 = computerService.count();
+		int c2 = 0;
+		try {
+			c2 = computerService.count();
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+		}
 		assertEquals(c1 - c2, 2);
 	}
 
 	public void notDelete() {
-		int c1 = computerService.count();
+		int c1 = 0;
+		try {
+			c1 = computerService.count();
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+		}
 		driver.findElement(By.id("editComputer")).click();
 		driver.findElement(By.xpath("//table/tbody/tr[1]/td[1]/input")).click();
 		driver.findElement(By.xpath("//table/tbody/tr[2]/td[1]/input")).click();
@@ -82,7 +107,12 @@ public class DeleteTest {
 		String url = driver.getCurrentUrl();
 		assertTrue("http://localhost:8888/cdb/dashboard#".equals(url));
 
-		int c2 = computerService.count();
+		int c2 = 0;
+		try {
+			c2 = computerService.count();
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+		}
 		assertEquals(c1 - c2, 2);
 	}
 

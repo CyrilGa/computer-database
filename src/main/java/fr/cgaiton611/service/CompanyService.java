@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.cgaiton611.exception.DAOException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.persistence.CompanyDAO;
 
@@ -14,31 +15,31 @@ public class CompanyService {
 	@Autowired
 	CompanyDAO companyDAO;
 
-	public List<Company> findPaged(int page, int elements) {
+	public List<Company> findPaged(int page, int elements) throws DAOException {
 		return companyDAO.findPaged(page, elements);
 	}
 	
-	public Optional<Company> find(long id) {
+	public Optional<Company> find(long id) throws DAOException {
 		return companyDAO.find(new Company(id));
 	}
 	
-	public Optional<Company> findByName(String name) {
+	public Optional<Company> findByName(String name) throws DAOException {
 		return companyDAO.findByName(name);
 	}
 	
-	public Optional<Company> create(String name) {
+	public Optional<Company> create(String name) throws DAOException {
 		return companyDAO.create(new Company(name));
 	}
 	
-	public int count() {
+	public int count() throws DAOException {
 		return companyDAO.count();
 	}
 	
-	public List<String> findAllName(){
+	public List<String> findAllName() throws DAOException{
 		return companyDAO.findAllName();
 	}
 	
-	public void delete(long id) {
+	public void delete(long id) throws DAOException {
 		companyDAO.delete(new Company(id));
 	}
 }

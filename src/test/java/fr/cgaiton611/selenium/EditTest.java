@@ -3,6 +3,8 @@ package fr.cgaiton611.selenium;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.AfterClass;
@@ -14,20 +16,25 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import fr.cgaiton611.exception.DAOException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.CompanyService;
 import fr.cgaiton611.service.ComputerService;
+import fr.cgaiton611.servlet.DashboardServlet;
 import fr.cgaiton611.springconfig.SpringConfig;
-
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = SpringConfig.class)
 public class EditTest {
+
+	private final Logger logger = LoggerFactory.getLogger(EditTest.class);
 	private static WebDriver driver;
 	@Autowired
 	private CompanyService companyService;
@@ -42,11 +49,16 @@ public class EditTest {
 
 	@Before
 	public void beforeAll() {
-		if (! companyService.findByName("TEST COMPANY EDIT").isPresent()) {
-			companyService.create("TEST COMPANY EDIT");
-		}
-		if (!(computerService.findByNamePaged(0, 1, "TEST COMPUTER EDIT", "").size() == 1)) {
-			computerService.create(new Computer("TEST COMPUTER EDIT", null, null, new Company()));
+		try {
+			if (!companyService.findByName("TEST COMPANY EDIT").isPresent()) {
+				companyService.create("TEST COMPANY EDIT");
+			}
+			List<Computer> computers = computerService.findPageWithParameters(0, 1, "TEST COMPUTER EDIT", "");
+			if (computers.size() == 0) {
+				computerService.create(new Computer("TEST COMPUTER EDIT", null, null, new Company()));
+			}
+		} catch (DAOException e) {
+			logger.error(e.getMessage());
 		}
 		driver.get("http://localhost:8888/cdb/dashboard");
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);

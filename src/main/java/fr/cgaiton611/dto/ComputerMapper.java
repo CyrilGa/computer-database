@@ -5,9 +5,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.cgaiton611.exception.DAOException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.CompanyService;
@@ -15,6 +18,8 @@ import fr.cgaiton611.util.ConvertUtil;
 
 @Service
 public class ComputerMapper {
+
+	private final Logger logger = LoggerFactory.getLogger(ComputerMapper.class);
 
 	@Autowired
 	private CompanyService companyService;
@@ -40,7 +45,12 @@ public class ComputerMapper {
 		computer.setDiscontinued(discontinued.orElse(null));
 
 		if (computerDTO.getCompanyName() != null) {
-			Optional<Company> company = companyService.findByName(computerDTO.getCompanyName());
+			Optional<Company> company = Optional.empty();
+			try {
+				company = companyService.findByName(computerDTO.getCompanyName());
+			} catch (DAOException e) {
+				logger.warn(e.getMessage());
+			}
 			if (!company.isPresent()) {
 				computer.setCompany(null);
 			}

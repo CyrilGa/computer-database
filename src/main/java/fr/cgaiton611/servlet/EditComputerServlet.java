@@ -1,6 +1,7 @@
 package fr.cgaiton611.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,11 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import fr.cgaiton611.dto.ComputerDTO;
 import fr.cgaiton611.dto.ComputerMapper;
+import fr.cgaiton611.exception.DAOException;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.CompanyService;
 import fr.cgaiton611.service.ComputerService;
@@ -26,6 +30,8 @@ import fr.cgaiton611.validation.ComputerValidator;
 public class EditComputerServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+	
+	private final Logger logger = LoggerFactory.getLogger(EditComputerServlet.class);
 
 	@Autowired
 	private ComputerService computerService;
@@ -38,13 +44,23 @@ public class EditComputerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		List<String> names = companyService.findAllName();
+		List<String> names = new ArrayList<>();
+		try {
+			names = companyService.findAllName();
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+		}
 		request.setAttribute("names", names);
 
 		String id = (String) request.getParameter("computerId");
 		request.setAttribute("id", id);
 
-		Optional<Computer> computer = computerService.find(Long.parseLong(id));
+		Optional<Computer> computer = Optional.empty();
+		try {
+			computer = computerService.find(Long.parseLong(id));
+		} catch (NumberFormatException | DAOException e) {
+			logger.warn(e.getMessage());
+		}
 		if (!computer.isPresent()) {
 			response.sendRedirect(request.getContextPath() + "/dashboard");
 			return;
@@ -87,7 +103,11 @@ public class EditComputerServlet extends HttpServlet {
 		String dashboardMsg;
 		if (computer.isPresent()) {
 			if (ComputerValidator.validateForEdit(computer.get())) {
-				computer = computerService.update(computer.get());
+				try {
+					computer = computerService.update(computer.get());
+				} catch (DAOException e) {
+					logger.warn(e.getMessage());
+				}
 				if (computer.isPresent())
 					dashboardMsg = "Computer successfully updated";
 				else

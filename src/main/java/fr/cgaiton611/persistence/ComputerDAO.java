@@ -16,8 +16,9 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.zaxxer.hikari.HikariDataSource;
-
+import fr.cgaiton611.exception.DAOException;
+import fr.cgaiton611.exception.DataSourceException;
+import fr.cgaiton611.exception.StatementException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.util.ConvertUtil;
@@ -57,7 +58,8 @@ public class ComputerDAO extends DAO<Computer>{
 			+ "WHERE computer.name LIKE ? ";
 
 	@Override
-	public Optional<Computer> create(Computer obj) {
+	public Optional<Computer> create(Computer obj) throws DAOException {
+		checkDataSource();
 		Computer computer = null;
 		try (Connection connection = ds.getConnection();
 				PreparedStatement prepare = connection.prepareStatement(SQL_CREATE,
@@ -79,13 +81,14 @@ public class ComputerDAO extends DAO<Computer>{
 						(Date) obj.getDiscontinued(), obj.getCompany());
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new StatementException();
 		}
 		return Optional.ofNullable(computer);
 	}
 
 	@Override
-	public Optional<Computer> find(Computer obj) {
+	public Optional<Computer> find(Computer obj) throws DAOException{
+		checkDataSource();
 		Computer computer = null;
 		try (Connection connection = ds.getConnection();
 				PreparedStatement prepare = connection.prepareStatement(SQL_FIND)) {
@@ -96,13 +99,14 @@ public class ComputerDAO extends DAO<Computer>{
 						rs.getTimestamp("discontinued"), new Company(rs.getLong("company_id")));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new StatementException();
 		}
 		return Optional.ofNullable(computer);
 	}
 
 	@Override
-	public Optional<Computer> update(Computer obj) {
+	public Optional<Computer> update(Computer obj) throws DAOException{
+		checkDataSource();
 		try (Connection connection = ds.getConnection();
 				PreparedStatement prepare = connection.prepareStatement(SQL_UPDATE)) {
 			prepare.setString(1, obj.getName());
@@ -115,23 +119,25 @@ public class ComputerDAO extends DAO<Computer>{
 			prepare.setLong(5, obj.getId());
 			prepare.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new StatementException();
 		}
 		return find(new Computer(obj.getId()));
 	}
 
 	@Override
-	public void delete(Computer obj) {
+	public void delete(Computer obj) throws DAOException{
+		checkDataSource();
 		try (Connection connection = ds.getConnection();
 				PreparedStatement prepare = connection.prepareStatement(SQL_DELETE)) {
 			prepare.setLong(1, obj.getId());
 			prepare.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new StatementException();
 		}
 	}
 
-	public List<Computer> findPaged(int page, int elements) {
+	public List<Computer> findPaged(int page, int elements) throws DAOException{
+		checkDataSource();
 		List<Computer> computers = new ArrayList<>();
 		try (Connection connection = ds.getConnection();
 				PreparedStatement prepare = connection.prepareStatement(SQL_FIND_PAGED)) {
@@ -143,12 +149,13 @@ public class ComputerDAO extends DAO<Computer>{
 						rs.getTimestamp("discontinued"), new Company(rs.getLong("company_id"))));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new StatementException();
 		}
 		return computers;
 	}
 
-	public int count() {
+	public int count() throws DAOException{
+		checkDataSource();
 		int max = 0;
 		try (Connection connection = ds.getConnection();
 				PreparedStatement prepare = connection.prepareStatement(SQL_COUNT)) {
@@ -157,12 +164,13 @@ public class ComputerDAO extends DAO<Computer>{
 				return rs.getInt("count");
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new StatementException();
 		}
 		return max;
 	}
 
-	public List<Computer> findByNamePaged(int page, int elements, String computerName, String companyName) {
+	public List<Computer> findPageWithParameters(int page, int elements, String computerName, String companyName) throws DAOException{
+		checkDataSource();
 		List<Computer> computers = new ArrayList<>();
 		String SQL;
 		if ("".equals(companyName)) {
@@ -191,12 +199,13 @@ public class ComputerDAO extends DAO<Computer>{
 						new Company(rs.getLong("company_id"), rs.getString("companyName"))));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new StatementException();
 		}
 		return computers;
 	}
 
-	public int countByName(String computerName, String companyName) {
+	public int countWithParameters(String computerName, String companyName) throws DAOException {
+		checkDataSource();
 		int max = 0;
 		String SQL;
 		if ("".equals(companyName)) {
@@ -217,9 +226,15 @@ public class ComputerDAO extends DAO<Computer>{
 				return rs.getInt("count");
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new StatementException();
 		}
 		return max;
+	}
+	
+	private void checkDataSource() throws DataSourceException {
+		if (ds == null) {
+			throw new DataSourceException();
+		}
 	}
 
 }

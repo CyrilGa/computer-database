@@ -3,19 +3,24 @@ package fr.cgaiton611.cli;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import fr.cgaiton611.exception.DAOException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.page.CompanyPage;
 import fr.cgaiton611.page.ComputerPage;
 import fr.cgaiton611.service.CompanyService;
 import fr.cgaiton611.service.ComputerService;
+import fr.cgaiton611.servlet.DashboardServlet;
 
 /**
  * Class serving as a front-facing interface for treating the cli
@@ -26,6 +31,7 @@ import fr.cgaiton611.service.ComputerService;
 
 @Controller
 public class CLIMenuFacade {
+	private final Logger logger = LoggerFactory.getLogger(DashboardServlet.class);
 
 	ScanUtil scanUtil = new ScanUtil();
 	PrintUtil printUtil = new PrintUtil();
@@ -42,9 +48,14 @@ public class CLIMenuFacade {
 	 * Use pagination to return a list of computers
 	 */
 	public void showPagedComputer() {
-		computerPage.init();
-		List<Computer> computers = computerPage.next();
+		List<Computer> computers;
 		while (true) {
+			computers = new ArrayList<>();
+			try {
+				computers = computerPage.getCurrent();
+			} catch (DAOException e) {
+				logger.warn(e.getMessage());
+			}
 			printUtil.printEntities(computers);
 			printUtil.printn("p for previous, n for next, e for exit");
 			printUtil.print("--> ");
@@ -56,10 +67,10 @@ public class CLIMenuFacade {
 			}
 			if (input.equals("p")) {
 				System.out.println("p");
-				computers = computerPage.previous();
+				computerPage.pageInc();
 			} else if (input.equals("n")) {
 				System.out.println("n");
-				computers = computerPage.next();
+				computerPage.pageDec();
 			} else if (input.equals("e"))
 				break;
 		}
@@ -69,9 +80,14 @@ public class CLIMenuFacade {
 	 * Use pagination to return a list of companies
 	 */
 	public void showPagedCompany() {
-		companyPage.init();
-		List<Company> companies = companyPage.next();
+		List<Company> companies;
 		while (true) {
+			companies = new ArrayList<>();
+			try {
+				companies = companyPage.getCurrent();
+			} catch (DAOException e) {
+				logger.warn(e.getMessage());
+			}
 			printUtil.printEntities(companies);
 			printUtil.printn("p for previous, n for next, e for exit");
 			printUtil.print("--> ");
@@ -82,9 +98,9 @@ public class CLIMenuFacade {
 				input = scanUtil.getLine();
 			}
 			if (input.equals("p"))
-				companies = companyPage.previous();
+				companyPage.pageInc();
 			else if (input.equals("n"))
-				companies = companyPage.next();
+				companyPage.pageDec();
 			else if (input.equals("e"))
 				break;
 		}
@@ -98,7 +114,12 @@ public class CLIMenuFacade {
 		if (!id.isPresent())
 			return;
 
-		Optional<Computer> computer = computerService.find(id.get());
+		Optional<Computer> computer = Optional.empty();
+		try {
+			computer = computerService.find(id.get());
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+		}
 		if (!computer.isPresent())
 			printUtil.printn("Computer not found");
 		else
@@ -121,8 +142,13 @@ public class CLIMenuFacade {
 		if (!companyId.isPresent())
 			return;
 
-		Optional<Computer> computer = computerService.create(name.get(), introduced.orElse(null),
-				discontinued.orElse(null), companyId.get());
+		Optional<Computer> computer = Optional.empty();
+		try {
+			computer = computerService.create(name.get(), introduced.orElse(null),
+					discontinued.orElse(null), companyId.get());
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+		}
 		if (!computer.isPresent())
 			printUtil.printn("Computer not created");
 		else
@@ -147,8 +173,13 @@ public class CLIMenuFacade {
 
 		Optional<Long> companyId = scanUtil.askLong("company_id", true);
 
-		Optional<Computer> computer = computerService.update(id.get().longValue(), name, introduced, discontinued,
-				companyId);
+		Optional<Computer> computer = Optional.empty();
+		try {
+			computer = computerService.update(id.get().longValue(), name, introduced, discontinued,
+					companyId);
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+		}
 		if (!computer.isPresent())
 			printUtil.printn("Computer not updated");
 		else
@@ -162,16 +193,28 @@ public class CLIMenuFacade {
 		Optional<Long> id = scanUtil.askLong("id", false);
 		if (!id.isPresent())
 			return;
-		computerService.delete(id.get());
-		printUtil.printn("Computer sucefully deleted !");
+		String msg = "Computer sucefully deleted !";
+		try {
+			computerService.delete(id.get());
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+			msg = "Computer not deleted";
+		}
+		printUtil.printn(msg);
 	}
 
 	public void deleteCompany() {
 		Optional<Long> id = scanUtil.askLong("id", false);
 		if (!id.isPresent())
 			return;
-		companyService.delete(id.get());
-		printUtil.printn("Company and computers sucefully deleted !");
+		String msg = "Company and computers sucefully deleted !";
+		try {
+			companyService.delete(id.get());
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+			msg = "Company and computers not deleted";
+		}
+		printUtil.printn(msg);
 	}
 
 	/**
