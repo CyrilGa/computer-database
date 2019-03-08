@@ -41,11 +41,6 @@ public class DashboardServlet extends HttpServlet {
 	@Autowired
 	private ComputerMapper computerMapper;
 
-	private int elements = 10;
-	private int page = 0;
-	private String computerName = "";
-	private String companyName = "";
-
 	@Autowired
 	private ComputerPage computerPage;
 	ConvertUtil convertUtil = new ConvertUtil();
@@ -54,60 +49,51 @@ public class DashboardServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			String dashboardMsg = (String) session.getAttribute("dashboardMsg");
-			if (dashboardMsg != null) {
-				request.setAttribute("dashboardMsg", dashboardMsg);
-				session.removeAttribute("dashboardMsg");
+		HttpSession session = request.getSession(true);
+		String dashboardMsg = (String) session.getAttribute("dashboardMsg");
+		request.setAttribute("dashboardMsg", dashboardMsg);
+		session.removeAttribute("dashboardMsg");
+
+		Optional<Integer> page = convertUtil.stringToInteger(request.getParameter("page"));
+		if (page.isPresent()) {
+			computerPage.setPage(page.get());
+		}
+		
+		Optional<Integer> elements = convertUtil.stringToInteger(request.getParameter("elements"));
+		if (elements.isPresent()) {
+			if (elementsIsValid(elements.get())) {
+				computerPage.setElements(elements.get());
 			}
 		}
 
-		String pageAttribute = request.getParameter("page");
-		Optional<Integer> pageTemp = convertUtil.stringToInteger(pageAttribute);
-		if (pageTemp.isPresent()) {
-			page = pageTemp.get();
-		}
-		computerPage.setPage(page);
-
-		computerName = request.getParameter("computerName");
-		computerPage.setComputerName(computerName);
+		computerPage.setComputerName(request.getParameter("computerName"));
 		request.setAttribute("computerName", computerPage.getComputerName());
 
-		companyName = request.getParameter("companyName");
-		computerPage.setCompanyName(companyName);
+		computerPage.setCompanyName(request.getParameter("companyName"));
 		request.setAttribute("companyName", computerPage.getCompanyName());
 
-		String elementsAttribute = request.getParameter("elements");
-		Optional<Integer> elementsTemp = convertUtil.stringToInteger(elementsAttribute);
-		if (elementsTemp.isPresent()) {
-			if (elementsIsValid(elementsTemp.get())) {
-				elements = elementsTemp.get();
-			}
-		}
-		computerPage.setElements(elements);
 
 		List<Computer> computers = new ArrayList<>();
 		try {
 			computers = computerPage.getCurrent();
+			List<ComputerDTO> computersDTO = computerMapper.toComputerDTOList(computers);
+			request.setAttribute("computers", computersDTO);
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
+			request.setAttribute("errorMsg", e.getMessage());
 		}
+		
 
-		List<ComputerDTO> computersDTO = computerMapper.toComputerDTOList(computers);
-
-		request.setAttribute("computers", computersDTO);
-
-		List<Integer> navigationPages = getNavigationPages(computerPage);
-		request.setAttribute("navigationPages", navigationPages);
+		request.setAttribute("navigationPages", getNavigationPages(computerPage));
 
 		int count = 0;
 		try {
 			count = computerService.countWithParameters(computerPage.getComputerName(), computerPage.getCompanyName());
+			request.setAttribute("count", count);
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
+			request.setAttribute("errorMsg", e.getMessage());
 		}
-		request.setAttribute("count", count);
 
 		request.setAttribute("page", computerPage.getPage());
 

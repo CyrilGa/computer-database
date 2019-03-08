@@ -232,7 +232,10 @@ public class ComputerDAO extends DAO<Computer>{
 	}
 	
 	private void checkDataSource() throws DataSourceException {
-		if (ds == null) {
+		try {
+			ds.getConnection();
+		}
+		catch (IllegalArgumentException | SQLException e) {
 			throw new DataSourceException();
 		}
 	}

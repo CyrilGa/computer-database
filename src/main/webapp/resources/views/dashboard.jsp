@@ -20,9 +20,20 @@
 
 	<section id="main">
 		<div class="container">
+			<c:if test="${dashboardMsg != null}">
+	            <div id="dashboardMsg" class="alert alert-warning">
+	            ${dashboardMsg}
+	            </div>
+            </c:if>
+            <c:if test="${errorMsg != null}">
+	            <div id="errorMsg" class="alert alert-danger">
+	            ${errorMsg}
+	            </div>
+            </c:if>
+        </div>
+		<div class="container">
 			<div id="container-title">
 				<h1 id="homeTitle">${count} Computers found </h1>
-				<span id="dashMsg">${dashboardMsg}</span>
 			</div>
 			<div id="actions" class="">
 				<div class="">

@@ -26,8 +26,9 @@ $(function() {
     setTimeout(
     		  function() 
     		  {
-    			 $("#dashMsg").text("");
-    		  }, 2500);
+    			 $("#dashboardMsg").hide();
+    			 $("#errorMsg").hide();
+    		  }, 3000);
     
     // Hide secondSearch
     $("#secondSearch").hide();

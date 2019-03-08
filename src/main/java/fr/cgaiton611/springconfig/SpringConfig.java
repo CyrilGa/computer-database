@@ -11,33 +11,43 @@ import org.springframework.context.annotation.Configuration;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-
 @Configuration
-@ComponentScan(basePackages= {
-		"fr.cgaiton611.page",
-		"fr.cgaiton611.persistence",
-		"fr.cgaiton611.service",
-		"fr.cgaiton611.dto",
-		"fr.cgaiton611.cli"})
+@ComponentScan(basePackages = { "fr.cgaiton611.page", "fr.cgaiton611.persistence", "fr.cgaiton611.service",
+		"fr.cgaiton611.dto", "fr.cgaiton611.cli" })
 public class SpringConfig {
 	private final Logger logger = LoggerFactory.getLogger(SpringConfig.class);
-	private final String configFile = "src/main/resources/db/db.properties";
-	
+	private final String configFile = "src/main/resources/db/db.pproperties";
+
 	@Bean
-    public DataSource dataSource(){
-		DataSource ds = null;
+	public DataSource dataSource() {
+		DataSource ds = new HikariDataSource();
 		HikariConfig config = null;
 		try {
 			config = new HikariConfig(configFile);
-			try {
-				ds = new HikariDataSource(config);
-				logger.info("Datasource initialized");
-			} catch (Exception e) {
-				logger.error("Error initializing HikariDataSource");
-			}
-		} catch (RuntimeException e) {
+			ds = new HikariDataSource(config);
+			logger.info("Datasource initialized");
+			logger.error("Error initializing HikariDataSource");
+		} catch (IllegalArgumentException e) {
 			logger.error("Properties file for database not found or incorrect");
 		}
-        return ds;
-    }
+		return ds;
+	}
+
+//	@Bean
+//    public DataSource dataSource(){
+//		DataSource ds = null;
+//		HikariConfig config = null;
+//		try {
+//			config = new HikariConfig(configFile);
+//			try {
+//				ds = new HikariDataSource(config);
+//				logger.info("Datasource initialized");
+//			} catch (Exception e) {
+//				logger.error("Error initializing HikariDataSource");
+//			}
+//		} catch (RuntimeException e) {
+//			logger.error("Properties file for database not found or incorrect");
+//		}
+//        return ds;
+//    }
 }
