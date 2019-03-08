@@ -12,15 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import fr.cgaiton611.dto.ComputerDTO;
 import fr.cgaiton611.dto.ComputerMapper;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.CompanyService;
 import fr.cgaiton611.service.ComputerService;
-import fr.cgaiton611.springconfig.SpringConfig;
 import fr.cgaiton611.validation.ComputerValidator;
 
 @WebServlet(urlPatterns = { "/editComputer" })
@@ -28,10 +27,12 @@ public class EditComputerServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-	private ComputerService computerService = context.getBean(ComputerService.class);
-	private CompanyService companyService = context.getBean(CompanyService.class);
-	private ComputerMapper computerMapper = context.getBean(ComputerMapper.class);
+	@Autowired
+	private ComputerService computerService;
+	@Autowired
+	private CompanyService companyService;
+	@Autowired
+	private ComputerMapper computerMapper;
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -102,5 +103,11 @@ public class EditComputerServlet extends HttpServlet {
 		session.setAttribute("dashboardMsg", dashboardMsg);
 		response.sendRedirect(request.getContextPath() + "/dashboard");
 
+	}
+	
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 	}
 }

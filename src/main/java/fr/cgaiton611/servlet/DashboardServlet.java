@@ -13,15 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import fr.cgaiton611.dto.ComputerDTO;
 import fr.cgaiton611.dto.ComputerMapper;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.page.ComputerByNamePage;
 import fr.cgaiton611.service.ComputerService;
-import fr.cgaiton611.springconfig.SpringConfig;
 import fr.cgaiton611.util.ConvertUtil;
 
 @WebServlet(urlPatterns = { "/dashboard", "" })
@@ -31,16 +30,19 @@ public class DashboardServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-	private ComputerService computerService = context.getBean(ComputerService.class);
-	private ComputerMapper computerMapper = context.getBean(ComputerMapper.class);
+
+	@Autowired
+	private ComputerService computerService;
+	@Autowired
+	private ComputerMapper computerMapper;
+	
 	private int elements = 10;
 	private int page = 0;
 	private String computerName = "";
 	private String companyName = "";
 
-    
-	private ComputerByNamePage computerByNamePage = context.getBean(ComputerByNamePage.class);
+	@Autowired
+	private ComputerByNamePage computerByNamePage;
 	ConvertUtil convertUtil = new ConvertUtil();
 
 	@Override
@@ -59,7 +61,7 @@ public class DashboardServlet extends HttpServlet {
 		String pageAttribute = request.getParameter("page");
 		Optional<Integer> pageTemp = convertUtil.stringToInteger(pageAttribute);
 		if (pageTemp.isPresent()) {
-				page = pageTemp.get();
+			page = pageTemp.get();
 		}
 		computerByNamePage.setPage(page);
 
@@ -154,6 +156,12 @@ public class DashboardServlet extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		session.setAttribute("dashboardMsg", "Computer successfully deleted");
 		response.sendRedirect(request.getContextPath() + "/dashboard");
+	}
+
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 	}
 
 }

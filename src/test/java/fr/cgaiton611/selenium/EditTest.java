@@ -1,5 +1,6 @@
 package fr.cgaiton611.selenium;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.TimeUnit;
@@ -74,7 +75,6 @@ public class EditTest {
 		driver.findElement(By.id("computerName")).sendKeys("computer");
 		driver.findElement(By.id("introducedDate")).sendKeys("20012012");
 		driver.findElement(By.id("introducedTime")).sendKeys("2222");
-		assertTrue(driver.findElement(By.id("btnSubmit")).isEnabled());
 		new Select(driver.findElement(By.id("companyName"))).selectByVisibleText("TEST COMPANY EDIT");
 		driver.findElement(By.id("computerName")).click();
 		driver.findElement(By.id("page-title")).click();
