@@ -32,12 +32,10 @@ public class Computer {
 	}
 
 	public Computer(long id) {
-		super();
 		this.id = id;
 	}
 
 	public Computer() {
-		super();
 	}
 
 	public long getId() {
@@ -74,7 +72,7 @@ public class Computer {
 
 	public Company getCompany() {
 		if (company == null) {
-			return new Company();
+			company = new Company();
 		}
  		return company;
 	}

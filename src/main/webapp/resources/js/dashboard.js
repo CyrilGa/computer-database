@@ -28,7 +28,7 @@ $(function() {
     		  {
     			 $("#dashboardMsg").hide();
     			 $("#errorMsg").hide();
-    		  }, 3000);
+    		  }, 5000);
     
     // Hide secondSearch
     $("#secondSearch").hide();

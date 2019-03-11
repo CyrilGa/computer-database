@@ -3,7 +3,6 @@ package fr.cgaiton611.selenium;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.AfterClass;
@@ -21,8 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.cgaiton611.exception.DAOException;
-import fr.cgaiton611.model.Company;
+import fr.cgaiton611.exception.dao.DAOException;
+import fr.cgaiton611.exception.dao.EmptyResultSetException;
 import fr.cgaiton611.service.CompanyService;
 import fr.cgaiton611.springconfig.SpringConfig;
 
@@ -45,9 +44,12 @@ public class AddTest {
 	@Before
 	public void beforeAll() {
 		try {
-			Optional<Company> company = companyService.findByName("TEST COMPANY ADD");
-			if (!company.isPresent()) {
+			companyService.findByName("TEST COMPANY ADD");
+		} catch (EmptyResultSetException e) {
+			try {
 				companyService.create("TEST COMPANY ADD");
+			} catch (DAOException e1) {
+				logger.error(e.getMessage());
 			}
 		} catch (DAOException e) {
 			logger.error(e.getMessage());
@@ -68,8 +70,8 @@ public class AddTest {
 
 		String url = driver.getCurrentUrl();
 		assertTrue("http://localhost:8888/cdb/dashboard".equals(url));
-		String dashMsg = driver.findElement(By.id("dashMsg")).getText();
-		assertTrue("Computer successfully created".equals(dashMsg));
+		String dashMsg = driver.findElement(By.id("dashboardMsg")).getText();
+		assertTrue(dashMsg.startsWith("Computer successfully created"));
 	}
 
 	public void computerNameAndIntroduced() {

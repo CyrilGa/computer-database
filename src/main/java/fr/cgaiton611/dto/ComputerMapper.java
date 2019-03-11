@@ -10,7 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.cgaiton611.exception.DAOException;
+import fr.cgaiton611.exception.dao.DAOException;
+import fr.cgaiton611.exception.mapping.IdNotConvertibleException;
+import fr.cgaiton611.exception.mapping.MappingException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.CompanyService;
@@ -23,18 +25,16 @@ public class ComputerMapper {
 
 	@Autowired
 	private CompanyService companyService;
-	
+
 	private ConvertUtil convertUtil = new ConvertUtil();
 
-	public Optional<Computer> toComputer(ComputerDTO computerDTO) {
+	public Computer toComputer(ComputerDTO computerDTO) throws MappingException{
 		Computer computer = new Computer();
-
-		String idS = computerDTO.getId();
-		Long id = 0l;
-		if (idS != null) {
-			id = Long.parseLong(idS);
+		
+		Optional<Long> id = convertUtil.stringToLong(computerDTO.getId());
+		if (id.isPresent()) {
+			computer.setId(id.get());
 		}
-		computer.setId(id);
 
 		computer.setName(computerDTO.getName());
 
@@ -44,22 +44,19 @@ public class ComputerMapper {
 		Optional<Date> discontinued = convertUtil.stringToDate(computerDTO.getDiscontinued());
 		computer.setDiscontinued(discontinued.orElse(null));
 
-		if (computerDTO.getCompanyName() != null) {
-			Optional<Company> company = Optional.empty();
+		if (computerDTO.getCompanyName() != null && computerDTO.getCompanyName() != "") {
+			Company company;
 			try {
 				company = companyService.findByName(computerDTO.getCompanyName());
+				computer.setCompany(company);
 			} catch (DAOException e) {
 				logger.warn(e.getMessage());
-			}
-			if (!company.isPresent()) {
 				computer.setCompany(null);
 			}
-			computer.setCompany(company.get());
-		}
-		else {
+		} else {
 			computer.setCompany(null);
 		}
-		return Optional.of(computer);
+		return computer;
 	}
 
 	public ComputerDTO toComputerDTO(Computer computer) {

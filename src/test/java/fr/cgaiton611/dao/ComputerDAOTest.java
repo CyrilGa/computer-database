@@ -1,9 +1,7 @@
 package fr.cgaiton611.dao;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Optional;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.cgaiton611.exception.DAOException;
+import fr.cgaiton611.exception.dao.DAOException;
+import fr.cgaiton611.exception.dao.EmptyResultSetException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.persistence.ComputerDAO;
@@ -24,73 +23,170 @@ import fr.cgaiton611.springconfig.SpringConfig;
 public class ComputerDAOTest {
 
 	private final Logger logger = LoggerFactory.getLogger(ComputerDAOTest.class);
-	
+
 	@Autowired
 	ComputerDAO computerDAO;
 
+	public void create() {
+		try {
+			computerDAO.create(new Computer("TEST COMPUTER DAO", null, null, new Company()));
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+			fail("database error");
+			return;
+		}
+	}
+
 	@Test
-	public void createAndFind() {
-		Optional<Computer> c1 = Optional.empty();
+	public void find() {
+		Computer c1;
 		try {
 			c1 = computerDAO.create(new Computer("TEST COMPUTER DAO", null, null, new Company()));
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
+			fail("database error");
+			return;
 		}
-		assertTrue(c1.isPresent());
-		Optional<Computer> c2 = Optional.empty();
+
+		Computer c2;
 		try {
-			c2 = computerDAO.find(c1.get());
+			c2 = computerDAO.find(c1);
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
+			fail("database error");
+			return;
 		}
-		assertTrue(c2.isPresent());
-		assertEquals(c1.get(), c2.get());
+		assertEquals(c1, c2);
+	}
+	
+	@Test
+	public void findFail() {
+		try {
+			computerDAO.find(new Computer(665169595));
+			fail("sql error");
+		} catch (EmptyResultSetException e) {
+			// ok
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+			fail("database error");
+			return;
+		}
 	}
 
 	@Test
 	public void update() {
-		Optional<Computer> c1 = Optional.empty();
+		Computer c1;
 		try {
 			c1 = computerDAO.create(new Computer("TEST COMPUTER DAO", null, null, new Company()));
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
+			fail("database error");
+			return;
 		}
-		assertTrue(c1.isPresent());
+
 		try {
-			computerDAO.update(new Computer(c1.get().getId(), "modified", null, null, new Company()));
+			computerDAO.update(new Computer(c1.getId(), "modified", null, null, new Company()));
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
+			fail("database error");
+			return;
 		}
+
+		Computer c2;
 		try {
-			c1 = computerDAO.find(c1.get());
+			c2 = computerDAO.find(c1);
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
+			fail("database error");
+			return;
 		}
-		assertTrue(c1.isPresent());
-		assertEquals("modified", c1.get().getName());
+		assertEquals("modified", c2.getName());
+	}
+	
+	@Test
+	public void updateFail() {
+		try {
+			computerDAO.update(new Computer(61618451, "modified", null, null, new Company()));
+			fail("sql error");
+		} catch (EmptyResultSetException e) {
+			// ok
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+			fail("database error");
+			return;
+		}
+
 	}
 
 	@Test
 	public void delete() {
-		Optional<Computer> c1 = Optional.empty();
+		Computer c1;
 		try {
 			c1 = computerDAO.create(new Computer("TEST COMPUTER DAO", null, null, new Company()));
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
+			fail("database error");
+			return;
 		}
-		assertTrue(c1.isPresent());
+
 		try {
-			computerDAO.delete(c1.get());
+			computerDAO.delete(c1);
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
+			fail("database error");
+			return;
 		}
+		
 		try {
-			c1 = computerDAO.find(c1.get());
+			computerDAO.delete(c1);
+		} catch (EmptyResultSetException e) {
+			
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
+			fail("database error");
+			return;
 		}
-		assertTrue(!c1.isPresent());
-		assertEquals(null, c1.orElse(null));
+
+		try {
+			computerDAO.find(c1);
+		} catch (EmptyResultSetException e) {
+			// ok
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+			fail("database error");
+			return;
+		}
 	}
 
+	@Test
+	public void deleteFail() {
+		Computer c1;
+		try {
+			c1 = computerDAO.create(new Computer("TEST COMPUTER DAO", null, null, new Company()));
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+			fail("database error");
+			return;
+		}
+
+		try {
+			computerDAO.delete(c1);
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+			fail("database error");
+			return;
+		}
+
+		try {
+			computerDAO.find(c1);
+			fail("sql error");
+		} catch (EmptyResultSetException e) {
+			// ok
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+			fail("database error");
+			return;
+		}
+	}
+	
 }

@@ -21,7 +21,7 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import fr.cgaiton611.dto.ComputerDTO;
 import fr.cgaiton611.dto.ComputerMapper;
-import fr.cgaiton611.exception.DAOException;
+import fr.cgaiton611.exception.dao.DAOException;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.page.ComputerPage;
 import fr.cgaiton611.service.ComputerService;
@@ -80,7 +80,7 @@ public class DashboardServlet extends HttpServlet {
 			request.setAttribute("computers", computersDTO);
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
-			request.setAttribute("errorMsg", e.getMessage());
+			request.setAttribute("errorMsgList", "Database error. The computer list could not be loaded");
 		}
 		
 
@@ -92,7 +92,7 @@ public class DashboardServlet extends HttpServlet {
 			request.setAttribute("count", count);
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
-			request.setAttribute("errorMsg", e.getMessage());
+			request.setAttribute("errorMsgCount", "Database error. The computer list could not be counted");
 		}
 
 		request.setAttribute("page", computerPage.getPage());

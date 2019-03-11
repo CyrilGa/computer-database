@@ -1,4 +1,4 @@
-package fr.cgaiton611.springconfig;
+ package fr.cgaiton611.springconfig;
 
 import javax.sql.DataSource;
 
@@ -16,7 +16,7 @@ import com.zaxxer.hikari.HikariDataSource;
 		"fr.cgaiton611.dto", "fr.cgaiton611.cli" })
 public class SpringConfig {
 	private final Logger logger = LoggerFactory.getLogger(SpringConfig.class);
-	private final String configFile = "src/main/resources/db/db.pproperties";
+	private final String configFile = "src/main/resources/db/db.properties";
 
 	@Bean
 	public DataSource dataSource() {
@@ -33,21 +33,4 @@ public class SpringConfig {
 		return ds;
 	}
 
-//	@Bean
-//    public DataSource dataSource(){
-//		DataSource ds = null;
-//		HikariConfig config = null;
-//		try {
-//			config = new HikariConfig(configFile);
-//			try {
-//				ds = new HikariDataSource(config);
-//				logger.info("Datasource initialized");
-//			} catch (Exception e) {
-//				logger.error("Error initializing HikariDataSource");
-//			}
-//		} catch (RuntimeException e) {
-//			logger.error("Properties file for database not found or incorrect");
-//		}
-//        return ds;
-//    }
 }

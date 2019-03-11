@@ -13,11 +13,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import fr.cgaiton611.exception.DAOException;
+import fr.cgaiton611.exception.dao.DAOException;
+import fr.cgaiton611.exception.dao.EmptyResultSetException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.page.CompanyPage;
 import fr.cgaiton611.page.ComputerPage;
+import fr.cgaiton611.persistence.CompanyDAO;
 import fr.cgaiton611.service.CompanyService;
 import fr.cgaiton611.service.ComputerService;
 import fr.cgaiton611.servlet.DashboardServlet;
@@ -114,16 +116,14 @@ public class CLIMenuFacade {
 		if (!id.isPresent())
 			return;
 
-		Optional<Computer> computer = Optional.empty();
+		Computer computer;
 		try {
 			computer = computerService.find(id.get());
+			printUtil.printn(computer);
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
-		}
-		if (!computer.isPresent())
 			printUtil.printn("Computer not found");
-		else
-			printUtil.printn(computer);
+		}
 	}
 
 	/**
@@ -142,17 +142,25 @@ public class CLIMenuFacade {
 		if (!companyId.isPresent())
 			return;
 
-		Optional<Computer> computer = Optional.empty();
+		Company company;
 		try {
-			computer = computerService.create(name.get(), introduced.orElse(null),
-					discontinued.orElse(null), companyId.get());
+			company = companyService.find(companyId.get());
+		} catch (EmptyResultSetException e) {
+			company = null;
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
+			printUtil.printn("Computer not created, database error");
+			return;
 		}
-		if (!computer.isPresent())
-			printUtil.printn("Computer not created");
-		else
-			printUtil.printn("Computer sucefully created ! (id: " + computer.get().getId() + ")");
+		Computer computer;
+		try {
+			computer = computerService
+					.create(new Computer(name.get(), introduced.orElse(null), discontinued.orElse(null), company));
+			printUtil.printn("Computer sucefully created ! (id: " + computer.getId() + ")");
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+			printUtil.printn("Computer not created, database error");
+		}
 	}
 
 	/**
@@ -173,17 +181,24 @@ public class CLIMenuFacade {
 
 		Optional<Long> companyId = scanUtil.askLong("company_id", true);
 
-		Optional<Computer> computer = Optional.empty();
+		Company company;
 		try {
-			computer = computerService.update(id.get().longValue(), name, introduced, discontinued,
-					companyId);
+			company = companyService.find(companyId.get());
+		} catch (EmptyResultSetException e) {
+			company = null;
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
+			printUtil.printn("Computer not created, database error");
+			return;
 		}
-		if (!computer.isPresent())
-			printUtil.printn("Computer not updated");
-		else
+		
+		try {
+			computerService.update(new Computer(id.get(), name.orElse(null), introduced.orElse(null), discontinued.orElse(null), company));
 			printUtil.printn("Computer sucefully updated !");
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+			printUtil.printn("Computer not updated, database error");
+		}
 	}
 
 	/**

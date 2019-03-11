@@ -27,7 +27,7 @@
             </c:if>
             <c:if test="${errorMsg != null}">
 	            <div id="errorMsg" class="alert alert-danger">
-	            ${errorMsg}
+	            ${errorMsgList}<br/>${errorMsgCount}
 	            </div>
             </c:if>
         </div>

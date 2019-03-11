@@ -1,9 +1,7 @@
 package fr.cgaiton611.selenium;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -22,12 +20,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.cgaiton611.exception.DAOException;
+import fr.cgaiton611.exception.dao.DAOException;
+import fr.cgaiton611.exception.dao.EmptyResultSetException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.CompanyService;
 import fr.cgaiton611.service.ComputerService;
-import fr.cgaiton611.servlet.DashboardServlet;
 import fr.cgaiton611.springconfig.SpringConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -50,9 +48,18 @@ public class EditTest {
 	@Before
 	public void beforeAll() {
 		try {
-			if (!companyService.findByName("TEST COMPANY EDIT").isPresent()) {
+			companyService.findByName("TEST COMPANY EDIT");
+		} catch (EmptyResultSetException e){
+			try {
 				companyService.create("TEST COMPANY EDIT");
+			} catch (DAOException e1) {
+				logger.error(e.getMessage());
 			}
+		} catch (DAOException e) {
+			logger.error(e.getMessage());
+		}
+		
+		try {
 			List<Computer> computers = computerService.findPageWithParameters(0, 1, "TEST COMPUTER EDIT", "");
 			if (computers.size() == 0) {
 				computerService.create(new Computer("TEST COMPUTER EDIT", null, null, new Company()));
@@ -76,7 +83,7 @@ public class EditTest {
 
 		String url = driver.getCurrentUrl();
 		assertTrue("http://localhost:8888/cdb/dashboard".equals(url));
-		String dashMsg = driver.findElement(By.id("dashMsg")).getText();
+		String dashMsg = driver.findElement(By.id("dashboardMsg")).getText();
 		assertTrue("Computer successfully updated".equals(dashMsg));
 	}
 
@@ -95,7 +102,7 @@ public class EditTest {
 
 		String url = driver.getCurrentUrl();
 		assertTrue("http://localhost:8888/cdb/dashboard".equals(url));
-		String dashMsg = driver.findElement(By.id("dashMsg")).getText();
+		String dashMsg = driver.findElement(By.id("dashboardMsg")).getText();
 		assertTrue("Computer successfully updated".equals(dashMsg));
 	}
 

@@ -13,9 +13,17 @@ public class ConvertUtil {
 	private final Logger logger = LoggerFactory.getLogger(ConvertUtil.class);
 
 	public Optional<Long> stringToLong(Optional<String> s) {
-		if (!s.isPresent())
+		if (!s.isPresent()) {
 			return Optional.empty();
-		return Optional.of(Long.parseLong(s.get()));
+		}
+		Long lon;
+		try {
+			lon = Long.parseLong(s.get());
+		}
+		catch (NumberFormatException e){
+			return Optional.empty();
+		}
+		return Optional.of(lon);
 	}
 
 	public Optional<Long> stringToLong(String s) {

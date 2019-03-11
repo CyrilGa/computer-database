@@ -3,7 +3,6 @@ package fr.cgaiton611.servlet;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,7 +19,9 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import fr.cgaiton611.dto.ComputerDTO;
 import fr.cgaiton611.dto.ComputerMapper;
-import fr.cgaiton611.exception.DAOException;
+import fr.cgaiton611.exception.dao.DAOException;
+import fr.cgaiton611.exception.mapping.MappingException;
+import fr.cgaiton611.exception.validation.ValidationException;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.CompanyService;
 import fr.cgaiton611.service.ComputerService;
@@ -70,32 +71,33 @@ public class AddComputerServlet extends HttpServlet {
 		if ("select-option-default".equals(companyName))
 			companyName = null;
 		ComputerDTO computerDTO = new ComputerDTO(name, introduced, discontinued, companyName);
-		Optional<Computer> computer = computerMapper.toComputer(computerDTO);
 		String dashboardMsg;
-		if (computer.isPresent()) {
-			if (ComputerValidator.validateForAdd(computer.get())) {
+
+		try {
+			Computer computer = computerMapper.toComputer(computerDTO);
+			try {
+				ComputerValidator.validateForAdd(computer);
 				try {
-					computer = computerService.create(computer.get());
+					Computer computerNew = computerService.create(computer);
+					dashboardMsg = "Computer successfully created, id: " + computerNew.getId();
 				} catch (DAOException e) {
 					logger.warn(e.getMessage());
+					dashboardMsg = "Computer not updated, database not accessible";
 				}
-				if (computer.isPresent())
-					dashboardMsg = "Computer successfully created";
-				else
-					dashboardMsg = "Computer not created, bad entries (service)";
+			} catch (ValidationException e) {
+				logger.warn(e.getMessage());
+				dashboardMsg = "Computer not updated, bad validation";
 			}
-			else {
-				dashboardMsg = "Computer not created, bad entries (validator)";
-			}
-		} else {
-			dashboardMsg = "Computer not created, bad entries (mapping)";
+		} catch (MappingException e) {
+			logger.warn(e.getMessage());
+			dashboardMsg = "Computer not updated, bad mapping";
 		}
 		HttpSession session = request.getSession(true);
 		session.setAttribute("dashboardMsg", dashboardMsg);
 		response.sendRedirect(request.getContextPath() + "/dashboard");
 
 	}
-	
+
 	@Override
 	public void init() throws ServletException {
 		super.init();

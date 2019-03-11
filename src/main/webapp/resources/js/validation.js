@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	$('input').on('blur keyup', function() {
+	$('body').on('blur keyup click keydown', function() {
 		if ($("#validForm").valid()) {
 			$('#btnSubmit').prop('disabled', false);
 		} else {

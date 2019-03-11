@@ -3,6 +3,11 @@ package fr.cgaiton611.validation;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import fr.cgaiton611.exception.validation.ComputerNullException;
+import fr.cgaiton611.exception.validation.DateNotValidException;
+import fr.cgaiton611.exception.validation.IdIsZeroException;
+import fr.cgaiton611.exception.validation.NameIsEmptyException;
+import fr.cgaiton611.exception.validation.ValidationException;
 import fr.cgaiton611.model.Computer;
 
 /**
@@ -11,36 +16,48 @@ import fr.cgaiton611.model.Computer;
  * @author cyril
  *
  */
+
 public class ComputerValidator {
-	public static boolean validate(Computer computer) {
-		if (computer==null)
-			return false;
-		return validateDate(computer.getIntroduced()) && validateDate(computer.getDiscontinued());
+
+	public static void validateForAdd(Computer computer) throws ValidationException {
+		if (computer == null) {
+			throw new ComputerNullException();
+		}
+		if (! stringNotEmpty(computer.getName())) {
+			throw new NameIsEmptyException();
+		}
+		if (! validateDate(computer.getIntroduced())) {
+			throw new DateNotValidException();
+		}
+		if (! validateDate(computer.getDiscontinued())) {
+			throw new DateNotValidException();
+		}
 	}
-	
-	public static boolean validateForAdd(Computer computer) {
-		if (computer==null)
-			return false;
-		return stringNotEmpty(computer.getName())
-				&& validateDate(computer.getIntroduced())
-				&& validateDate(computer.getDiscontinued());
+
+	public static void validateForEdit(Computer computer) throws ValidationException {
+		if (computer == null) {
+			throw new ComputerNullException();
+		}
+		if (! longNotZero(computer.getId())) {
+			throw new IdIsZeroException();
+		}
+		if (! stringNotEmpty(computer.getName())) {
+			throw new NameIsEmptyException();
+		}
+		if (! validateDate(computer.getIntroduced())) {
+			throw new DateNotValidException();
+		}
+		if (! validateDate(computer.getDiscontinued())) {
+			throw new DateNotValidException();
+		}
 	}
-	
-	public static boolean validateForEdit(Computer computer) {
-		if (computer==null)
-			return false;
-		return longNotZero(computer.getId())
-				&& stringNotEmpty(computer.getName())
-				&& validateDate(computer.getIntroduced())
-				&& validateDate(computer.getDiscontinued());
-	}
-	
+
 	private static boolean stringNotEmpty(String s) {
-		return s!=null && s!="";
+		return s != null && s != "";
 	}
-	
+
 	private static boolean longNotZero(long i) {
-		return i!=0;
+		return i != 0l;
 	}
 
 	/**
@@ -68,7 +85,7 @@ public class ComputerValidator {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Test if a String (converted to an integer) if included between two integer
 	 * 
@@ -81,8 +98,7 @@ public class ComputerValidator {
 		int test;
 		try {
 			test = Integer.parseInt(s);
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			return false;
 		}
 		return c1 <= test && test <= c2;

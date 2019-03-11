@@ -1,4 +1,4 @@
-package fr.cgaiton611.exception;
+package fr.cgaiton611.exception.dao;
 
 public class StatementException extends DAOException{
 

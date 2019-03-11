@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.cgaiton611.exception.DAOException;
+import fr.cgaiton611.exception.dao.DAOException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.ComputerService;
@@ -76,7 +76,7 @@ public class DeleteTest {
 		new WebDriverWait(driver, 10).until(ExpectedConditions.urlToBe("http://localhost:8888/cdb/dashboard"));
 		String url = driver.getCurrentUrl();
 		assertTrue("http://localhost:8888/cdb/dashboard".equals(url));
-		String dashMsg = driver.findElement(By.id("dashMsg")).getText();
+		String dashMsg = driver.findElement(By.id("dashboardMsg")).getText();
 		assertTrue(dashMsg.endsWith("Computer(s) successfully deleted"));
 
 		int c2 = 0;
