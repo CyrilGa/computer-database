@@ -33,6 +33,8 @@ public class DashboardServlet extends HttpServlet {
 	private final Logger logger = LoggerFactory.getLogger(DashboardServlet.class);
 
 	private static final long serialVersionUID = 1L;
+	
+	private final String[] tableNames = {"Computer name", "Introduced date", "Discontinued date", "Company"};
 
 	@Autowired
 	private ComputerService computerService;
@@ -70,9 +72,9 @@ public class DashboardServlet extends HttpServlet {
 		request.setAttribute("companyName", computerPage.getCompanyName());
 		
 		computerPage.setOrderByName(request.getParameter("orderByName"));
-		request.setAttribute("orderByName", computerPage.getCompanyName());
+		request.setAttribute("orderByName", computerPage.getOrderByName());
 
-		computerPage.setOrderByOrder(request.getParameter("orderByOrder"));
+		request.setAttribute("orderByOrder", computerPage.getOrderByOrder());
 
 
 
@@ -102,6 +104,10 @@ public class DashboardServlet extends HttpServlet {
 		
 		request.setAttribute("ELEMENTS_AUTORISED", computerPage.ELEMENTS_AUTORISED);
 		request.setAttribute("elements", computerPage.getElements());
+
+		request.setAttribute("ORDERBYNAME_AUTORISED", computerPage.ORDERBYNAME_AUTORISED);
+		request.setAttribute("tableNames", tableNames);
+		
 
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/resources/views/dashboard.jsp");
 		dispatcher.forward(request, response);

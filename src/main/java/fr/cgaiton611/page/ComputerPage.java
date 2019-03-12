@@ -54,8 +54,6 @@ public class ComputerPage {
 	public String getCompanyName() {
 		return companyName;
 	}
-	
-	
 
 	public int getElements() {
 		return elements;
@@ -121,15 +119,37 @@ public class ComputerPage {
 
 	public void setOrderByName(String orderByName) {
 		if (orderByName != null) {
-			if (oderByNameIsValid(orderByName))
+			if (orderByNameIsValid(orderByName)) {
 				this.orderByName = orderByName;
+				page = 0;
+				if (this.orderByName.equals(orderByName)) {
+					invOrderByOrder();
+				}
+				else {
+					orderByOrder = ORDERBYORDER_AUTORISED[0];
+				}
+			}
 		}
 	}
 
 	public void setOrderByOrder(String orderByOrder) {
 		if (orderByOrder != null) {
-			if (oderByOrderIsValid(orderByOrder))
+			if (orderByOrderIsValid(orderByOrder)) {
 				this.orderByOrder = orderByOrder;
+				page = 0;
+				if (this.orderByOrder.equals(orderByOrder)) {
+					invOrderByOrder();
+				}
+			}
+		}
+	}
+	
+	public void invOrderByOrder() {
+		if (ORDERBYORDER_AUTORISED[0].equals(orderByOrder)){
+			orderByOrder = ORDERBYORDER_AUTORISED[1];
+		}
+		else {
+			orderByOrder = ORDERBYORDER_AUTORISED[0];
 		}
 	}
 
@@ -162,7 +182,7 @@ public class ComputerPage {
 		return false;
 	}
 
-	public boolean oderByNameIsValid(String test) {
+	public boolean orderByNameIsValid(String test) {
 		for (String s : ORDERBYNAME_AUTORISED) {
 			if (s.equals(test))
 				return true;
@@ -170,7 +190,7 @@ public class ComputerPage {
 		return false;
 	}
 
-	public boolean oderByOrderIsValid(String test) {
+	public boolean orderByOrderIsValid(String test) {
 		for (String s : ORDERBYORDER_AUTORISED) {
 			if (s.equals(test))
 				return true;

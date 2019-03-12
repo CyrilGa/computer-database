@@ -88,12 +88,29 @@
 								</a>
 							</span>
 						</th>
-						<th>Computer name</th>
-						<th>Introduced date</th>
-						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date</th>
-						<!-- Table header for Company -->
-						<th>Company</th>
+						<c:forEach items="${ORDERBYNAME_AUTORISED}" var="orderName" varStatus="status">
+						<c:choose>
+							<c:when test="${orderName.equals(orderByName)}">
+								<c:choose>
+									<c:when test="${\"ASC\".equals(orderByOrder)}">
+										<th>
+											<a href="/cdb/dashboard?orderByName=${orderName}">${tableNames[status.index]}</a>
+											<span class="glyphicon glyphicon-sort-by-attributes"></span>
+										</th>
+									</c:when>
+									<c:otherwise>
+										<th>
+											<a href="/cdb/dashboard?orderByName=${orderName}">${tableNames[status.index]}</a>
+											<span class="glyphicon glyphicon-sort-by-attributes-alt"></span>
+										</th>
+									</c:otherwise>
+								</c:choose>
+							</c:when>
+							<c:otherwise>
+								<th><a href="/cdb/dashboard?orderByName=${orderName}">${tableNames[status.index]}</a></th>
+							</c:otherwise>
+							</c:choose>
+						</c:forEach>
 
 					</tr>
 				</thead>

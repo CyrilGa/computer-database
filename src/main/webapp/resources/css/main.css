@@ -32,39 +32,50 @@ input[type='checkbox'] {
 	color: #888888;
 }
 
-#container-title{
+#container-title {
 	display: flex;
 	align-items: center;
 }
 
-#container-title span{
+#container-title span {
 	color: #ffb53f;
 	font-size: 20px;
 	margin-left: 50px;
 	margin-top: 10px;
 }
 
-#container-id{
+#container-id {
 	font-size: 20px;
 }
 
-#introducedDate{
+#introducedDate {
 	margin-bottom: 5px;
 }
 
-#discontinuedDate{
+#discontinuedDate {
 	margin-bottom: 5px;
 }
 
-#actions{
+#actions {
 	display: flex;
 	justify-content: space-between;
 }
 
-#secondDiv{
+#secondDiv {
 	margin-top: 6px;
 }
 
-.hiddenElement{
+.hiddenElement {
 	visibility: collapse;
+}
+
+th a {
+	text-decoration: none;
+	color: black;
+	transition: 0.3s;
+}
+
+th a:hover {
+	text-decoration: none;
+	color: #dd1c1c;
 }
