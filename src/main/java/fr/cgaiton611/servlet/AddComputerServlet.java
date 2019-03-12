@@ -20,7 +20,6 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import fr.cgaiton611.dto.ComputerDTO;
 import fr.cgaiton611.dto.ComputerMapper;
 import fr.cgaiton611.exception.dao.DAOException;
-import fr.cgaiton611.exception.mapping.MappingException;
 import fr.cgaiton611.exception.validation.ValidationException;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.CompanyService;
@@ -73,24 +72,19 @@ public class AddComputerServlet extends HttpServlet {
 		ComputerDTO computerDTO = new ComputerDTO(name, introduced, discontinued, companyName);
 		String dashboardMsg;
 
+		Computer computer = computerMapper.toComputer(computerDTO);
 		try {
-			Computer computer = computerMapper.toComputer(computerDTO);
+			ComputerValidator.validateForAdd(computer);
 			try {
-				ComputerValidator.validateForAdd(computer);
-				try {
-					Computer computerNew = computerService.create(computer);
-					dashboardMsg = "Computer successfully created, id: " + computerNew.getId();
-				} catch (DAOException e) {
-					logger.warn(e.getMessage());
-					dashboardMsg = "Computer not updated, database not accessible";
-				}
-			} catch (ValidationException e) {
+				Computer computerNew = computerService.create(computer);
+				dashboardMsg = "Computer successfully created, id: " + computerNew.getId();
+			} catch (DAOException e) {
 				logger.warn(e.getMessage());
-				dashboardMsg = "Computer not updated, bad validation";
+				dashboardMsg = "Computer not updated, database not accessible";
 			}
-		} catch (MappingException e) {
+		} catch (ValidationException e) {
 			logger.warn(e.getMessage());
-			dashboardMsg = "Computer not updated, bad mapping";
+			dashboardMsg = "Computer not updated, bad validation";
 		}
 		HttpSession session = request.getSession(true);
 		session.setAttribute("dashboardMsg", dashboardMsg);

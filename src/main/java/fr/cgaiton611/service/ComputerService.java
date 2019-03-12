@@ -18,16 +18,6 @@ public class ComputerService {
 	@Autowired
 	private CompanyService companyService;
 
-//	public List<Computer> findPaged(int page, int elements) throws DAOException {
-//		List<Computer> computers = computerDAO.findPaged(page, elements);
-//		for (Computer computer : computers) {
-//			Optional<Company> company = companyService.find(computer.getId());
-//			if (company.isPresent())
-//				computer.setCompany(company.get());
-//		}
-//		return computers;
-//	}
-
 	public Computer find(long id) throws DAOException {
 		Computer computer = computerDAO.find(new Computer(id));
 		try {
@@ -62,8 +52,8 @@ public class ComputerService {
 		return computerDAO.count();
 	}
 
-	public List<Computer> findPageWithParameters(int page, int elements, String computerName, String companyName, String orderByName, String orderByOrder)
-			throws DAOException {
+	public List<Computer> findPageWithParameters(int page, int elements, String computerName, String companyName,
+			String orderByName, String orderByOrder) throws DAOException {
 		return computerDAO.findPageWithParameters(page, elements, computerName, companyName, orderByName, orderByOrder);
 	}
 

@@ -13,8 +13,6 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -24,7 +22,6 @@ import fr.cgaiton611.exception.dao.EmptyResultSetException;
 import fr.cgaiton611.exception.dao.StatementException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
-import fr.cgaiton611.servlet.DashboardServlet;
 import fr.cgaiton611.util.ConvertUtil;
 
 /**
@@ -37,8 +34,6 @@ import fr.cgaiton611.util.ConvertUtil;
 @Repository
 public class ComputerDAO extends DAO<Computer> {
 
-	private final Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
-	
 	@Autowired
 	DataSource ds;
 
@@ -128,7 +123,7 @@ public class ComputerDAO extends DAO<Computer> {
 			}
 			prepare.setLong(5, obj.getId());
 			int row = prepare.executeUpdate();
-			if(row == 0) {
+			if (row == 0) {
 				throw new EmptyResultSetException();
 			}
 
@@ -145,7 +140,7 @@ public class ComputerDAO extends DAO<Computer> {
 				PreparedStatement prepare = connection.prepareStatement(SQL_DELETE)) {
 			prepare.setLong(1, obj.getId());
 			int row = prepare.executeUpdate();
-			if(row == 0) {
+			if (row == 0) {
 				throw new EmptyResultSetException();
 			}
 
@@ -162,7 +157,7 @@ public class ComputerDAO extends DAO<Computer> {
 			prepare.setInt(1, elements);
 			prepare.setInt(2, page * elements);
 			ResultSet rs = prepare.executeQuery();
-			
+
 			while (rs.next()) {
 				computers.add(new Computer(rs.getLong("id"), rs.getString("name"), rs.getTimestamp("introduced"),
 						rs.getTimestamp("discontinued"), new Company(rs.getLong("company_id"))));
@@ -179,7 +174,7 @@ public class ComputerDAO extends DAO<Computer> {
 		try (Connection connection = ds.getConnection();
 				PreparedStatement prepare = connection.prepareStatement(SQL_COUNT)) {
 			ResultSet rs = prepare.executeQuery();
-			
+
 			if (rs.next()) {
 				max = rs.getInt("count");
 			} else {
@@ -191,8 +186,8 @@ public class ComputerDAO extends DAO<Computer> {
 		return max;
 	}
 
-	public List<Computer> findPageWithParameters(int page, int elements, String computerName, String companyName, String orderByName, String orderByOrder)
-			throws DAOException {
+	public List<Computer> findPageWithParameters(int page, int elements, String computerName, String companyName,
+			String orderByName, String orderByOrder) throws DAOException {
 		checkDataSource();
 		List<Computer> computers = new ArrayList<>();
 		String SQL;
@@ -216,7 +211,7 @@ public class ComputerDAO extends DAO<Computer> {
 				prepare.setInt(4, page * elements);
 			}
 			ResultSet rs = prepare.executeQuery();
-			
+
 			while (rs.next()) {
 				computers.add(new Computer(rs.getLong("id"), rs.getString("name"), rs.getTimestamp("introduced"),
 						rs.getTimestamp("discontinued"),
@@ -245,7 +240,7 @@ public class ComputerDAO extends DAO<Computer> {
 				prepare.setString(2, "%" + computerName + "%");
 			}
 			ResultSet rs = prepare.executeQuery();
-			
+
 			if (rs.next()) {
 				max = rs.getInt("count");
 			} else {
@@ -258,7 +253,7 @@ public class ComputerDAO extends DAO<Computer> {
 	}
 
 	private void checkDataSource() throws DataSourceException {
-		try(Connection connection = ds.getConnection()) {
+		try (Connection connection = ds.getConnection()) {
 		} catch (IllegalArgumentException | SQLException e) {
 			throw new DataSourceException();
 		}

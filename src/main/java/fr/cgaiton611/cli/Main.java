@@ -20,12 +20,12 @@ public class Main {
 	 * 
 	 * @param args Arguments
 	 */
-	
+
 	public static void main(String[] args) {
 
 		ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
 		CLIMenuFacade cliMenuFacade = context.getBean(CLIMenuFacade.class);
-		
+
 		ScanUtil scanUtil = new ScanUtil();
 		PrintUtil printUtil = new PrintUtil();
 		final Logger logger = LoggerFactory.getLogger(Main.class);

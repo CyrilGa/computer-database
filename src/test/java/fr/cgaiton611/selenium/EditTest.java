@@ -49,7 +49,7 @@ public class EditTest {
 	public void beforeAll() {
 		try {
 			companyService.findByName("TEST COMPANY EDIT");
-		} catch (EmptyResultSetException e){
+		} catch (EmptyResultSetException e) {
 			try {
 				companyService.create("TEST COMPANY EDIT");
 			} catch (DAOException e1) {
@@ -58,16 +58,17 @@ public class EditTest {
 		} catch (DAOException e) {
 			logger.error(e.getMessage());
 		}
-		
+
 		try {
-			List<Computer> computers = computerService.findPageWithParameters(0, 1, "TEST COMPUTER EDIT", "");
+			List<Computer> computers = computerService.findPageWithParameters(0, 1, "TEST COMPUTER EDIT", "",
+					"computer.id", "ASC");
 			if (computers.size() == 0) {
 				computerService.create(new Computer("TEST COMPUTER EDIT", null, null, new Company()));
 			}
 		} catch (DAOException e) {
 			logger.error(e.getMessage());
 		}
-		driver.get("http://localhost:8888/cdb/dashboard");
+		driver.get("http://localhost:9090/cdb/dashboard");
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
 
@@ -82,7 +83,7 @@ public class EditTest {
 		driver.findElement(By.id("btnSubmit")).click();
 
 		String url = driver.getCurrentUrl();
-		assertTrue("http://localhost:8888/cdb/dashboard".equals(url));
+		assertTrue("http://localhost:9090/cdb/dashboard".equals(url));
 		String dashMsg = driver.findElement(By.id("dashboardMsg")).getText();
 		assertTrue("Computer successfully updated".equals(dashMsg));
 	}
@@ -101,7 +102,7 @@ public class EditTest {
 		driver.findElement(By.id("btnSubmit")).click();
 
 		String url = driver.getCurrentUrl();
-		assertTrue("http://localhost:8888/cdb/dashboard".equals(url));
+		assertTrue("http://localhost:9090/cdb/dashboard".equals(url));
 		String dashMsg = driver.findElement(By.id("dashboardMsg")).getText();
 		assertTrue("Computer successfully updated".equals(dashMsg));
 	}

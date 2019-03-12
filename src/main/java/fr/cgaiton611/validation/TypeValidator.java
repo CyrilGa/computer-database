@@ -43,7 +43,7 @@ public class TypeValidator {
 	private boolean isDate(String s) {
 		if (s.length() != 16)
 			return false;
-		if (! s.matches("\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d"))
+		if (!s.matches("\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d"))
 			return false;
 		return true;
 	}

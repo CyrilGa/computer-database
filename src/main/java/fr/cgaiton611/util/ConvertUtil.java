@@ -19,8 +19,7 @@ public class ConvertUtil {
 		Long lon;
 		try {
 			lon = Long.parseLong(s.get());
-		}
-		catch (NumberFormatException e){
+		} catch (NumberFormatException e) {
 			return Optional.empty();
 		}
 		return Optional.of(lon);

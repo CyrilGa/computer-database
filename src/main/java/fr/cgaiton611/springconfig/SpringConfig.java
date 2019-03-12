@@ -1,4 +1,4 @@
- package fr.cgaiton611.springconfig;
+package fr.cgaiton611.springconfig;
 
 import javax.sql.DataSource;
 
@@ -26,10 +26,9 @@ public class SpringConfig {
 		try {
 			config = new HikariConfig(configFile);
 			try {
-			ds = new HikariDataSource(config);
-			logger.info("Datasource initialized");
-			}
-			catch (PoolInitializationException e) {
+				ds = new HikariDataSource(config);
+				logger.info("Datasource initialized");
+			} catch (PoolInitializationException e) {
 				logger.error("Error initializing HikariDataSource");
 			}
 		} catch (RuntimeException e) {

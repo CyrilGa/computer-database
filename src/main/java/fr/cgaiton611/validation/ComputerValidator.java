@@ -23,13 +23,13 @@ public class ComputerValidator {
 		if (computer == null) {
 			throw new ComputerNullException();
 		}
-		if (! stringNotEmpty(computer.getName())) {
+		if (!stringNotEmpty(computer.getName())) {
 			throw new NameIsEmptyException();
 		}
-		if (! validateDate(computer.getIntroduced())) {
+		if (!validateDate(computer.getIntroduced())) {
 			throw new DateNotValidException();
 		}
-		if (! validateDate(computer.getDiscontinued())) {
+		if (!validateDate(computer.getDiscontinued())) {
 			throw new DateNotValidException();
 		}
 	}
@@ -38,16 +38,16 @@ public class ComputerValidator {
 		if (computer == null) {
 			throw new ComputerNullException();
 		}
-		if (! longNotZero(computer.getId())) {
+		if (!longNotZero(computer.getId())) {
 			throw new IdIsZeroException();
 		}
-		if (! stringNotEmpty(computer.getName())) {
+		if (!stringNotEmpty(computer.getName())) {
 			throw new NameIsEmptyException();
 		}
-		if (! validateDate(computer.getIntroduced())) {
+		if (!validateDate(computer.getIntroduced())) {
 			throw new DateNotValidException();
 		}
-		if (! validateDate(computer.getDiscontinued())) {
+		if (!validateDate(computer.getDiscontinued())) {
 			throw new DateNotValidException();
 		}
 	}

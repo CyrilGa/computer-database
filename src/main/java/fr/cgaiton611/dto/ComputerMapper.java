@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.cgaiton611.exception.dao.DAOException;
-import fr.cgaiton611.exception.mapping.IdNotConvertibleException;
-import fr.cgaiton611.exception.mapping.MappingException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.CompanyService;
@@ -28,15 +26,12 @@ public class ComputerMapper {
 
 	private ConvertUtil convertUtil = new ConvertUtil();
 
-	public Computer toComputer(ComputerDTO computerDTO) throws MappingException{
+	public Computer toComputer(ComputerDTO computerDTO) {
 		Computer computer = new Computer();
-		
+
 		Optional<Long> id = convertUtil.stringToLong(computerDTO.getId());
 		if (id.isPresent()) {
 			computer.setId(id.get());
-		}
-		else {
-			throw new IdNotConvertibleException();
 		}
 
 		computer.setName(computerDTO.getName());

@@ -19,7 +19,6 @@ import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.page.CompanyPage;
 import fr.cgaiton611.page.ComputerPage;
-import fr.cgaiton611.persistence.CompanyDAO;
 import fr.cgaiton611.service.CompanyService;
 import fr.cgaiton611.service.ComputerService;
 import fr.cgaiton611.servlet.DashboardServlet;
@@ -191,9 +190,10 @@ public class CLIMenuFacade {
 			printUtil.printn("Computer not created, database error");
 			return;
 		}
-		
+
 		try {
-			computerService.update(new Computer(id.get(), name.orElse(null), introduced.orElse(null), discontinued.orElse(null), company));
+			computerService.update(new Computer(id.get(), name.orElse(null), introduced.orElse(null),
+					discontinued.orElse(null), company));
 			printUtil.printn("Computer sucefully updated !");
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());

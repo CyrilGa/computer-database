@@ -58,7 +58,7 @@ public class ComputerDAOTest {
 		}
 		assertEquals(c1, c2);
 	}
-	
+
 	@Test
 	public void findFail() {
 		try {
@@ -102,7 +102,7 @@ public class ComputerDAOTest {
 		}
 		assertEquals("modified", c2.getName());
 	}
-	
+
 	@Test
 	public void updateFail() {
 		try {
@@ -136,11 +136,11 @@ public class ComputerDAOTest {
 			fail("database error");
 			return;
 		}
-		
+
 		try {
 			computerDAO.delete(c1);
 		} catch (EmptyResultSetException e) {
-			
+
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			fail("database error");
@@ -188,5 +188,5 @@ public class ComputerDAOTest {
 			return;
 		}
 	}
-	
+
 }

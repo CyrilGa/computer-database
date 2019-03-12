@@ -122,8 +122,7 @@ public class ComputerPage {
 			if (orderByNameIsValid(orderByName)) {
 				if (this.orderByName.equals(orderByName)) {
 					invOrderByOrder();
-				}
-				else {
+				} else {
 					orderByOrder = ORDERBYORDER_AUTORISED[0];
 				}
 				this.orderByName = orderByName;
@@ -132,12 +131,10 @@ public class ComputerPage {
 		}
 	}
 
-
 	public void invOrderByOrder() {
-		if (ORDERBYORDER_AUTORISED[0].equals(orderByOrder)){
+		if (ORDERBYORDER_AUTORISED[0].equals(orderByOrder)) {
 			orderByOrder = ORDERBYORDER_AUTORISED[1];
-		}
-		else {
+		} else {
 			orderByOrder = ORDERBYORDER_AUTORISED[0];
 		}
 	}

@@ -1,6 +1,6 @@
 package fr.cgaiton611.exception.validation;
 
-public class NameIsEmptyException extends ValidationException{
+public class NameIsEmptyException extends ValidationException {
 
 	private static final long serialVersionUID = 1L;
 

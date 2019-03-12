@@ -33,8 +33,8 @@ public class DashboardServlet extends HttpServlet {
 	private final Logger logger = LoggerFactory.getLogger(DashboardServlet.class);
 
 	private static final long serialVersionUID = 1L;
-	
-	private final String[] tableNames = {"Computer name", "Introduced date", "Discontinued date", "Company"};
+
+	private final String[] tableNames = { "Computer name", "Introduced date", "Discontinued date", "Company" };
 
 	@Autowired
 	private ComputerService computerService;
@@ -43,7 +43,7 @@ public class DashboardServlet extends HttpServlet {
 
 	@Autowired
 	private ComputerPage computerPage;
-	
+
 	ConvertUtil convertUtil = new ConvertUtil();
 
 	@Override
@@ -59,10 +59,10 @@ public class DashboardServlet extends HttpServlet {
 		if (page.isPresent()) {
 			computerPage.setPage(page.get());
 		}
-		
+
 		Optional<Integer> elements = convertUtil.stringToInteger(request.getParameter("elements"));
 		if (elements.isPresent()) {
-				computerPage.setElements(elements.get());
+			computerPage.setElements(elements.get());
 		}
 
 		computerPage.setComputerName(request.getParameter("computerName"));
@@ -70,13 +70,11 @@ public class DashboardServlet extends HttpServlet {
 
 		computerPage.setCompanyName(request.getParameter("companyName"));
 		request.setAttribute("companyName", computerPage.getCompanyName());
-		
+
 		computerPage.setOrderByName(request.getParameter("orderByName"));
 		request.setAttribute("orderByName", computerPage.getOrderByName());
 
 		request.setAttribute("orderByOrder", computerPage.getOrderByOrder());
-
-
 
 		List<Computer> computers = new ArrayList<>();
 		try {
@@ -87,7 +85,6 @@ public class DashboardServlet extends HttpServlet {
 			logger.warn(e.getMessage());
 			request.setAttribute("errorMsgList", "Database error. The computer list could not be loaded");
 		}
-		
 
 		request.setAttribute("navigationPages", getNavigationPages(computerPage));
 
@@ -101,13 +98,12 @@ public class DashboardServlet extends HttpServlet {
 		}
 
 		request.setAttribute("page", computerPage.getPage());
-		
+
 		request.setAttribute("ELEMENTS_AUTORISED", computerPage.ELEMENTS_AUTORISED);
 		request.setAttribute("elements", computerPage.getElements());
 
 		request.setAttribute("ORDERBYNAME_AUTORISED", computerPage.ORDERBYNAME_AUTORISED);
 		request.setAttribute("tableNames", tableNames);
-		
 
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/resources/views/dashboard.jsp");
 		dispatcher.forward(request, response);
@@ -168,7 +164,7 @@ public class DashboardServlet extends HttpServlet {
 			}
 		}
 		HttpSession session = request.getSession(true);
-		session.setAttribute("dashboardMsg", MessageFormat.format("{0}sur{1} {2}", count, N, dashboardMsg));
+		session.setAttribute("dashboardMsg", MessageFormat.format("{0} sur {1} {2}", count, N, dashboardMsg));
 		response.sendRedirect(request.getContextPath() + "/dashboard");
 	}
 

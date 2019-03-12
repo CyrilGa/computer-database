@@ -29,7 +29,6 @@ public class CompanyPage {
 		return page;
 	}
 
-
 	public void setPage(int page) {
 		this.page = page;
 		if (this.page <= 0)
@@ -50,7 +49,6 @@ public class CompanyPage {
 		}
 	}
 
-
 	public void pageInc() {
 		page++;
 		if (page >= max)
@@ -70,5 +68,5 @@ public class CompanyPage {
 	public void calculateMax() throws DAOException {
 		max = (companyService.count() / elements);
 	}
-	
+
 }

@@ -21,7 +21,6 @@ import fr.cgaiton611.dto.ComputerDTO;
 import fr.cgaiton611.dto.ComputerMapper;
 import fr.cgaiton611.exception.dao.DAOException;
 import fr.cgaiton611.exception.dao.EmptyResultSetException;
-import fr.cgaiton611.exception.mapping.MappingException;
 import fr.cgaiton611.exception.validation.ValidationException;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.CompanyService;
@@ -102,27 +101,22 @@ public class EditComputerServlet extends HttpServlet {
 		ComputerDTO computerDTO = new ComputerDTO(id, name, introduced, discontinued, companyName);
 		String dashboardMsg;
 
+		Computer computer = computerMapper.toComputer(computerDTO);
 		try {
-			Computer computer = computerMapper.toComputer(computerDTO);
+			ComputerValidator.validateForEdit(computer);
 			try {
-				ComputerValidator.validateForEdit(computer);
-				try {
-					computerService.update(computer);
-					dashboardMsg = "Computer successfully updated";
-				} catch (EmptyResultSetException e) {
-					logger.warn(e.getMessage());
-					dashboardMsg = "Computer not updated, computer not found";
-				} catch (DAOException e) {
-					logger.warn(e.getMessage());
-					dashboardMsg = "Computer not updated, database not accessible";
-				}
-			} catch (ValidationException e) {
+				computerService.update(computer);
+				dashboardMsg = "Computer successfully updated";
+			} catch (EmptyResultSetException e) {
 				logger.warn(e.getMessage());
-				dashboardMsg = "Computer not updated, bad validation";
+				dashboardMsg = "Computer not updated, computer not found";
+			} catch (DAOException e) {
+				logger.warn(e.getMessage());
+				dashboardMsg = "Computer not updated, database not accessible";
 			}
-		} catch (MappingException e) {
+		} catch (ValidationException e) {
 			logger.warn(e.getMessage());
-			dashboardMsg = "Computer not updated, bad mapping";
+			dashboardMsg = "Computer not updated, bad validation";
 		}
 
 		HttpSession session = request.getSession(true);

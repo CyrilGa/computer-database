@@ -17,27 +17,27 @@ public class CompanyService {
 	public List<Company> findPaged(int page, int elements) throws DAOException {
 		return companyDAO.findPaged(page, elements);
 	}
-	
+
 	public Company find(long id) throws DAOException {
 		return companyDAO.find(new Company(id));
 	}
-	
+
 	public Company findByName(String name) throws DAOException {
 		return companyDAO.findByName(name);
 	}
-	
+
 	public Company create(String name) throws DAOException {
 		return companyDAO.create(new Company(name));
 	}
-	
+
 	public int count() throws DAOException {
 		return companyDAO.count();
 	}
-	
-	public List<String> findAllName() throws DAOException{
+
+	public List<String> findAllName() throws DAOException {
 		return companyDAO.findAllName();
 	}
-	
+
 	public void delete(long id) throws DAOException {
 		companyDAO.delete(new Company(id));
 	}

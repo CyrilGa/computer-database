@@ -1,6 +1,6 @@
 package fr.cgaiton611.exception.dao;
 
-public class DataSourceException extends DAOException{
+public class DataSourceException extends DAOException {
 
 	private static final long serialVersionUID = 1L;
 
@@ -9,6 +9,4 @@ public class DataSourceException extends DAOException{
 		return "DataSource not accessible";
 	}
 
-	
-	
 }

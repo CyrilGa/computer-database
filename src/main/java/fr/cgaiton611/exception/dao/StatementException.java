@@ -1,6 +1,6 @@
 package fr.cgaiton611.exception.dao;
 
-public class StatementException extends DAOException{
+public class StatementException extends DAOException {
 
 	private static final long serialVersionUID = 1L;
 
@@ -9,6 +9,4 @@ public class StatementException extends DAOException{
 		return "The database request failed";
 	}
 
-	
-	
 }

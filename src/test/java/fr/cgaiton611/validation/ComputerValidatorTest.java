@@ -9,9 +9,9 @@ import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.util.ConvertUtil;
 
 public class ComputerValidatorTest {
-	
+
 	ConvertUtil convertUtil = new ConvertUtil();
-	
+
 	@Test
 	public void validateForAdd() {
 		Computer computer = null;
@@ -42,7 +42,7 @@ public class ComputerValidatorTest {
 			fail("validation failed");
 		}
 	}
-	
+
 	@Test
 	public void validateForEdit() {
 		Computer computer = null;
@@ -79,6 +79,5 @@ public class ComputerValidatorTest {
 			fail("validation failed");
 		}
 	}
-	
 
 }

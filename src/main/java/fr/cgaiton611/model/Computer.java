@@ -74,7 +74,7 @@ public class Computer {
 		if (company == null) {
 			company = new Company();
 		}
- 		return company;
+		return company;
 	}
 
 	public void setCompany(Company company) {

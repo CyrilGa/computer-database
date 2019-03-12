@@ -46,16 +46,18 @@ public class DeleteTest {
 	@Before
 	public void beforeAll() {
 		try {
-			if (computerService.findPageWithParameters(0, 1, "TEST 1 COMPUTER DELETE", "").size() == 0) {
+			if (computerService.findPageWithParameters(0, 1, "TEST 1 COMPUTER DELETE", "", "computer.id", "ASC")
+					.size() == 0) {
 				computerService.create(new Computer("TEST 1 COMPUTER DELETE", null, null, new Company()));
 			}
-			if (computerService.findPageWithParameters(0, 1, "TEST 2 COMPUTER DELETE", "").size() == 0) {
+			if (computerService.findPageWithParameters(0, 1, "TEST 2 COMPUTER DELETE", "", "computer.id", "ASC")
+					.size() == 0) {
 				computerService.create(new Computer("TEST 2 COMPUTER DELETE", null, null, new Company()));
 			}
 		} catch (DAOException e) {
 			logger.error(e.getMessage());
 		}
-		driver.get("http://localhost:8888/cdb/dashboard");
+		driver.get("http://localhost:9090/cdb/dashboard");
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
 
@@ -73,9 +75,9 @@ public class DeleteTest {
 		;
 		driver.findElement(By.id("deleteSelected")).click();
 		driver.switchTo().alert().accept();
-		new WebDriverWait(driver, 10).until(ExpectedConditions.urlToBe("http://localhost:8888/cdb/dashboard"));
+		new WebDriverWait(driver, 10).until(ExpectedConditions.urlToBe("http://localhost:9090/cdb/dashboard"));
 		String url = driver.getCurrentUrl();
-		assertTrue("http://localhost:8888/cdb/dashboard".equals(url));
+		assertTrue("http://localhost:9090/cdb/dashboard".equals(url));
 		String dashMsg = driver.findElement(By.id("dashboardMsg")).getText();
 		assertTrue(dashMsg.endsWith("Computer(s) successfully deleted"));
 
@@ -105,7 +107,7 @@ public class DeleteTest {
 		driver.findElement(By.id("editComputer")).click();
 
 		String url = driver.getCurrentUrl();
-		assertTrue("http://localhost:8888/cdb/dashboard#".equals(url));
+		assertTrue("http://localhost:9090/cdb/dashboard#".equals(url));
 
 		int c2 = 0;
 		try {
