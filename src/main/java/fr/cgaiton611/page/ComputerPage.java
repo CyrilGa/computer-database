@@ -120,30 +120,19 @@ public class ComputerPage {
 	public void setOrderByName(String orderByName) {
 		if (orderByName != null) {
 			if (orderByNameIsValid(orderByName)) {
-				this.orderByName = orderByName;
-				page = 0;
 				if (this.orderByName.equals(orderByName)) {
 					invOrderByOrder();
 				}
 				else {
 					orderByOrder = ORDERBYORDER_AUTORISED[0];
 				}
+				this.orderByName = orderByName;
+				page = 0;
 			}
 		}
 	}
 
-	public void setOrderByOrder(String orderByOrder) {
-		if (orderByOrder != null) {
-			if (orderByOrderIsValid(orderByOrder)) {
-				this.orderByOrder = orderByOrder;
-				page = 0;
-				if (this.orderByOrder.equals(orderByOrder)) {
-					invOrderByOrder();
-				}
-			}
-		}
-	}
-	
+
 	public void invOrderByOrder() {
 		if (ORDERBYORDER_AUTORISED[0].equals(orderByOrder)){
 			orderByOrder = ORDERBYORDER_AUTORISED[1];

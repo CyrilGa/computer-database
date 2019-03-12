@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import com.zaxxer.hikari.pool.HikariPool.PoolInitializationException;
 
 @Configuration
 @ComponentScan(basePackages = { "fr.cgaiton611.page", "fr.cgaiton611.persistence", "fr.cgaiton611.service",
@@ -24,10 +25,14 @@ public class SpringConfig {
 		HikariConfig config = null;
 		try {
 			config = new HikariConfig(configFile);
+			try {
 			ds = new HikariDataSource(config);
 			logger.info("Datasource initialized");
-			logger.error("Error initializing HikariDataSource");
-		} catch (IllegalArgumentException e) {
+			}
+			catch (PoolInitializationException e) {
+				logger.error("Error initializing HikariDataSource");
+			}
+		} catch (RuntimeException e) {
 			logger.error("Properties file for database not found or incorrect");
 		}
 		return ds;
