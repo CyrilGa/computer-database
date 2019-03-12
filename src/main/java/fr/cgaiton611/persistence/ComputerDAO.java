@@ -6,12 +6,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +24,7 @@ import fr.cgaiton611.exception.dao.EmptyResultSetException;
 import fr.cgaiton611.exception.dao.StatementException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
+import fr.cgaiton611.servlet.DashboardServlet;
 import fr.cgaiton611.util.ConvertUtil;
 
 /**
@@ -33,6 +37,8 @@ import fr.cgaiton611.util.ConvertUtil;
 @Repository
 public class ComputerDAO extends DAO<Computer> {
 
+	private final Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+	
 	@Autowired
 	DataSource ds;
 
@@ -46,12 +52,12 @@ public class ComputerDAO extends DAO<Computer> {
 	private static final String SQL_COUNT = "SELECT COUNT(*) as count FROM computer";
 	private static final String SQL_FIND_BY_NAME_PAGED = "SELECT computer.id as id, computer.name as name, introduced, discontinued, company_id, company.name as companyName "
 			+ "FROM computer left JOIN company ON company_id = company.id WHERE computer.name LIKE ? "
-			+ "ORDER BY computer.id ASC " + "LIMIT ? OFFSET ? ";
+			+ "ORDER BY {0} {1} LIMIT ? OFFSET ? ";
 	private static final String SQL_COUNT_BY_NAME = "SELECT COUNT(*) as count FROM computer " + "WHERE name LIKE ? ";
 	private static final String SQL_FIND_BY_NAME_PAGED_WITH_COMPANY_NAME = "SELECT computer.id as id, computer.name as name, introduced, discontinued, company_id, company.name as companyName "
 			+ "FROM computer JOIN company "
 			+ "ON company.id IN (SELECT id FROM company WHERE name LIKE ? ) AND company_id = company.id "
-			+ "WHERE computer.name LIKE ? ORDER BY computer.id ASC LIMIT ? OFFSET ? ";
+			+ "WHERE computer.name LIKE ? ORDER BY {0} {1} LIMIT ? OFFSET ? ";
 	private static final String SQL_COUNT_BY_NAME_WITH_COMPANY_NAME = "SELECT COUNT(*) as count FROM computer JOIN company "
 			+ "ON company.id IN (SELECT id FROM company WHERE name LIKE ? ) AND company_id = company.id "
 			+ "WHERE computer.name LIKE ? ";
@@ -185,7 +191,7 @@ public class ComputerDAO extends DAO<Computer> {
 		return max;
 	}
 
-	public List<Computer> findPageWithParameters(int page, int elements, String computerName, String companyName)
+	public List<Computer> findPageWithParameters(int page, int elements, String computerName, String companyName, String orderByName, String orderByOrder)
 			throws DAOException {
 		checkDataSource();
 		List<Computer> computers = new ArrayList<>();
@@ -195,6 +201,7 @@ public class ComputerDAO extends DAO<Computer> {
 		} else {
 			SQL = SQL_FIND_BY_NAME_PAGED_WITH_COMPANY_NAME;
 		}
+		SQL = MessageFormat.format(SQL, orderByName, orderByOrder);
 
 		try (Connection connection = ds.getConnection(); PreparedStatement prepare = connection.prepareStatement(SQL)) {
 

@@ -123,8 +123,15 @@
 					aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 				</a></li>
 
-				<c:forEach items="${navigationPages}" var="page">
-					<li><a href="/cdb/dashboard?page=${page}">${page}</a></li>
+				<c:forEach items="${navigationPages}" var="navPage">
+					<c:choose>
+						<c:when test="${page == navPage}">
+							<li class="active"><a href="/cdb/dashboard?page=${navPage}">${navPage}</a></li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="/cdb/dashboard?page=${navPage}">${navPage}</a></li>
+						</c:otherwise>
+					</c:choose>
 				</c:forEach>
 
 				<li><a href="/cdb/dashboard?page=${page + 1}" aria-label="Next">
@@ -133,9 +140,16 @@
 			</ul>
 
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<a href="/cdb/dashboard?elements=10" class="btn btn-default">10</a>
-				<a href="/cdb/dashboard?elements=50" class="btn btn-default">50</a>
-				<a href="/cdb/dashboard?elements=100" class="btn btn-default">100</a>
+				<c:forEach items="${ELEMENTS_AUTORISED}" var="elem">
+					<c:choose>
+						<c:when test="${elem == elements}">
+							<a href="/cdb/dashboard?elements=${elem}" class="btn btn-primary">${elem}</a>
+						</c:when>
+						<c:otherwise>
+							<a href="/cdb/dashboard?elements=${elem}" class="btn btn-default">${elem}</a>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
 			</div>
 			
 		</div>

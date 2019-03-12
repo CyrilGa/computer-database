@@ -15,13 +15,29 @@ import fr.cgaiton611.service.ComputerService;
 public class ComputerPage {
 
 	private final Logger logger = LoggerFactory.getLogger(ComputerPage.class);
-	@Autowired
+
 	private ComputerService computerService;
-	private int elements = 10;
+
+	public int[] ELEMENTS_AUTORISED = { 10, 50, 100 };
+	public String[] ORDERBYNAME_AUTORISED = { "computer.name", "introduced", "discontinued", "company.name" };
+	public String[] ORDERBYORDER_AUTORISED = { "ASC", "DESC" };
+	private int elements = ELEMENTS_AUTORISED[0];
 	private int page = 0;
 	private int max = 0;
 	private String computerName = "";
 	private String companyName = "";
+	private String orderByName = ORDERBYNAME_AUTORISED[0];
+	private String orderByOrder = ORDERBYORDER_AUTORISED[0];
+
+	@Autowired
+	public ComputerPage(ComputerService computerService) {
+		this.computerService = computerService;
+		try {
+			calculateMax();
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+		}
+	}
 
 	public int getMax() {
 		return max;
@@ -38,23 +54,39 @@ public class ComputerPage {
 	public String getCompanyName() {
 		return companyName;
 	}
+	
+	
+
+	public int getElements() {
+		return elements;
+	}
+
+	public String getOrderByName() {
+		return orderByName;
+	}
+
+	public String getOrderByOrder() {
+		return orderByOrder;
+	}
 
 	public void setPage(int page) {
 		this.page = page;
-		if (this.page <= 0)
+		if (this.page < 0)
 			this.page = 0;
-		else if (this.page >= max)
+		else if (this.page > max)
 			this.page = max;
 	}
 
 	public void setElements(int elements) {
-		if (this.elements != elements) {
-			page = 0;
-			this.elements = elements;
-			try {
-				calculateMax();
-			} catch (DAOException e) {
-				logger.warn(e.getMessage());
+		if (elementsIsValid(elements)) {
+			if (this.elements != elements) {
+				page = 0;
+				this.elements = elements;
+				try {
+					calculateMax();
+				} catch (DAOException e) {
+					logger.warn(e.getMessage());
+				}
 			}
 		}
 	}
@@ -87,6 +119,20 @@ public class ComputerPage {
 		}
 	}
 
+	public void setOrderByName(String orderByName) {
+		if (orderByName != null) {
+			if (oderByNameIsValid(orderByName))
+				this.orderByName = orderByName;
+		}
+	}
+
+	public void setOrderByOrder(String orderByOrder) {
+		if (orderByOrder != null) {
+			if (oderByOrderIsValid(orderByOrder))
+				this.orderByOrder = orderByOrder;
+		}
+	}
+
 	public void pageInc() {
 		page++;
 		if (page >= max)
@@ -100,11 +146,36 @@ public class ComputerPage {
 	}
 
 	public List<Computer> getCurrent() throws DAOException {
-		return computerService.findPageWithParameters(page, elements, computerName, companyName);
+		return computerService.findPageWithParameters(page, elements, computerName, companyName, orderByName,
+				orderByOrder);
 	}
 
 	public void calculateMax() throws DAOException {
 		max = (computerService.countWithParameters(computerName, companyName) / elements);
+	}
+
+	public boolean elementsIsValid(int test) {
+		for (int i : ELEMENTS_AUTORISED) {
+			if (i == test)
+				return true;
+		}
+		return false;
+	}
+
+	public boolean oderByNameIsValid(String test) {
+		for (String s : ORDERBYNAME_AUTORISED) {
+			if (s.equals(test))
+				return true;
+		}
+		return false;
+	}
+
+	public boolean oderByOrderIsValid(String test) {
+		for (String s : ORDERBYORDER_AUTORISED) {
+			if (s.equals(test))
+				return true;
+		}
+		return false;
 	}
 
 }

@@ -32,8 +32,6 @@ public class DashboardServlet extends HttpServlet {
 
 	private final Logger logger = LoggerFactory.getLogger(DashboardServlet.class);
 
-	private int[] ELEMENTS_AUTORISED = { 10, 50, 100 };
-
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
@@ -43,6 +41,7 @@ public class DashboardServlet extends HttpServlet {
 
 	@Autowired
 	private ComputerPage computerPage;
+	
 	ConvertUtil convertUtil = new ConvertUtil();
 
 	@Override
@@ -61,9 +60,7 @@ public class DashboardServlet extends HttpServlet {
 		
 		Optional<Integer> elements = convertUtil.stringToInteger(request.getParameter("elements"));
 		if (elements.isPresent()) {
-			if (elementsIsValid(elements.get())) {
 				computerPage.setElements(elements.get());
-			}
 		}
 
 		computerPage.setComputerName(request.getParameter("computerName"));
@@ -71,6 +68,12 @@ public class DashboardServlet extends HttpServlet {
 
 		computerPage.setCompanyName(request.getParameter("companyName"));
 		request.setAttribute("companyName", computerPage.getCompanyName());
+		
+		computerPage.setOrderByName(request.getParameter("orderByName"));
+		request.setAttribute("orderByName", computerPage.getCompanyName());
+
+		computerPage.setOrderByOrder(request.getParameter("orderByOrder"));
+
 
 
 		List<Computer> computers = new ArrayList<>();
@@ -96,6 +99,9 @@ public class DashboardServlet extends HttpServlet {
 		}
 
 		request.setAttribute("page", computerPage.getPage());
+		
+		request.setAttribute("ELEMENTS_AUTORISED", computerPage.ELEMENTS_AUTORISED);
+		request.setAttribute("elements", computerPage.getElements());
 
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/resources/views/dashboard.jsp");
 		dispatcher.forward(request, response);
@@ -133,14 +139,6 @@ public class DashboardServlet extends HttpServlet {
 				sup = false;
 		}
 		return navigationPages;
-	}
-
-	public boolean elementsIsValid(int elements) {
-		for (int i : ELEMENTS_AUTORISED) {
-			if (i == elements)
-				return true;
-		}
-		return false;
 	}
 
 	@Override

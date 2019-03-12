@@ -1,8 +1,6 @@
 package fr.cgaiton611.service;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,9 +62,9 @@ public class ComputerService {
 		return computerDAO.count();
 	}
 
-	public List<Computer> findPageWithParameters(int page, int elements, String computerName, String companyName)
+	public List<Computer> findPageWithParameters(int page, int elements, String computerName, String companyName, String orderByName, String orderByOrder)
 			throws DAOException {
-		return computerDAO.findPageWithParameters(page, elements, computerName, companyName);
+		return computerDAO.findPageWithParameters(page, elements, computerName, companyName, orderByName, orderByOrder);
 	}
 
 	public int countWithParameters(String computerName, String companyName) throws DAOException {
