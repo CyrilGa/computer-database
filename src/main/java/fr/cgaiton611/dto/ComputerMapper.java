@@ -35,6 +35,9 @@ public class ComputerMapper {
 		if (id.isPresent()) {
 			computer.setId(id.get());
 		}
+		else {
+			throw new IdNotConvertibleException();
+		}
 
 		computer.setName(computerDTO.getName());
 
