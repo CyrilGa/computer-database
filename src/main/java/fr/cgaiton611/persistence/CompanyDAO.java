@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.jdbc.config.JdbcNamespaceHandler;
 import org.springframework.stereotype.Repository;
 
 import fr.cgaiton611.exception.dao.DAOException;
@@ -37,6 +38,7 @@ public class CompanyDAO extends DAO<Company> {
 
 	@Override
 	public Company create(Company obj) throws DAOException {
+		JdbcNamespaceHandler m;
 		checkDataSource();
 		Company company = null;
 		try (Connection connection = ds.getConnection();
