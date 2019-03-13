@@ -38,7 +38,7 @@ public class AddTest {
 	public static void setUp() {
 		System.setProperty("webdriver.gecko.driver", "/home/cyril/Téléchargements/geckodriver");
 		driver = new FirefoxDriver();
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 	}
 
 	@Before

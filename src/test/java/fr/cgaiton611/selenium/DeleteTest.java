@@ -41,6 +41,7 @@ public class DeleteTest {
 	public static void setUp() {
 		System.setProperty("webdriver.gecko.driver", "/home/cyril/Téléchargements/geckodriver");
 		driver = new FirefoxDriver();
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 	}
 
 	@Before
@@ -58,7 +59,6 @@ public class DeleteTest {
 			logger.error(e.getMessage());
 		}
 		driver.get("http://localhost:9090/cdb/dashboard");
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
 
 	@Test
@@ -87,6 +87,8 @@ public class DeleteTest {
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 		}
+		logger.debug("c1 "+c1);
+		logger.debug("c2 "+c2);
 		assertEquals(c1 - c2, 2);
 	}
 

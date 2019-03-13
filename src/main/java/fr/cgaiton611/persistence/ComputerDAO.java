@@ -34,9 +34,6 @@ import fr.cgaiton611.util.ConvertUtil;
 @Repository
 public class ComputerDAO extends DAO<Computer> {
 
-	@Autowired
-	DataSource ds;
-
 	private ConvertUtil convertUtil = new ConvertUtil();
 
 	private static final String SQL_CREATE = "INSERT INTO computer(name, introduced, discontinued, company_id) VALUES(?, ?, ?, ?)";

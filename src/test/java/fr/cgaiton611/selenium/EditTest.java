@@ -34,8 +34,10 @@ public class EditTest {
 
 	private final Logger logger = LoggerFactory.getLogger(EditTest.class);
 	private static WebDriver driver;
+	
 	@Autowired
 	private CompanyService companyService;
+	
 	@Autowired
 	private ComputerService computerService;
 
@@ -43,12 +45,14 @@ public class EditTest {
 	public static void setUp() {
 		System.setProperty("webdriver.gecko.driver", "/home/cyril/Téléchargements/geckodriver");
 		driver = new FirefoxDriver();
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 	}
 
 	@Before
 	public void beforeAll() {
 		try {
 			companyService.findByName("TEST COMPANY EDIT");
+			logger.info("TEST COMANY EDIT already created");
 		} catch (EmptyResultSetException e) {
 			try {
 				companyService.create("TEST COMPANY EDIT");
@@ -69,7 +73,6 @@ public class EditTest {
 			logger.error(e.getMessage());
 		}
 		driver.get("http://localhost:9090/cdb/dashboard");
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
 
 	@Test
