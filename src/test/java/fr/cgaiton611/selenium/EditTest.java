@@ -21,7 +21,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.cgaiton611.exception.dao.DAOException;
-import fr.cgaiton611.exception.dao.EmptyResultSetException;
+import fr.cgaiton611.exception.dao.NoRowUpdatedException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.CompanyService;
@@ -53,7 +53,7 @@ public class EditTest {
 		try {
 			companyService.findByName("TEST COMPANY EDIT");
 			logger.info("TEST COMANY EDIT already created");
-		} catch (EmptyResultSetException e) {
+		} catch (NoRowUpdatedException e) {
 			try {
 				companyService.create("TEST COMPANY EDIT");
 			} catch (DAOException e1) {

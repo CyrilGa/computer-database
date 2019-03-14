@@ -21,7 +21,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.cgaiton611.exception.dao.DAOException;
-import fr.cgaiton611.exception.dao.EmptyResultSetException;
+import fr.cgaiton611.exception.dao.NoRowUpdatedException;
 import fr.cgaiton611.service.CompanyService;
 import fr.cgaiton611.springconfig.SpringConfig;
 
@@ -45,7 +45,7 @@ public class AddTest {
 	public void beforeAll() {
 		try {
 			companyService.findByName("TEST COMPANY ADD");
-		} catch (EmptyResultSetException e) {
+		} catch (NoRowUpdatedException e) {
 			try {
 				companyService.create("TEST COMPANY ADD");
 			} catch (DAOException e1) {

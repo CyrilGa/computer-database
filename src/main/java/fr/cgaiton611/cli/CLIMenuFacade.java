@@ -14,14 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import fr.cgaiton611.exception.dao.DAOException;
-import fr.cgaiton611.exception.dao.EmptyResultSetException;
+import fr.cgaiton611.exception.dao.NoRowUpdatedException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.page.CompanyPage;
 import fr.cgaiton611.page.ComputerPage;
 import fr.cgaiton611.service.CompanyService;
 import fr.cgaiton611.service.ComputerService;
-import fr.cgaiton611.servlet.DashboardServlet;
 
 /**
  * Class serving as a front-facing interface for treating the cli
@@ -32,10 +31,11 @@ import fr.cgaiton611.servlet.DashboardServlet;
 
 @Controller
 public class CLIMenuFacade {
-	private final Logger logger = LoggerFactory.getLogger(DashboardServlet.class);
+	private final Logger logger = LoggerFactory.getLogger(CLIMenuFacade.class);
 
 	ScanUtil scanUtil = new ScanUtil();
 	PrintUtil printUtil = new PrintUtil();
+
 	@Autowired
 	ComputerService computerService;
 	@Autowired
@@ -144,7 +144,7 @@ public class CLIMenuFacade {
 		Company company;
 		try {
 			company = companyService.find(companyId.get());
-		} catch (EmptyResultSetException e) {
+		} catch (NoRowUpdatedException e) {
 			company = null;
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
@@ -180,20 +180,24 @@ public class CLIMenuFacade {
 
 		Optional<Long> companyId = scanUtil.askLong("company_id", true);
 
-		Company company;
-		try {
-			company = companyService.find(companyId.get());
-		} catch (EmptyResultSetException e) {
-			company = null;
-		} catch (DAOException e) {
-			logger.warn(e.getMessage());
-			printUtil.printn("Computer not created, database error");
-			return;
+		Company company = null;
+		if (companyId.isPresent()) {
+			try {
+				company = companyService.find(companyId.get());
+			} catch (NoRowUpdatedException e) {
+				company = null;
+			} catch (DAOException e) {
+				logger.warn(e.getMessage());
+				printUtil.printn("Computer not updated, database error");
+				return;
+			}
 		}
 
 		try {
 			computerService.update(new Computer(id.get(), name.orElse(null), introduced.orElse(null),
 					discontinued.orElse(null), company));
+			logger.debug(new Computer(id.get(), name.orElse(null), introduced.orElse(null),
+					discontinued.orElse(null), company).toString());
 			printUtil.printn("Computer sucefully updated !");
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());

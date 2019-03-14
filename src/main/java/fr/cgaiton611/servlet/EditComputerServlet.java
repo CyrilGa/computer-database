@@ -20,7 +20,7 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import fr.cgaiton611.dto.ComputerDTO;
 import fr.cgaiton611.dto.ComputerMapper;
 import fr.cgaiton611.exception.dao.DAOException;
-import fr.cgaiton611.exception.dao.EmptyResultSetException;
+import fr.cgaiton611.exception.dao.NoRowUpdatedException;
 import fr.cgaiton611.exception.validation.ValidationException;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.CompanyService;
@@ -107,7 +107,7 @@ public class EditComputerServlet extends HttpServlet {
 			try {
 				computerService.update(computer);
 				dashboardMsg = "Computer successfully updated";
-			} catch (EmptyResultSetException e) {
+			} catch (NoRowUpdatedException e) {
 				logger.warn(e.getMessage());
 				dashboardMsg = "Computer not updated, computer not found";
 			} catch (DAOException e) {

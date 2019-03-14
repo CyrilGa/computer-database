@@ -3,6 +3,8 @@ package fr.cgaiton611.dao;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.util.Date;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -12,7 +14,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.cgaiton611.exception.dao.DAOException;
-import fr.cgaiton611.exception.dao.EmptyResultSetException;
+import fr.cgaiton611.exception.dao.NoRowUpdatedException;
+import fr.cgaiton611.exception.dao.NotOneResultException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.persistence.ComputerDAO;
@@ -41,7 +44,7 @@ public class ComputerDAOTest {
 	public void find() {
 		Computer c1;
 		try {
-			c1 = computerDAO.create(new Computer("TEST COMPUTER DAO", null, null, new Company()));
+			c1 = computerDAO.create(new Computer("TEST COMPUTER DAO", new Date(), new Date(), new Company(2)));
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			fail("database error");
@@ -64,7 +67,7 @@ public class ComputerDAOTest {
 		try {
 			computerDAO.find(new Computer(665169595));
 			fail("sql error");
-		} catch (EmptyResultSetException e) {
+		} catch (NotOneResultException e) {
 			// ok
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
@@ -108,7 +111,7 @@ public class ComputerDAOTest {
 		try {
 			computerDAO.update(new Computer(61618451, "modified", null, null, new Company()));
 			fail("sql error");
-		} catch (EmptyResultSetException e) {
+		} catch (NoRowUpdatedException e) {
 			// ok
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
@@ -138,18 +141,8 @@ public class ComputerDAOTest {
 		}
 
 		try {
-			computerDAO.delete(c1);
-		} catch (EmptyResultSetException e) {
-
-		} catch (DAOException e) {
-			logger.warn(e.getMessage());
-			fail("database error");
-			return;
-		}
-
-		try {
 			computerDAO.find(c1);
-		} catch (EmptyResultSetException e) {
+		} catch (NotOneResultException e) {
 			// ok
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
@@ -178,9 +171,9 @@ public class ComputerDAOTest {
 		}
 
 		try {
-			computerDAO.find(c1);
+			computerDAO.delete(c1);
 			fail("sql error");
-		} catch (EmptyResultSetException e) {
+		} catch (NoRowUpdatedException e) {
 			// ok
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());

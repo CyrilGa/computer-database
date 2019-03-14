@@ -62,7 +62,7 @@ public class CompanyPage {
 	}
 
 	public List<Company> getCurrent() throws DAOException {
-		return companyService.findPaged(page, elements);
+		return companyService.findPage(page, elements);
 	}
 
 	public void calculateMax() throws DAOException {

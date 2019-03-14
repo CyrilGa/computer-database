@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.cgaiton611.exception.dao.DAOException;
-import fr.cgaiton611.exception.dao.EmptyResultSetException;
+import fr.cgaiton611.exception.dao.NoRowUpdatedException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.persistence.ComputerDAO;
@@ -23,18 +23,11 @@ public class ComputerService {
 		try {
 			Company company = companyService.find(computer.getCompany().getId());
 			computer.setCompany(company);
-		} catch (EmptyResultSetException e) {
+		} catch (NoRowUpdatedException e) {
 			computer.setCompany(null);
 		}
 		return computer;
 	}
-
-//	public Computer create(String name, Date introduced, Date discontinued, long companyId)
-//			throws DAOException {
-//		Company company = companyService.find(companyId);
-//		Computer computer = new Computer(name, introduced, discontinued, company.orElse(null));
-//		return computerDAO.create(computer);
-//	}
 
 	public Computer create(Computer computer) throws DAOException {
 		return computerDAO.create(computer);
@@ -54,11 +47,11 @@ public class ComputerService {
 
 	public List<Computer> findPageWithParameters(int page, int elements, String computerName, String companyName,
 			String orderByName, String orderByOrder) throws DAOException {
-		return computerDAO.findPageWithParameters(page, elements, computerName, companyName, orderByName, orderByOrder);
+		return computerDAO.findPage(page, elements, computerName, companyName, orderByName, orderByOrder);
 	}
 
 	public int countWithParameters(String computerName, String companyName) throws DAOException {
-		return computerDAO.countWithParameters(computerName, companyName);
+		return computerDAO.count(computerName, companyName);
 	}
 
 }

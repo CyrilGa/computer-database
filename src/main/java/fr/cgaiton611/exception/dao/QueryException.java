@@ -1,12 +1,11 @@
 package fr.cgaiton611.exception.dao;
 
-public class DAOException extends Exception {
+public class QueryException extends DAOException {
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	public String getMessage() {
-		return "DAO exception";
+		return "The query encounter a problem";
 	}
-
 }

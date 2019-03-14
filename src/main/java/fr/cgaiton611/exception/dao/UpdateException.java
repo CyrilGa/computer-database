@@ -1,11 +1,11 @@
 package fr.cgaiton611.exception.dao;
 
-public class EmptyResultSetException extends DAOException {
-	
+public class UpdateException extends DAOException {
+
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	public String getMessage() {
-		return "Empty result set";
+		return "The update encounter a problem";
 	}
 }

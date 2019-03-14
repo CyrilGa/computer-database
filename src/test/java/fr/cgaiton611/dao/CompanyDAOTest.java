@@ -12,7 +12,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.cgaiton611.exception.dao.DAOException;
-import fr.cgaiton611.exception.dao.EmptyResultSetException;
+import fr.cgaiton611.exception.dao.NoRowUpdatedException;
+import fr.cgaiton611.exception.dao.NotOneResultException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.persistence.CompanyDAO;
 import fr.cgaiton611.springconfig.SpringConfig;
@@ -64,7 +65,7 @@ public class CompanyDAOTest {
 		try {
 			companyDAO.find(new Company(99999999));
 			fail("sql error");
-		} catch (EmptyResultSetException e) {
+		} catch (NotOneResultException e) {
 			// ok
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
@@ -108,7 +109,7 @@ public class CompanyDAOTest {
 		try {
 			companyDAO.update(new Company(56465156, "modified"));
 			fail("sql error");
-		} catch (EmptyResultSetException e) {
+		} catch (NoRowUpdatedException e) {
 			// ok
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
@@ -138,7 +139,7 @@ public class CompanyDAOTest {
 
 		try {
 			companyDAO.find(c1);
-		} catch (EmptyResultSetException e) {
+		} catch (NotOneResultException e) {
 			// ok
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
@@ -169,7 +170,7 @@ public class CompanyDAOTest {
 		try {
 			companyDAO.delete(c1);
 			fail("sql error");
-		} catch (EmptyResultSetException e) {
+		} catch (NoRowUpdatedException e) {
 			// ok
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());

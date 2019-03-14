@@ -14,8 +14,8 @@ public class CompanyService {
 	@Autowired
 	CompanyDAO companyDAO;
 
-	public List<Company> findPaged(int page, int elements) throws DAOException {
-		return companyDAO.findPaged(page, elements);
+	public List<Company> findPage(int page, int elements) throws DAOException {
+		return companyDAO.findPage(page, elements);
 	}
 
 	public Company find(long id) throws DAOException {
