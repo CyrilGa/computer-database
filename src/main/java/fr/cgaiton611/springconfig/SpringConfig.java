@@ -8,6 +8,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
@@ -16,9 +20,10 @@ import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.pool.HikariPool.PoolInitializationException;
 
 @Configuration
+@EnableWebMvc
 @ComponentScan(basePackages = { "fr.cgaiton611.page", "fr.cgaiton611.persistence", "fr.cgaiton611.service",
 		"fr.cgaiton611.dto", "fr.cgaiton611.cli", "fr.cgaiton611.servlet" })
-public class SpringConfig {
+public class SpringConfig implements WebMvcConfigurer{
 	private final Logger logger = LoggerFactory.getLogger(SpringConfig.class);
 	private final String configFileMain = "src/main/resources/db/main/db.properties";
 
@@ -44,9 +49,22 @@ public class SpringConfig {
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setViewClass(JstlView.class);
-		viewResolver.setPrefix("/resources/views/");
+		viewResolver.setPrefix("/WEB-INF/views/");
 		viewResolver.setSuffix(".jsp");
 		return viewResolver;
+	}
+	
+
+	@Override
+	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+		configurer.enable();
+}
+
+	@Override
+	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/js/**").addResourceLocations("/resources/js/");
+		registry.addResourceHandler("/css/**").addResourceLocations("/resources/css/");
+		registry.addResourceHandler("/fonts/**").addResourceLocations("/resources/fonts/");
 	}
 	
 }

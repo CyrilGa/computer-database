@@ -9,14 +9,9 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@EnableWebMvc
-public class WebConfig implements WebApplicationInitializer, WebMvcConfigurer {
+public class WebConfig implements WebApplicationInitializer {
 
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
@@ -29,19 +24,5 @@ public class WebConfig implements WebApplicationInitializer, WebMvcConfigurer {
 		servlet.setLoadOnStartup(1);
 		servlet.addMapping("/");
 	}
-
-
-	@Override
-	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-		WebMvcConfigurer.super.configureDefaultServletHandling(configurer);
-		configurer.enable();
-	}
-	
-	@Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry
-          .addResourceHandler("/resources/**")
-          .addResourceLocations("/resources/"); 
-    }
 
 }
