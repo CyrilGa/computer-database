@@ -1,23 +1,22 @@
 package fr.cgaiton611.servlet;
 
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import fr.cgaiton611.dto.ComputerDTO;
 import fr.cgaiton611.dto.ComputerMapper;
@@ -27,18 +26,17 @@ import fr.cgaiton611.page.ComputerPage;
 import fr.cgaiton611.service.ComputerService;
 import fr.cgaiton611.util.ConvertUtil;
 
-@WebServlet(urlPatterns = { "/dashboard", "" })
-public class DashboardServlet extends HttpServlet {
+@Controller
+@RequestMapping("/dashboard")
+public class DashboardServlet {
 
 	private final Logger logger = LoggerFactory.getLogger(DashboardServlet.class);
-
-	private static final long serialVersionUID = 1L;
 
 	private final String[] tableNames = { "Computer name", "Introduced date", "Discontinued date", "Company" };
 
 	@Autowired
 	private ComputerService computerService;
-	
+
 	@Autowired
 	private ComputerMapper computerMapper;
 
@@ -47,67 +45,68 @@ public class DashboardServlet extends HttpServlet {
 
 	ConvertUtil convertUtil = new ConvertUtil();
 
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	@GetMapping
+	protected String doGet(@RequestParam(required = false, name = "dashboardMsg") String pDashboardMsg,
+			@RequestParam(required = false, name = "page") String pPage,
+			@RequestParam(required = false, name = "elements") String pElements,
+			@RequestParam(required = false, name = "computerName") String pComputerName,
+			@RequestParam(required = false, name = "companyName") String pCompanyName,
+			@RequestParam(required = false, name = "orderByName") String pOrderByName, Model model) {
 
-		HttpSession session = request.getSession(true);
-		String dashboardMsg = (String) session.getAttribute("dashboardMsg");
-		request.setAttribute("dashboardMsg", dashboardMsg);
-		session.removeAttribute("dashboardMsg");
+		model.addAttribute("dashboardMsg", pDashboardMsg);
 
-		Optional<Integer> page = convertUtil.stringToInteger(request.getParameter("page"));
+		Optional<Integer> page = convertUtil.stringToInteger(pPage);
 		if (page.isPresent()) {
 			computerPage.setPage(page.get());
 		}
 
-		Optional<Integer> elements = convertUtil.stringToInteger(request.getParameter("elements"));
+		Optional<Integer> elements = convertUtil.stringToInteger(pElements);
 		if (elements.isPresent()) {
 			computerPage.setElements(elements.get());
 		}
 
-		computerPage.setComputerName(request.getParameter("computerName"));
-		request.setAttribute("computerName", computerPage.getComputerName());
+		computerPage.setComputerName(pComputerName);
+		model.addAttribute("computerName", computerPage.getComputerName());
 
-		computerPage.setCompanyName(request.getParameter("companyName"));
-		request.setAttribute("companyName", computerPage.getCompanyName());
+		computerPage.setCompanyName(pCompanyName);
+		model.addAttribute("companyName", computerPage.getCompanyName());
 
-		computerPage.setOrderByName(request.getParameter("orderByName"));
-		request.setAttribute("orderByName", computerPage.getOrderByName());
+		computerPage.setOrderByName(pOrderByName);
+		model.addAttribute("orderByName", computerPage.getOrderByName());
 
-		request.setAttribute("orderByOrder", computerPage.getOrderByOrder());
+		model.addAttribute("orderByOrder", computerPage.getOrderByOrder());
 
 		List<Computer> computers = new ArrayList<>();
 		try {
 			computers = computerPage.getCurrent();
 			List<ComputerDTO> computersDTO = computerMapper.toComputerDTOList(computers);
-			request.setAttribute("computers", computersDTO);
+			model.addAttribute("computers", computersDTO);
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
-			request.setAttribute("errorMsgList", "Database error. The computer list could not be loaded");
+			model.addAttribute("errorMsgList", "Database error. The computer list could not be loaded");
 		}
 
-		request.setAttribute("navigationPages", getNavigationPages(computerPage));
+		model.addAttribute("navigationPages", getNavigationPages(computerPage));
 
 		int count = 0;
 		try {
 			count = computerService.countWithParameters(computerPage.getComputerName(), computerPage.getCompanyName());
-			request.setAttribute("count", count);
+			model.addAttribute("count", count);
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
-			request.setAttribute("errorMsgCount", "Database error. The computer list could not be counted");
+			model.addAttribute("errorMsgCount", "Database error. The computer list could not be counted");
 		}
 
-		request.setAttribute("page", computerPage.getPage());
+		model.addAttribute("page", computerPage.getPage());
 
-		request.setAttribute("ELEMENTS_AUTORISED", computerPage.ELEMENTS_AUTORISED);
-		request.setAttribute("elements", computerPage.getElements());
+		model.addAttribute("ELEMENTS_AUTORISED", computerPage.ELEMENTS_AUTORISED);
+		model.addAttribute("elements", computerPage.getElements());
 
-		request.setAttribute("ORDERBYNAME_AUTORISED", computerPage.ORDERBYNAME_AUTORISED);
-		request.setAttribute("tableNames", tableNames);
+		model.addAttribute("ORDERBYNAME_AUTORISED", computerPage.ORDERBYNAME_AUTORISED);
+		model.addAttribute("tableNames", tableNames);
 
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/resources/views/dashboard.jsp");
-		dispatcher.forward(request, response);
+		
+		return "dashboard";
 
 	}
 
@@ -144,15 +143,14 @@ public class DashboardServlet extends HttpServlet {
 		return navigationPages;
 	}
 
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	@PostMapping
+	protected RedirectView doPost(@RequestParam(required = false, name = "selection") String pSelection,
+			RedirectAttributes redirectAttributes) {
 		String dashboardMsg = "Computer(s) successfully deleted";
 		int count = 0;
 		int N = 0;
-		String selection = request.getParameter("selection");
-		if (selection != null) {
-			String[] ids = selection.split(",");
+		if (pSelection != null) {
+			String[] ids = pSelection.split(",");
 			N = ids.length;
 			count = N;
 			for (int i = 0; i < ids.length; i++) {
@@ -164,15 +162,8 @@ public class DashboardServlet extends HttpServlet {
 				}
 			}
 		}
-		HttpSession session = request.getSession(true);
-		session.setAttribute("dashboardMsg", MessageFormat.format("{0} sur {1} {2}", count, N, dashboardMsg));
-		response.sendRedirect(request.getContextPath() + "/dashboard");
-	}
-
-	@Override
-	public void init() throws ServletException {
-		super.init();
-		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+		redirectAttributes.addAttribute("dashboardMsg", MessageFormat.format("{0} sur {1} {2}", count, N, dashboardMsg));
+		return new RedirectView("dashboard");
 	}
 
 }

@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -14,7 +17,7 @@ import com.zaxxer.hikari.pool.HikariPool.PoolInitializationException;
 
 @Configuration
 @ComponentScan(basePackages = { "fr.cgaiton611.page", "fr.cgaiton611.persistence", "fr.cgaiton611.service",
-		"fr.cgaiton611.dto", "fr.cgaiton611.cli" })
+		"fr.cgaiton611.dto", "fr.cgaiton611.cli", "fr.cgaiton611.servlet" })
 public class SpringConfig {
 	private final Logger logger = LoggerFactory.getLogger(SpringConfig.class);
 	private final String configFileMain = "src/main/resources/db/main/db.properties";
@@ -36,4 +39,14 @@ public class SpringConfig {
 		}
 		return ds;
 	}
+	
+	@Bean
+	public ViewResolver viewResolver() {
+		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+		viewResolver.setViewClass(JstlView.class);
+		viewResolver.setPrefix("/resources/views/");
+		viewResolver.setSuffix(".jsp");
+		return viewResolver;
+	}
+	
 }
