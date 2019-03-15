@@ -21,6 +21,7 @@
     <logger name="org.springframework.jndi" level="WARN"/>
     <logger name="org.springframework.web" level="WARN"/>
     <logger name="org.springframework.test" level="WARN"/>
+    <logger name="org.springframework.jdbc" level="WARN"/>
 
     <root level="DEBUG">
 	<appender-ref ref="STDOUT" />

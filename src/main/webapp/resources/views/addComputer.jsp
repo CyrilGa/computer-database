@@ -30,18 +30,24 @@
                                 	placeholder="Computer name">
                             </div>
                             <div class="form-group">
-                                <label for="introducedDate">Introduced in:</label>
+                                <label for="introducedDate">Introduced date</label>
+                            	<div class="form-inline">
                                 	<input type="date" class="form-control" id="introducedDate" name="introducedDate" 
-                                		placeholder="Introduced date">
+                                		placeholder="Introduced date"
+                                		min="0000-01-01" max="9999-01-01">
                                		<input type="time" class="form-control" id="introducedTime" name="introducedTime" 
-                               			placeholder="Introduced time">
+                               			placeholder="Introduced date">
+                            	</div>
                             </div>
                             <div class="form-group">
-                                <label for="discontinuedDate">Discontinued in:</label>
+                                <label for="discontinuedDate">Discontinued date</label>
+                                <div class="form-inline">
                                 <input type="date" class="form-control" id="discontinuedDate" name="discontinuedDate"
-                                	placeholder="Discontinued date">
+                                	placeholder="Discontinued date"
+                                	min="0000-01-01" max="9999-01-01">
                                 <input type="time" class="form-control" id="discontinuedTime" name="discontinuedTime"
-                                	placeholder="Discontinued time">
+                                	placeholder="Discontinued date" >
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="companyName">Company</label>
@@ -63,8 +69,9 @@
             </div>
         </div>
     </section>
-	<script src="<c:url value="js/jquery.min.js"/>"></script>
-	<script src="<c:url value="js/bootstrap.min.js"/>"></script>
-	<script src="<c:url value="js/dashboard.js"/>"></script>
+	<script src="<c:url value="/js/bootstrap.min.js"/>"></script>
+	<script src="<c:url value="/js/jquery.min.js"/>"></script>
+	<script src="<c:url value="/js/jquery.validate.min.js"/>"></script>
+	<script src="<c:url value="/js/validation.js"/>"></script>
 </body>
 </html>

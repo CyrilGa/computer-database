@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import fr.cgaiton611.dto.ComputerDTO;
 import fr.cgaiton611.dto.ComputerMapper;
@@ -30,9 +28,7 @@ import fr.cgaiton611.validation.ComputerValidator;
 
 @Controller
 @RequestMapping("/addComputer")
-public class AddComputerServlet extends HttpServlet {
-
-	private static final long serialVersionUID = 1L;
+public class AddComputerServlet {
 
 	private final Logger logger = LoggerFactory.getLogger(AddComputerServlet.class);
 
@@ -44,7 +40,7 @@ public class AddComputerServlet extends HttpServlet {
 	private ComputerMapper computerMapper;
 
 	@GetMapping
-	public String doGet(Model model) throws ServletException, IOException {
+	public String doGet(Model model) {
 
 		List<String> names = new ArrayList<>();
 		try {
@@ -58,7 +54,7 @@ public class AddComputerServlet extends HttpServlet {
 	}
 
 	@PostMapping
-	public RedirectView doPost(@RequestParam(required = false, name = "computerName") String pComputerName,
+	public String doPost(@RequestParam(required = false, name = "computerName") String pComputerName,
 			@RequestParam(required = false, name = "introducedDate") String pIntroducedDate,
 			@RequestParam(required = false, name = "introducedTime") String pIntroducedTime,
 			@RequestParam(required = false, name = "discontinuedDate") String pDiscontinuedDate,
@@ -87,7 +83,7 @@ public class AddComputerServlet extends HttpServlet {
 			dashboardMsg = "Computer not updated, bad validation";
 		}
 		redirectAttributes.addAttribute("dashboardMsg", dashboardMsg);
-		return new RedirectView("dashboard");
+		return "redirect:dashboard";
 	}
 
 }

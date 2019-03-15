@@ -57,13 +57,13 @@
                                 <label for="companyName">Company</label>
                                 <select class="form-control" id="companyName" name="companyName" >
                                 	<option value="select-option-default" selected disabled hidden="true">Choose here</option>
-                                	<c:forEach items="${names}" var="name">
+                                	<c:forEach items="${names}" var="pName">
                                 		<c:choose>
-                                			<c:when test="${name.equals(companyName)}">
-                                    			<option value="${name}" selected>${name}</option>
+                                			<c:when test="${pName.equals(companyName)}">
+                                    			<option value="${pName}" selected>${pName}</option>
                                     		</c:when>
                                     		<c:otherwise>
-                                    			<option value="${name}">${name}</option>
+                                    			<option value="${pName}">${pName}</option>
                                     		</c:otherwise>
                                     	</c:choose>
                                     </c:forEach>
@@ -73,15 +73,16 @@
                         <div class="actions pull-right">
                             <input type="submit" id="btnSubmit" value="Edit" class="btn btn-primary">
                             &nbsp&nbsp or &nbsp&nbsp
-                            <a href="dashboard" class="btn btn-default">Cancel</a>
+                            <a href="/cdb/dashboard" class="btn btn-default">Cancel</a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </section>
-	<script src="<c:url value="js/jquery.min.js"/>"></script>
-	<script src="<c:url value="js/bootstrap.min.js"/>"></script>
-	<script src="<c:url value="js/dashboard.js"/>"></script>
+	<script src="<c:url value="/js/bootstrap.min.js"/>"></script>
+	<script src="<c:url value="/js/jquery.min.js"/>"></script>
+	<script src="<c:url value="/js/jquery.validate.min.js"/>"></script>
+	<script src="<c:url value="/js/validation.js"/>"></script>
 </body>
 </html>

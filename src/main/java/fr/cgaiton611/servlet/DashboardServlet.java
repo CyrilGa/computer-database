@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import fr.cgaiton611.dto.ComputerDTO;
 import fr.cgaiton611.dto.ComputerMapper;
@@ -54,7 +52,6 @@ public class DashboardServlet {
 			@RequestParam(required = false, name = "orderByName") String pOrderByName, Model model) {
 
 		model.addAttribute("dashboardMsg", pDashboardMsg);
-
 		Optional<Integer> page = convertUtil.stringToInteger(pPage);
 		if (page.isPresent()) {
 			computerPage.setPage(page.get());
@@ -144,7 +141,7 @@ public class DashboardServlet {
 	}
 
 	@PostMapping
-	public RedirectView doPost(@RequestParam(required = false, name = "selection") String pSelection,
+	public String doPost(@RequestParam(required = false, name = "selection") String pSelection,
 			RedirectAttributes redirectAttributes) {
 		String dashboardMsg = "Computer(s) successfully deleted";
 		int count = 0;
@@ -163,7 +160,7 @@ public class DashboardServlet {
 			}
 		}
 		redirectAttributes.addAttribute("dashboardMsg", MessageFormat.format("{0} sur {1} {2}", count, N, dashboardMsg));
-		return new RedirectView("dashboard");
+		return "redirect:dashboard";
 	}
 
 }

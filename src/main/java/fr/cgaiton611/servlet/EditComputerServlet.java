@@ -1,16 +1,7 @@
 package fr.cgaiton611.servlet;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import fr.cgaiton611.dto.ComputerDTO;
 import fr.cgaiton611.dto.ComputerMapper;
@@ -37,9 +26,7 @@ import fr.cgaiton611.validation.ComputerValidator;
 
 @Controller
 @RequestMapping("/editComputer")
-public class EditComputerServlet extends HttpServlet {
-
-	private static final long serialVersionUID = 1L;
+public class EditComputerServlet {
 
 	private final Logger logger = LoggerFactory.getLogger(EditComputerServlet.class);
 
@@ -51,7 +38,8 @@ public class EditComputerServlet extends HttpServlet {
 	private ComputerMapper computerMapper;
 
 	@GetMapping
-	public String doGet(Model model) {
+	public String doGet(@RequestParam(required = false, name = "dashboard") String pDashboard,
+			@RequestParam(required = false, name = "computerId") String pComputerId, Model model) {
 
 		List<String> names = new ArrayList<>();
 		try {
@@ -59,41 +47,38 @@ public class EditComputerServlet extends HttpServlet {
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 		}
-		request.setAttribute("names", names);
+		model.addAttribute("names", names);
 
-		String id = (String) request.getParameter("computerId");
-		request.setAttribute("id", id);
+		model.addAttribute("id", pComputerId);
 
 		Computer computer;
 		try {
-			computer = computerService.find(Long.parseLong(id));
+			computer = computerService.find(Long.parseLong(pComputerId));
 		} catch (NumberFormatException | DAOException e) {
 			logger.warn(e.getMessage());
-			response.sendRedirect(request.getContextPath() + "/dashboard");
-			return;
+			return "redirect:dashboard";
 		}
 
 		ComputerDTO computerDTO = computerMapper.toComputerDTO(computer);
-		request.setAttribute("name", computerDTO.getName());
+		model.addAttribute("name", computerDTO.getName());
 
 		String introduced = computerDTO.getIntroduced();
 		if (introduced != null && !"".equals(introduced)) {
-			request.setAttribute("introducedDate", introduced.substring(0, 10));
-			request.setAttribute("introducedTime", introduced.substring(11));
+			model.addAttribute("introducedDate", introduced.substring(0, 10));
+			model.addAttribute("introducedTime", introduced.substring(11));
 		}
 		String discontinued = computerDTO.getDiscontinued();
 		if (discontinued != null && !"".equals(discontinued)) {
-			request.setAttribute("discontinuedDate", discontinued.substring(0, 10));
-			request.setAttribute("discontinuedTime", discontinued.substring(11));
+			model.addAttribute("discontinuedDate", discontinued.substring(0, 10));
+			model.addAttribute("discontinuedTime", discontinued.substring(11));
 		}
-		request.setAttribute("companyName", computerDTO.getCompanyName());
+		model.addAttribute("companyName", computerDTO.getCompanyName());
 
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/resources/views/editComputer.jsp");
-		dispatcher.forward(request, response);
+		return "editComputer";
 	}
 
 	@PostMapping
-	public RedirectView doPost(@RequestParam(required = false, name = "computerName") String pId,
+	public String doPost(@RequestParam(required = false, name = "computerName") String pId,
 			@RequestParam(required = false, name = "computerName") String pComputerName,
 			@RequestParam(required = false, name = "introducedDate") String pIntroducedDate,
 			@RequestParam(required = false, name = "introducedTime") String pIntroducedTime,
@@ -126,7 +111,7 @@ public class EditComputerServlet extends HttpServlet {
 		}
 
 		redirectAttributes.addAttribute("dashboardMsg", dashboardMsg);
-		return new RedirectView("dashboard");
+		return "redirect:dashboard";
 
 	}
 }
