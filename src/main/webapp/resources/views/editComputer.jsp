@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <!DOCTYPE html>
 <html>
@@ -13,8 +14,10 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
-        </div>
+			<a class="navbar-brand" href="dashboard">
+            	<spring:message code="string.title"/>
+            </a>
+		</div>
     </header>
     <section id="main">
         <div class="container">
@@ -23,38 +26,38 @@
                     <div class="label label-default pull-right" id="container-id">
                         id: ${id}
                     </div>
-                    <h1 id="page-title">Edit Computer</h1>
+                    <h1 id="page-title"><spring:message code="string.editTitle"/></h1>
 
                     <form id="validForm" action="/cdb/editComputer" method="POST">
                         <input type="hidden" value="${id}" name="id"/>
                         <fieldset>
                             <div class="form-group">
-                                <label for="computerName">Computer name</label>
+                                <label for="computerName"><spring:message code="string.computerName"/></label>
                                 <input type="text" class="form-control" id="computerName" name="computerName"
                                 	placeholder="Computer name" value="${name}">
                             </div>
                             <div class="form-group">
-                                <label for="introducedDate">Introduced date</label>
+                                <label for="introducedDate"><spring:message code="string.introduced"/></label>
                             	<div class="form-inline">
                                 	<input type="date" class="form-control" id="introducedDate" name="introducedDate" 
-                                		placeholder="Introduced date" value="${introducedDate}"
+                                		value="${introducedDate}"
                                 		min="0000-01-01" max="9999-01-01">
                                		<input type="time" class="form-control" id="introducedTime" name="introducedTime" 
                                			placeholder="Introduced date" value="${introducedTime}">
                             	</div>
                             </div>
                             <div class="form-group">
-                                <label for="discontinuedDate">Discontinued date</label>
+                                <label for="discontinuedDate"><spring:message code="string.discontinued"/></label>
                                 <div class="form-inline">
                                 <input type="date" class="form-control" id="discontinuedDate" name="discontinuedDate"
                                 	placeholder="Discontinued date" value="${discontinuedDate}"
                                 	min="0000-01-01" max="9999-01-01">
                                 <input type="time" class="form-control" id="discontinuedTime" name="discontinuedTime"
-                                	placeholder="Discontinued date" value="${discontinuedTime}">
+                                	value="${discontinuedTime}">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="companyName">Company</label>
+                                <label for="companyName"><spring:message code="string.companyName"/></label>
                                 <select class="form-control" id="companyName" name="companyName" >
                                 	<option value="select-option-default" selected disabled hidden="true">Choose here</option>
                                 	<c:forEach items="${names}" var="pName">
@@ -71,9 +74,9 @@
                             </div>            
                         </fieldset>
                         <div class="actions pull-right">
-                            <input type="submit" id="btnSubmit" value="Edit" class="btn btn-primary">
+                            <input type="submit" id="btnSubmit" value="<spring:message code="string.edit"/>" class="btn btn-primary">
                             &nbsp&nbsp or &nbsp&nbsp
-                            <a href="/cdb/dashboard" class="btn btn-default">Cancel</a>
+                            <a href="/cdb/dashboard" class="btn btn-default"><spring:message code="string.cancel"/></a>
                         </div>
                     </form>
                 </div>

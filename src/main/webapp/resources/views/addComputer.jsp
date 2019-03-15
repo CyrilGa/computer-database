@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <!DOCTYPE html>
 <html>
@@ -13,7 +14,9 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
+            <a class="navbar-brand" href="dashboard">
+            	<spring:message code="string.title"/>
+            </a>
         </div>
     </header>
 
@@ -21,36 +24,32 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
-                    <h1 id="page-title">Add Computer</h1>
+                    <h1 id="page-title"><spring:message code="string.addTitle"/></h1>
                     <form id="validForm" action="/cdb/addComputer" method="POST">
                         <fieldset>
                             <div class="form-group">
-                                <label for="computerName">Computer name</label>
+                                <label for="computerName"><spring:message code="string.computerName"/></label>
                                 <input type="text" class="form-control" id="computerName" name="computerName" 
-                                	placeholder="Computer name">
+                                	placeholder="<spring:message code="string.computerName"/>">
                             </div>
                             <div class="form-group">
-                                <label for="introducedDate">Introduced date</label>
+                                <label for="introducedDate"><spring:message code="string.introduced"/></label>
                             	<div class="form-inline">
                                 	<input type="date" class="form-control" id="introducedDate" name="introducedDate" 
-                                		placeholder="Introduced date"
                                 		min="0000-01-01" max="9999-01-01">
-                               		<input type="time" class="form-control" id="introducedTime" name="introducedTime" 
-                               			placeholder="Introduced date">
+                               		<input type="time" class="form-control" id="introducedTime" name="introducedTime">
                             	</div>
                             </div>
                             <div class="form-group">
-                                <label for="discontinuedDate">Discontinued date</label>
+                                <label for="discontinuedDate"><spring:message code="string.discontinued"/></label>
                                 <div class="form-inline">
                                 <input type="date" class="form-control" id="discontinuedDate" name="discontinuedDate"
-                                	placeholder="Discontinued date"
                                 	min="0000-01-01" max="9999-01-01">
-                                <input type="time" class="form-control" id="discontinuedTime" name="discontinuedTime"
-                                	placeholder="Discontinued date" >
+                                <input type="time" class="form-control" id="discontinuedTime" name="discontinuedTime">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="companyName">Company</label>
+                                <label for="companyName"><spring:message code="string.companyName"/></label>
                                 <select class="form-control" id="companyName" name="companyName" >
                                 	<option value="select-option-default" selected disabled hidden="true">Choose here</option>
                                 	<c:forEach items="${names}" var="name">
@@ -60,9 +59,9 @@
                             </div>                  
                         </fieldset>
                         <div class="actions pull-right">
-                            <input type="submit" id="btnSubmit" value="Add" class="btn btn-primary">
+                            <input type="submit" id="btnSubmit" value="<spring:message code="string.add"/>" class="btn btn-primary">
                             &nbsp&nbsp or &nbsp&nbsp
-                            <a href="/cdb/dashboard" class="btn btn-default">Cancel</a>
+                            <a href="/cdb/dashboard" class="btn btn-default"><spring:message code="string.cancel"/></a>
                         </div>
                     </form>
                 </div>

@@ -36,7 +36,7 @@
         </div>
 		<div class="container">
 			<div id="container-title">
-				<h1 id="homeTitle">${count} Computers found </h1>
+				<h1 id="homeTitle">${count} <spring:message code="string.computerFound"/> </h1>
 			</div>
 			<div id="actions" class="">
 				<div class="">
@@ -45,8 +45,8 @@
 							<span id="spanSecondSearch" class="glyphicon glyphicon-plus-sign"></span>
 						</i>
 						<input type="search" id="searchbox" name="computerName" class="form-control" 
-							placeholder="Computer name" value="${computerName}" />
-						<input type="submit" id="searchsubmit" value="Filter by name" class="btn btn-primary" />
+							placeholder="<spring:message code="string.computerName"/>" value="${computerName}" />
+						<input type="submit" id="searchsubmit" value="<spring:message code="string.filter"/>" class="btn btn-primary" />
 						<c:if test="${!\"\".equals(computerName) || !\"\".equals(companyName)}">
 							 <button class="btn btn-danger" onClick="$.fn.resetSearch();">
 							 	<span class="glyphicon glyphicon-remove-sign"></span>
@@ -57,7 +57,7 @@
 							 	<span class="glyphicon glyphicon-remove-sign hiddenElement"></span>
 							 </a>
 							<input type="search" name="companyName" id="companyName" class="form-control" 
-								placeholder="Company name" value="${companyName}" />	
+								placeholder="<spring:message code="string.companyName"/>" value="${companyName}" />	
 						</div>
 					</form>
 				</div>
@@ -65,9 +65,9 @@
 					<span class="btn" id="custom-p"><spring:message code="string.commands"/></span>
 				</div>
 				<div class="">
-					<a class="btn btn-success" id="addComputer" href="/cdb/addComputer">Add Computer</a> 
+					<a class="btn btn-success" id="addComputer" href="/cdb/addComputer"><spring:message code="string.add"/></a> 
 					<a class="btn btn-default" id="editComputer" href="#" 
-						onclick="$.fn.toggleEditMode();">Edit</a>
+						onclick="$.fn.toggleEditMode();"><spring:message code="string.edit"/></a>
 				</div>
 			</div>
 		</div>
@@ -182,6 +182,11 @@
 			
 		</div>
 	</footer>
+	<script type="text/javascript">
+		var edit="<spring:message code="string.js.edit"/>";
+		var view="<spring:message code="string.js.view"/>";
+		var alertMsg="<spring:message code="string.js.alertMsg"/>";
+	</script>
 	<script src="<c:url value="/js/jquery.min.js"/>"></script>
 	<script src="<c:url value="/js/bootstrap.min.js"/>"></script>
 	<script src="<c:url value="/js/dashboard.js"/>"></script>
