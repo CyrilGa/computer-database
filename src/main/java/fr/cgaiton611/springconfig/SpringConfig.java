@@ -1,14 +1,12 @@
 package fr.cgaiton611.springconfig;
 
 import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -49,16 +47,11 @@ public class SpringConfig implements WebMvcConfigurer{
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setViewClass(JstlView.class);
-		viewResolver.setPrefix("/WEB-INF/views/");
+		viewResolver.setPrefix("/resources/views/");
 		viewResolver.setSuffix(".jsp");
 		return viewResolver;
 	}
 	
-
-	@Override
-	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-		configurer.enable();
-}
 
 	@Override
 	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
@@ -66,5 +59,5 @@ public class SpringConfig implements WebMvcConfigurer{
 		registry.addResourceHandler("/css/**").addResourceLocations("/resources/css/");
 		registry.addResourceHandler("/fonts/**").addResourceLocations("/resources/fonts/");
 	}
-	
+
 }

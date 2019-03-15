@@ -46,7 +46,7 @@ public class DashboardServlet {
 	ConvertUtil convertUtil = new ConvertUtil();
 
 	@GetMapping
-	protected String doGet(@RequestParam(required = false, name = "dashboardMsg") String pDashboardMsg,
+	public String doGet(@RequestParam(required = false, name = "dashboardMsg") String pDashboardMsg,
 			@RequestParam(required = false, name = "page") String pPage,
 			@RequestParam(required = false, name = "elements") String pElements,
 			@RequestParam(required = false, name = "computerName") String pComputerName,
@@ -144,7 +144,7 @@ public class DashboardServlet {
 	}
 
 	@PostMapping
-	protected RedirectView doPost(@RequestParam(required = false, name = "selection") String pSelection,
+	public RedirectView doPost(@RequestParam(required = false, name = "selection") String pSelection,
 			RedirectAttributes redirectAttributes) {
 		String dashboardMsg = "Computer(s) successfully deleted";
 		int count = 0;
