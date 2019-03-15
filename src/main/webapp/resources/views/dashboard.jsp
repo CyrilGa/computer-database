@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <!DOCTYPE html>
 <html>
@@ -14,7 +15,9 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="/cdb/dashboard"> Application - Computer Database </a>
+			<a class="navbar-brand" href="/cdb/dashboard">
+				<spring:message code="string.title"/>
+			</a>
 		</div>
 	</header>
 
@@ -59,7 +62,7 @@
 					</form>
 				</div>
 				<div class="">
-					<span class="btn" id="custom-p">CTRL+Y : toggle edit mode, del : delete selected computer(s)</span>
+					<span class="btn" id="custom-p"><spring:message code="string.commands"/></span>
 				</div>
 				<div class="">
 					<a class="btn btn-success" id="addComputer" href="/cdb/addComputer">Add Computer</a> 
@@ -94,20 +97,28 @@
 								<c:choose>
 									<c:when test="${\"ASC\".equals(orderByOrder)}">
 										<th>
-											<a href="/cdb/dashboard?orderByName=${orderName}">${tableNames[status.index]}</a>
+											<a href="/cdb/dashboard?orderByName=${orderName}">
+												<spring:message code="${tableNames[status.index]}"/>
+											</a>
 											<span class="glyphicon glyphicon-sort-by-attributes"></span>
 										</th>
 									</c:when>
 									<c:otherwise>
 										<th>
-											<a href="/cdb/dashboard?orderByName=${orderName}">${tableNames[status.index]}</a>
+											<a href="/cdb/dashboard?orderByName=${orderName}">
+												<spring:message code="${tableNames[status.index]}"/>
+											</a>
 											<span class="glyphicon glyphicon-sort-by-attributes-alt"></span>
 										</th>
 									</c:otherwise>
 								</c:choose>
 							</c:when>
 							<c:otherwise>
-								<th><a href="/cdb/dashboard?orderByName=${orderName}">${tableNames[status.index]}</a></th>
+								<th>
+									<a href="/cdb/dashboard?orderByName=${orderName}">
+										<spring:message code="${tableNames[status.index]}"/>
+									</a>
+								</th>
 							</c:otherwise>
 							</c:choose>
 						</c:forEach>

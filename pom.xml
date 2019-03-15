@@ -269,6 +269,9 @@
 			<resource>
 				<directory>src/main/resources/logs</directory>
 			</resource>
+			<resource>
+				<directory>src/main/resources/i18n</directory>
+			</resource>
 		</resources>
 	</build>
 

@@ -3,11 +3,13 @@ package fr.cgaiton611.servlet;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +32,7 @@ public class DashboardServlet {
 
 	private final Logger logger = LoggerFactory.getLogger(DashboardServlet.class);
 
-	private final String[] tableNames = { "Computer name", "Introduced date", "Discontinued date", "Company" };
+	private final String[] tableNames = { "string.computerName", "string.introduced", "string.discontinued", "string.companyName" };
 
 	@Autowired
 	private ComputerService computerService;
@@ -50,6 +52,9 @@ public class DashboardServlet {
 			@RequestParam(required = false, name = "computerName") String pComputerName,
 			@RequestParam(required = false, name = "companyName") String pCompanyName,
 			@RequestParam(required = false, name = "orderByName") String pOrderByName, Model model) {
+
+		Locale currentLocale = LocaleContextHolder.getLocale();
+		model.addAttribute("locale", currentLocale);
 
 		model.addAttribute("dashboardMsg", pDashboardMsg);
 		Optional<Integer> page = convertUtil.stringToInteger(pPage);
@@ -102,7 +107,6 @@ public class DashboardServlet {
 		model.addAttribute("ORDERBYNAME_AUTORISED", computerPage.ORDERBYNAME_AUTORISED);
 		model.addAttribute("tableNames", tableNames);
 
-		
 		return "dashboard";
 
 	}
@@ -159,7 +163,8 @@ public class DashboardServlet {
 				}
 			}
 		}
-		redirectAttributes.addAttribute("dashboardMsg", MessageFormat.format("{0} sur {1} {2}", count, N, dashboardMsg));
+		redirectAttributes.addAttribute("dashboardMsg",
+				MessageFormat.format("{0} sur {1} {2}", count, N, dashboardMsg));
 		return "redirect:dashboard";
 	}
 
