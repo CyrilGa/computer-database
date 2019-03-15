@@ -64,7 +64,7 @@ public class AddComputerServlet extends HttpServlet {
 			@RequestParam(required = false, name = "discontinuedDate") String pDiscontinuedDate,
 			@RequestParam(required = false, name = "discontinuedTime") String pDiscontinuedTime,
 			@RequestParam(required = false, name = "companyName") String pCompanyName,
-			RedirectAttributes redirectAttributes) throws ServletException, IOException {
+			RedirectAttributes redirectAttributes) {
 		String introduced = pIntroducedDate + " " + pIntroducedTime;
 		String discontinued = pDiscontinuedDate + " " + pDiscontinuedTime;
 		if ("select-option-default".equals(pCompanyName))
