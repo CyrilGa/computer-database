@@ -14,10 +14,14 @@
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
+		<div>
 			<a class="navbar-brand" href="/cdb/dashboard">
 				<spring:message code="string.title"/>
 			</a>
+			<span>
+				<a href="?lang=fr"><img src="<c:url value="/img/fr.svg"/>"></img></a>
+				<a href="?lang=en"><img src="<c:url value="/img/gb.svg"/>"></img></a>
+			</span>
 		</div>
 	</header>
 

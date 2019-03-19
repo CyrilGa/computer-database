@@ -79,3 +79,36 @@ th a:hover {
 	text-decoration: none;
 	color: #dd1c1c;
 }
+
+.flag-icon {
+	background-size: contain;
+	background-position: 50%;
+	background-repeat: no-repeat;
+	position: relative;
+	display: inline-block;
+	width: 1.33333333em;
+	line-height: 1em;
+}
+
+header div {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-left: 15px;
+	padding-right: 15px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 89%;
+}
+
+header img{
+	height: 20px;
+}
+
+header span :nth-child(1) {
+	margin-right: 3px;
+}
+
+header span :nth-child(2){
+	margin-left: 3px;
+}
