@@ -1,4 +1,4 @@
-package fr.cgaiton611.contoller;
+package fr.cgaiton611.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +24,7 @@ import fr.cgaiton611.dto.ComputerDTO;
 import fr.cgaiton611.dto.ComputerForm;
 import fr.cgaiton611.dto.ComputerMapper;
 import fr.cgaiton611.exception.dao.DAOException;
+import fr.cgaiton611.exception.dao.NoRowUpdatedException;
 import fr.cgaiton611.exception.validation.ValidationException;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.CompanyService;
@@ -31,10 +32,10 @@ import fr.cgaiton611.service.ComputerService;
 import fr.cgaiton611.validation.ComputerValidator;
 
 @Controller
-@RequestMapping("/addComputer")
-public class AddComputerController {
+@RequestMapping("/editComputer")
+public class EditComputerController {
 
-	private final Logger logger = LoggerFactory.getLogger(AddComputerController.class);
+	private final Logger logger = LoggerFactory.getLogger(EditComputerController.class);
 
 	@Autowired
 	private ComputerService computerService;
@@ -44,7 +45,9 @@ public class AddComputerController {
 	private ComputerMapper computerMapper;
 
 	@GetMapping
-	public String doGet(@RequestParam(required = false, name = "errorMsgs") List<String> errorMsgs, Model model) {
+	public String doGet(@RequestParam(required = false, name = "dashboard") String pDashboard,
+			@RequestParam(required = false, name = "computerId") String pComputerId,
+			@RequestParam(required = false, name = "errorMsgs") List<String> errorMsgs, Model model) {
 
 		List<String> names = new ArrayList<>();
 		try {
@@ -54,9 +57,34 @@ public class AddComputerController {
 		}
 		model.addAttribute("names", names);
 
+		model.addAttribute("id", pComputerId);
+
+		Computer computer;
+		try {
+			computer = computerService.find(Long.parseLong(pComputerId));
+		} catch (NumberFormatException | DAOException e) {
+			logger.warn(e.getMessage());
+			return "redirect:dashboard";
+		}
+
+		ComputerDTO computerDTO = computerMapper.toComputerDTO(computer);
+		model.addAttribute("name", computerDTO.getName());
+
+		String introduced = computerDTO.getIntroduced();
+		if (introduced != null && !"".equals(introduced)) {
+			model.addAttribute("introducedDate", introduced.substring(0, 10));
+			model.addAttribute("introducedTime", introduced.substring(11));
+		}
+		String discontinued = computerDTO.getDiscontinued();
+		if (discontinued != null && !"".equals(discontinued)) {
+			model.addAttribute("discontinuedDate", discontinued.substring(0, 10));
+			model.addAttribute("discontinuedTime", discontinued.substring(11));
+		}
+		model.addAttribute("companyName", computerDTO.getCompanyName());
+
 		model.addAttribute("errorMsgs", errorMsgs);
 
-		return "addComputer";
+		return "editComputer";
 	}
 
 	@ModelAttribute("computerForm")
@@ -77,20 +105,22 @@ public class AddComputerController {
 				errors.add(error.getObjectName() + " - " + error.getDefaultMessage());
 			}
 			redirectAttributes.addAttribute("errorMsgs", errors);
-			return "redirect:addComputer";
+			redirectAttributes.addAttribute("computerId", computerForm.getId());
+			return "redirect:editComputer";
 		}
 
 		String dashboardMsg;
 
 		ComputerDTO computerDTO = new ComputerDTO(computerForm);
-		logger.debug(computerDTO.toString());
 		Computer computer = computerMapper.toComputer(computerDTO);
-		logger.debug(computer.toString());
 		try {
-			ComputerValidator.validateForAdd(computer);
+			ComputerValidator.validateForEdit(computer);
 			try {
-				Computer computerNew = computerService.create(computer);
-				dashboardMsg = "Computer successfully created, id: " + computerNew.getId();
+				computerService.update(computer);
+				dashboardMsg = "Computer successfully updated";
+			} catch (NoRowUpdatedException e) {
+				logger.warn(e.getMessage());
+				dashboardMsg = "Computer not updated, computer not found";
 			} catch (DAOException e) {
 				logger.warn(e.getMessage());
 				dashboardMsg = "Computer not updated, database not accessible";
@@ -99,13 +129,15 @@ public class AddComputerController {
 			logger.warn(e.getMessage());
 			dashboardMsg = "Computer not updated, bad validation";
 		}
-		redirectAttributes.addAttribute("dashboardMsg", dashboardMsg);
 
+		redirectAttributes.addAttribute("dashboardMsg", dashboardMsg);
 		return "redirect:dashboard";
+
 	}
 
 //	@PostMapping
-//	public String doPost(@RequestParam(required = false, name = "computerName") String pComputerName,
+//	public String doPost(@RequestParam(required = false, name = "computerName") String pId,
+//			@RequestParam(required = false, name = "computerName") String pComputerName,
 //			@RequestParam(required = false, name = "introducedDate") String pIntroducedDate,
 //			@RequestParam(required = false, name = "introducedTime") String pIntroducedTime,
 //			@RequestParam(required = false, name = "discontinuedDate") String pDiscontinuedDate,
@@ -116,15 +148,17 @@ public class AddComputerController {
 //		String discontinued = pDiscontinuedDate + " " + pDiscontinuedTime;
 //		if ("select-option-default".equals(pCompanyName))
 //			pCompanyName = null;
-//		ComputerDTO computerDTO = new ComputerDTO(pComputerName, introduced, discontinued, pCompanyName);
+//		ComputerDTO computerDTO = new ComputerDTO(pId, pComputerName, introduced, discontinued, pCompanyName);
 //		String dashboardMsg;
-//
 //		Computer computer = computerMapper.toComputer(computerDTO);
 //		try {
-//			ComputerValidator.validateForAdd(computer);
+//			ComputerValidator.validateForEdit(computer);
 //			try {
-//				Computer computerNew = computerService.create(computer);
-//				dashboardMsg = "Computer successfully created, id: " + computerNew.getId();
+//				computerService.update(computer);
+//				dashboardMsg = "Computer successfully updated";
+//			} catch (NoRowUpdatedException e) {
+//				logger.warn(e.getMessage());
+//				dashboardMsg = "Computer not updated, computer not found";
 //			} catch (DAOException e) {
 //				logger.warn(e.getMessage());
 //				dashboardMsg = "Computer not updated, database not accessible";
@@ -133,8 +167,9 @@ public class AddComputerController {
 //			logger.warn(e.getMessage());
 //			dashboardMsg = "Computer not updated, bad validation";
 //		}
+//
 //		redirectAttributes.addAttribute("dashboardMsg", dashboardMsg);
 //		return "redirect:dashboard";
+//
 //	}
-
 }

@@ -1,4 +1,4 @@
-package fr.cgaiton611.contoller;
+package fr.cgaiton611.controller;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;

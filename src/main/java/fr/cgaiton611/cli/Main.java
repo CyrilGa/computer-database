@@ -27,7 +27,7 @@ public class Main {
 
 		context = new AnnotationConfigApplicationContext(SpringConfig.class);
 		CLIMenuFacade cliMenuFacade = context.getBean(CLIMenuFacade.class);
-
+				
 		ScanUtil scanUtil = new ScanUtil();
 		PrintUtil printUtil = new PrintUtil();
 		final Logger logger = LoggerFactory.getLogger(Main.class);

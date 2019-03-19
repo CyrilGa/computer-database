@@ -3,6 +3,7 @@ package fr.cgaiton611.springconfig;
 import java.util.Locale;
 
 import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -26,28 +27,11 @@ import com.zaxxer.hikari.pool.HikariPool.PoolInitializationException;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = { "fr.cgaiton611.page", "fr.cgaiton611.persistence", "fr.cgaiton611.service",
-		"fr.cgaiton611.dto", "fr.cgaiton611.cli", "fr.cgaiton611.servlet" })
+		"fr.cgaiton611.dto", "fr.cgaiton611.cli", "fr.cgaiton611.controller" })
 public class SpringConfig implements WebMvcConfigurer {
+
 	private final Logger logger = LoggerFactory.getLogger(SpringConfig.class);
 	private final String configFileMain = "src/main/resources/db/main/db.properties";
-
-	@Bean
-	public DataSource dataSource() {
-		DataSource ds = new HikariDataSource();
-		HikariConfig config = null;
-		try {
-			config = new HikariConfig(configFileMain);
-			try {
-				ds = new HikariDataSource(config);
-				logger.info("Datasource initialized (main db)");
-			} catch (PoolInitializationException e) {
-				logger.error("Error initializing HikariDataSource");
-			}
-		} catch (RuntimeException e) {
-			logger.error("Properties file for database not found or incorrect");
-		}
-		return ds;
-	}
 
 	@Bean
 	public ViewResolver viewResolver() {

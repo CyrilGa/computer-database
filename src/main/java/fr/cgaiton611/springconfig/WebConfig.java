@@ -3,9 +3,10 @@ package fr.cgaiton611.springconfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
+	
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class[] {  };
+		return new Class[] { HibernateConfig.class };
 	}
 
 	@Override
