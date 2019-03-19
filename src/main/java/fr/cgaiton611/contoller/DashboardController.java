@@ -1,4 +1,4 @@
-package fr.cgaiton611.servlet;
+package fr.cgaiton611.contoller;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -26,9 +26,9 @@ import fr.cgaiton611.util.ConvertUtil;
 
 @Controller
 @RequestMapping("/dashboard")
-public class DashboardServlet {
+public class DashboardController {
 
-	private final Logger logger = LoggerFactory.getLogger(DashboardServlet.class);
+	private final Logger logger = LoggerFactory.getLogger(DashboardController.class);
 
 	private final String[] tableNames = { "string.computerName", "string.introduced", "string.discontinued", "string.companyName" };
 

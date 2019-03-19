@@ -1,4 +1,4 @@
-package fr.cgaiton611.servlet;
+package fr.cgaiton611.contoller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +33,9 @@ import fr.cgaiton611.validation.ComputerValidator;
 
 @Controller
 @RequestMapping("/editComputer")
-public class EditComputerServlet {
+public class EditComputerController {
 
-	private final Logger logger = LoggerFactory.getLogger(EditComputerServlet.class);
+	private final Logger logger = LoggerFactory.getLogger(EditComputerController.class);
 
 	@Autowired
 	private ComputerService computerService;

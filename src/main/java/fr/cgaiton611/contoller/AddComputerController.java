@@ -1,4 +1,4 @@
-package fr.cgaiton611.servlet;
+package fr.cgaiton611.contoller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +32,9 @@ import fr.cgaiton611.validation.ComputerValidator;
 
 @Controller
 @RequestMapping("/addComputer")
-public class AddComputerServlet {
+public class AddComputerController {
 
-	private final Logger logger = LoggerFactory.getLogger(AddComputerServlet.class);
+	private final Logger logger = LoggerFactory.getLogger(AddComputerController.class);
 
 	@Autowired
 	private ComputerService computerService;
