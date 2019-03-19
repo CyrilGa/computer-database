@@ -15,6 +15,8 @@ import fr.cgaiton611.springconfig.SpringConfig;
  */
 public class Main {
 
+	private static ApplicationContext context;
+
 	/**
 	 * Wait for the user entry and call facade method appropriately
 	 * 
@@ -23,7 +25,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+		context = new AnnotationConfigApplicationContext(SpringConfig.class);
 		CLIMenuFacade cliMenuFacade = context.getBean(CLIMenuFacade.class);
 
 		ScanUtil scanUtil = new ScanUtil();

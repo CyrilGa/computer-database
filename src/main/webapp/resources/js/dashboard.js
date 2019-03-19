@@ -22,7 +22,7 @@ $(function() {
         }
     });
 
-    // Delete dashboard msg after 3 sec
+    // Hide dashboard msg after 3 sec
     setTimeout(
     		  function() 
     		  {

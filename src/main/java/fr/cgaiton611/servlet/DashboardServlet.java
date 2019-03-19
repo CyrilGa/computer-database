@@ -3,13 +3,11 @@ package fr.cgaiton611.servlet;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,9 +50,6 @@ public class DashboardServlet {
 			@RequestParam(required = false, name = "computerName") String pComputerName,
 			@RequestParam(required = false, name = "companyName") String pCompanyName,
 			@RequestParam(required = false, name = "orderByName") String pOrderByName, Model model) {
-
-		Locale currentLocale = LocaleContextHolder.getLocale();
-		model.addAttribute("locale", currentLocale);
 
 		model.addAttribute("dashboardMsg", pDashboardMsg);
 		Optional<Integer> page = convertUtil.stringToInteger(pPage);

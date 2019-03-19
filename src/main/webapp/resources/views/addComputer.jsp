@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <!DOCTYPE html>
 <html>
@@ -21,49 +22,60 @@
     </header>
 
     <section id="main">
+    	<div id="errorMsg-container" class="container">
+	    	<c:forEach items="${errorMsgs}" var="errorMsg">
+				<div class="alert alert-danger">
+					${errorMsg}
+				</div>
+			</c:forEach>
+		</div>
         <div class="container">
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <h1 id="page-title"><spring:message code="string.addTitle"/></h1>
-                    <form id="validForm" action="/cdb/addComputer" method="POST">
+                    <form:form id="validForm" action="/cdb/addComputer" method="POST" modelAttribute="computerForm">
                         <fieldset>
                             <div class="form-group">
                                 <label for="computerName"><spring:message code="string.computerName"/></label>
-                                <input type="text" class="form-control" id="computerName" name="computerName" 
-                                	placeholder="<spring:message code="string.computerName"/>">
+                                <spring:message code="string.computerName" var="stringComputerName"/>
+                                <form:input type="text" class="form-control" id="computerName" name="computerName" 
+                                	placeholder="${stringComputerName}" path="computerName"/>
                             </div>
                             <div class="form-group">
                                 <label for="introducedDate"><spring:message code="string.introduced"/></label>
                             	<div class="form-inline">
-                                	<input type="date" class="form-control" id="introducedDate" name="introducedDate" 
-                                		min="0000-01-01" max="9999-01-01">
-                               		<input type="time" class="form-control" id="introducedTime" name="introducedTime">
+                                	<form:input type="date" class="form-control" id="introducedDate" name="introducedDate" 
+                                		min="0000-01-01" max="9999-01-01" path="introducedTime"/>
+                               		<form:input type="time" class="form-control" id="introducedTime" name="introducedTime"
+                               			path="introducedDate"/>
                             	</div>
                             </div>
                             <div class="form-group">
                                 <label for="discontinuedDate"><spring:message code="string.discontinued"/></label>
                                 <div class="form-inline">
-                                <input type="date" class="form-control" id="discontinuedDate" name="discontinuedDate"
-                                	min="0000-01-01" max="9999-01-01">
-                                <input type="time" class="form-control" id="discontinuedTime" name="discontinuedTime">
+                                <form:input type="date" class="form-control" id="discontinuedDate" name="discontinuedDate"
+                                	min="0000-01-01" max="9999-01-01" path="discontinuedDate"/>
+                                <form:input type="time" class="form-control" id="discontinuedTime" name="discontinuedTime"
+                                	path="discontinuedTime"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="companyName"><spring:message code="string.companyName"/></label>
-                                <select class="form-control" id="companyName" name="companyName" >
+                                <form:select class="form-control" id="companyName" name="companyName" path="companyName">
                                 	<option value="select-option-default" selected disabled hidden="true">Choose here</option>
                                 	<c:forEach items="${names}" var="name">
                                     	<option value="${name}">${name}</option>
                                     </c:forEach>
-                                </select>
+                                </form:select>
                             </div>                  
                         </fieldset>
                         <div class="actions pull-right">
-                            <input type="submit" id="btnSubmit" value="<spring:message code="string.add"/>" class="btn btn-primary">
+                            <input type="submit" id="btnSubmit" value="<spring:message code="string.add"/>"
+                            	class="btn btn-primary"/>
                             &nbsp&nbsp or &nbsp&nbsp
                             <a href="/cdb/dashboard" class="btn btn-default"><spring:message code="string.cancel"/></a>
                         </div>
-                    </form>
+                    </form:form>
                 </div>
             </div>
         </div>
@@ -72,5 +84,6 @@
 	<script src="<c:url value="/js/jquery.min.js"/>"></script>
 	<script src="<c:url value="/js/jquery.validate.min.js"/>"></script>
 	<script src="<c:url value="/js/validation.js"/>"></script>
+	<script src="<c:url value="/js/hideErrorMsg.js"/>"></script>
 </body>
 </html>

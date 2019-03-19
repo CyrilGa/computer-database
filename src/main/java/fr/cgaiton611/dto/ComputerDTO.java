@@ -8,7 +8,6 @@ public class ComputerDTO {
 	private String companyName;
 
 	public ComputerDTO() {
-		super();
 	}
 
 	public ComputerDTO(String name, String introduced, String discontinued, String companyName) {
@@ -24,6 +23,18 @@ public class ComputerDTO {
 		this.introduced = introduced;
 		this.discontinued = discontinued;
 		this.companyName = companyName;
+	}
+
+	public ComputerDTO(ComputerForm computerForm) {
+		id = computerForm.getId();
+		name = computerForm.getComputerName();
+		introduced = computerForm.getIntroducedDate() + " " + computerForm.getIntroducedTime();
+		discontinued = computerForm.getDiscontinuedDate() + " " + computerForm.getDiscontinuedTime();
+		if ("select-option-default".equals(computerForm.getCompanyName())) {
+			companyName = null;
+		} else {
+			companyName = computerForm.getCompanyName();
+		}
 	}
 
 	public String getId() {
