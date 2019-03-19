@@ -16,10 +16,10 @@ import fr.cgaiton611.exception.dao.NoRowUpdatedException;
 import fr.cgaiton611.exception.dao.NotOneResultException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.persistence.CompanyDAO;
-import fr.cgaiton611.springconfig.SpringConfig;
+import fr.cgaiton611.springconfig.WebConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = SpringConfig.class)
+@ContextConfiguration(classes = WebConfig.class)
 public class CompanyDAOTest {
 
 	private final Logger logger = LoggerFactory.getLogger(CompanyDAOTest.class);

@@ -26,10 +26,10 @@ import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.CompanyService;
 import fr.cgaiton611.service.ComputerService;
-import fr.cgaiton611.springconfig.SpringConfig;
+import fr.cgaiton611.springconfig.WebConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = SpringConfig.class)
+@ContextConfiguration(classes = WebConfig.class)
 public class EditTest {
 
 	private final Logger logger = LoggerFactory.getLogger(EditTest.class);

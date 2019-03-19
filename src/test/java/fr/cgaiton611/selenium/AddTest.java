@@ -23,10 +23,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import fr.cgaiton611.exception.dao.DAOException;
 import fr.cgaiton611.exception.dao.NoRowUpdatedException;
 import fr.cgaiton611.service.CompanyService;
-import fr.cgaiton611.springconfig.SpringConfig;
+import fr.cgaiton611.springconfig.WebConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = SpringConfig.class)
+@ContextConfiguration(classes = WebConfig.class)
 public class AddTest {
 
 	private final Logger logger = LoggerFactory.getLogger(AddTest.class);
