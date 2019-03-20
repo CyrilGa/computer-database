@@ -102,7 +102,6 @@ public class ComputerDAO extends DAO<Computer> {
 	}
 
 	@Override
-	@Transactional
 	public void delete(Computer obj) throws DAOException {
 		int row;
 		try (Session session = sessionFactory.openSession()) {
