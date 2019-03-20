@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.cgaiton611.exception.dao.DAOException;
-import fr.cgaiton611.exception.dao.NoRowUpdatedException;
-import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.persistence.ComputerDAO;
 
@@ -15,18 +13,9 @@ import fr.cgaiton611.persistence.ComputerDAO;
 public class ComputerService {
 	@Autowired
 	private ComputerDAO computerDAO;
-	@Autowired
-	private CompanyService companyService;
 
 	public Computer find(long id) throws DAOException {
-		Computer computer = computerDAO.find(new Computer(id));
-		try {
-			Company company = companyService.find(computer.getCompany().getId());
-			computer.setCompany(company);
-		} catch (NoRowUpdatedException e) {
-			computer.setCompany(null);
-		}
-		return computer;
+		return computerDAO.find(new Computer(id));
 	}
 
 	public Computer create(Computer computer) throws DAOException {

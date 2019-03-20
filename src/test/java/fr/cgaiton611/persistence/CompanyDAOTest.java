@@ -1,9 +1,7 @@
-package fr.cgaiton611.dao;
+package fr.cgaiton611.persistence;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-
-import java.util.Date;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,24 +13,23 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.cgaiton611.exception.dao.DAOException;
 import fr.cgaiton611.exception.dao.NoRowUpdatedException;
-import fr.cgaiton611.exception.dao.NotOneResultException;
 import fr.cgaiton611.model.Company;
-import fr.cgaiton611.model.Computer;
-import fr.cgaiton611.persistence.ComputerDAO;
+import fr.cgaiton611.persistence.CompanyDAO;
 import fr.cgaiton611.springconfig.WebConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebConfig.class)
-public class ComputerDAOTest {
+public class CompanyDAOTest {
 
-	private final Logger logger = LoggerFactory.getLogger(ComputerDAOTest.class);
+	private final Logger logger = LoggerFactory.getLogger(CompanyDAOTest.class);
 
 	@Autowired
-	ComputerDAO computerDAO;
+	CompanyDAO companyDAO;
 
+	@Test
 	public void create() {
 		try {
-			computerDAO.create(new Computer("TEST COMPUTER DAO", null, null, new Company()));
+			companyDAO.create(new Company("TEST COMPANY DAO"));
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			fail("database error");
@@ -42,18 +39,18 @@ public class ComputerDAOTest {
 
 	@Test
 	public void find() {
-		Computer c1;
+		Company c1;
 		try {
-			c1 = computerDAO.create(new Computer("TEST COMPUTER DAO", new Date(), new Date(), new Company(2)));
+			c1 = companyDAO.create(new Company("TEST COMPANY DAO"));
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			fail("database error");
 			return;
 		}
 
-		Computer c2;
+		Company c2;
 		try {
-			c2 = computerDAO.find(c1);
+			c2 = companyDAO.find(new Company(c1.getId()));
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			fail("database error");
@@ -65,10 +62,8 @@ public class ComputerDAOTest {
 	@Test
 	public void findFail() {
 		try {
-			computerDAO.find(new Computer(665169595));
+			companyDAO.find(new Company(99999999));
 			fail("sql error");
-		} catch (NotOneResultException e) {
-			// ok
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			fail("database error");
@@ -78,9 +73,9 @@ public class ComputerDAOTest {
 
 	@Test
 	public void update() {
-		Computer c1;
+		Company c1;
 		try {
-			c1 = computerDAO.create(new Computer("TEST COMPUTER DAO", null, null, new Company()));
+			c1 = companyDAO.create(new Company("TEST COMPANY DAO"));
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			fail("database error");
@@ -88,16 +83,16 @@ public class ComputerDAOTest {
 		}
 
 		try {
-			computerDAO.update(new Computer(c1.getId(), "modified", null, null, new Company()));
+			companyDAO.update(new Company(c1.getId(), "modified"));
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			fail("database error");
 			return;
 		}
 
-		Computer c2;
+		Company c2;
 		try {
-			c2 = computerDAO.find(c1);
+			c2 = companyDAO.find(c1);
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			fail("database error");
@@ -109,7 +104,7 @@ public class ComputerDAOTest {
 	@Test
 	public void updateFail() {
 		try {
-			computerDAO.update(new Computer(61618451, "modified", null, null, new Company()));
+			companyDAO.update(new Company(56465156, "modified"));
 			fail("sql error");
 		} catch (NoRowUpdatedException e) {
 			// ok
@@ -118,14 +113,13 @@ public class ComputerDAOTest {
 			fail("database error");
 			return;
 		}
-
 	}
 
 	@Test
 	public void delete() {
-		Computer c1;
+		Company c1;
 		try {
-			c1 = computerDAO.create(new Computer("TEST COMPUTER DAO", null, null, new Company()));
+			c1 = companyDAO.create(new Company("TEST COMPANY DAO"));
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			fail("database error");
@@ -133,7 +127,7 @@ public class ComputerDAOTest {
 		}
 
 		try {
-			computerDAO.delete(c1);
+			companyDAO.delete(c1);
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			fail("database error");
@@ -141,9 +135,7 @@ public class ComputerDAOTest {
 		}
 
 		try {
-			computerDAO.find(c1);
-		} catch (NotOneResultException e) {
-			// ok
+			companyDAO.find(c1);
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			fail("database error");
@@ -153,9 +145,9 @@ public class ComputerDAOTest {
 
 	@Test
 	public void deleteFail() {
-		Computer c1;
+		Company c1;
 		try {
-			c1 = computerDAO.create(new Computer("TEST COMPUTER DAO", null, null, new Company()));
+			c1 = companyDAO.create(new Company("TEST COMPANY DAO"));
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			fail("database error");
@@ -163,7 +155,7 @@ public class ComputerDAOTest {
 		}
 
 		try {
-			computerDAO.delete(c1);
+			companyDAO.delete(c1);
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			fail("database error");
@@ -171,7 +163,7 @@ public class ComputerDAOTest {
 		}
 
 		try {
-			computerDAO.delete(c1);
+			companyDAO.delete(c1);
 			fail("sql error");
 		} catch (NoRowUpdatedException e) {
 			// ok

@@ -18,8 +18,8 @@ public class CompanyService {
 		return companyDAO.findPage(page, elements);
 	}
 
-	public Company find(long id) throws DAOException {
-		return companyDAO.find(new Company(id));
+	public Company find(Company company) throws DAOException {
+		return companyDAO.find(company);
 	}
 
 	public Company findByName(String name) throws DAOException {

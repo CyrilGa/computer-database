@@ -6,12 +6,10 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import fr.cgaiton611.exception.dao.DAOException;
 import fr.cgaiton611.exception.dao.NoRowUpdatedException;
@@ -34,12 +32,12 @@ public class ComputerDAO extends DAO<Computer> {
 
 //	private static final String HQL_CREATE = "INSERT INTO Computer(name, introduced, discontinued, company_id) VALUES(?, ?, ?, ?)";
 	private static final String HQL_FIND = "SELECT cpu FROM Computer cpu WHERE cpu.id = :id";
-	private static final String HQL_UPDATE = "UPDATE Computer SET name = :name ,introduced = :introduced ,discontinued = :discontinued, "
-			+ "company_id = :cpaId  WHERE id = :cpuId ";
-	private static final String HQL_DELETE = "DELETE Computer WHERE id = :id";
-	private static final String HQL_FIND_BY_NAME_PAGED = "SELECT cpu FROM Computer cpu LEFT JOIN Company cpa "
+	private static final String HQL_UPDATE = "UPDATE Computer cpu SET cpu.name = :name ,cpu.introduced = :introduced ,"
+			+ "cpu.discontinued = :discontinued, cpu.company = :cpaId  WHERE id = :cpuId ";
+	private static final String HQL_DELETE = "DELETE Computer cpu WHERE cpu.id = :id";
+	private static final String HQL_FIND_BY_NAME_PAGE = "SELECT cpu FROM Computer cpu LEFT JOIN Company cpa "
 			+ "ON cpu.company = cpa.id WHERE lower(cpu.name) LIKE lower(:cpuName) ORDER BY {0} {1}";
-	private static final String HQL_FIND_BY_NAME_PAGED_WITH_COMPANY_NAME = "SELECT cpu FROM Computer cpu JOIN Company cpa "
+	private static final String HQL_FIND_BY_NAME_PAGE_WITH_COMPANY_NAME = "SELECT cpu FROM Computer cpu JOIN Company cpa "
 			+ "ON cpa.id IN (SELECT cpa.id FROM Company cpa WHERE lower(cpa.name) LIKE lower(:cpaName) ) AND cpu.company = cpa.id "
 			+ "WHERE lower(cpu.name) LIKE lower(:cpuName) ORDER BY {0} {1}";
 	private static final String HQL_COUNT_BY_NAME = "SELECT COUNT(cpu) FROM Computer cpu "
@@ -47,8 +45,6 @@ public class ComputerDAO extends DAO<Computer> {
 	private static final String HQL_COUNT_BY_NAME_WITH_COMPANY_NAME = "SELECT COUNT(cpu) FROM Computer cpu JOIN Company cpa "
 			+ "ON cpa.id IN (SELECT cpa.id FROM Company cpa WHERE lower(cpa.name) LIKE lower(:cpaName) ) AND cpu.company = cpa.id "
 			+ "WHERE lower(cpu.name) LIKE lower(:cpuName) ";
-
-	private final Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -84,40 +80,44 @@ public class ComputerDAO extends DAO<Computer> {
 		} else {
 			cpaId = null;
 		}
-		Transaction tx;
 		int row;
 		try (Session session = sessionFactory.openSession()) {
-			tx = session.beginTransaction();
-			row = session.createQuery(HQL_UPDATE).setParameter("name", obj.getName())
-					.setParameter("introduced", convertUtil.dateToTimestamp(obj.getIntroduced()))
-					.setParameter("discontinued", convertUtil.dateToTimestamp(obj.getDiscontinued()))
-					.setParameter("cpaId", cpaId).setParameter("cpuId", obj.getId()).executeUpdate();
-			tx.commit();
-		} catch (HibernateException e) {
-			logger.debug(e.getMessage());
-			e.printStackTrace();
-			throw new UpdateException();
+			try {
+				session.getTransaction().begin();
+				row = session.createQuery(HQL_UPDATE).setParameter("name", obj.getName())
+						.setParameter("introduced", convertUtil.dateToTimestamp(obj.getIntroduced()))
+						.setParameter("discontinued", convertUtil.dateToTimestamp(obj.getDiscontinued()))
+						.setParameter("cpaId", cpaId).setParameter("cpuId", obj.getId()).executeUpdate();
+				session.getTransaction().commit();
+			} catch (HibernateException e) {
+				session.getTransaction().rollback();
+				throw new UpdateException();
+			}
+			if (row == 0) {
+				session.getTransaction().rollback();
+				throw new NoRowUpdatedException();
+			}
 		}
-		if (row == 0) {
-			throw new NoRowUpdatedException();
-		}
-		logger.debug("computer: " + obj);
 		return obj;
 	}
 
 	@Override
+	@Transactional
 	public void delete(Computer obj) throws DAOException {
-		Transaction tx;
 		int row;
 		try (Session session = sessionFactory.openSession()) {
-			tx = session.beginTransaction();
-			row = session.createQuery(HQL_DELETE).setParameter("id", obj.getId()).executeUpdate();
-			tx.commit();
-		} catch (HibernateException e) {
-			throw new UpdateException();
-		}
-		if (row == 0) {
-			throw new NoRowUpdatedException();
+			try {
+				session.getTransaction().begin();
+				row = session.createQuery(HQL_DELETE).setParameter("id", obj.getId()).executeUpdate();
+				session.getTransaction().commit();
+			} catch (HibernateException e) {
+				session.getTransaction().rollback();
+				throw new UpdateException();
+			}
+			if (row == 0) {
+				session.getTransaction().rollback();
+				throw new NoRowUpdatedException();
+			}
 		}
 	}
 
@@ -136,14 +136,14 @@ public class ComputerDAO extends DAO<Computer> {
 		try (Session session = sessionFactory.openSession()) {
 			if ("".equals(companyName)) {
 				Query<Computer> query = session.createQuery(
-						MessageFormat.format(HQL_FIND_BY_NAME_PAGED, orderByName, orderByOrder), Computer.class);
+						MessageFormat.format(HQL_FIND_BY_NAME_PAGE, orderByName, orderByOrder), Computer.class);
 				query.setParameter("cpuName", "%" + computerName + "%");
 				query.setMaxResults(elements);
 				query.setFirstResult(page * elements);
 				computers = query.list();
 			} else {
 				Query<Computer> query = session.createQuery(
-						MessageFormat.format(HQL_FIND_BY_NAME_PAGED_WITH_COMPANY_NAME, orderByName, orderByOrder),
+						MessageFormat.format(HQL_FIND_BY_NAME_PAGE_WITH_COMPANY_NAME, orderByName, orderByOrder),
 						Computer.class);
 				query.setParameter("cpaName", "%" + companyName + "%");
 				query.setParameter("cpuName", "%" + computerName + "%");

@@ -1,4 +1,4 @@
-package fr.cgaiton611.dao;
+package fr.cgaiton611.persistence;
 
 import static org.junit.Assert.assertNotEquals;
 

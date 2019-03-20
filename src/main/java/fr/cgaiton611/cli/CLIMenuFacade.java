@@ -143,7 +143,7 @@ public class CLIMenuFacade {
 
 		Company company;
 		try {
-			company = companyService.find(companyId.get());
+			company = companyService.find(new Company(companyId.get()));
 		} catch (NoRowUpdatedException e) {
 			company = null;
 		} catch (DAOException e) {
@@ -183,7 +183,7 @@ public class CLIMenuFacade {
 		Company company = null;
 		if (companyId.isPresent()) {
 			try {
-				company = companyService.find(companyId.get());
+				company = companyService.find(new Company(companyId.get()));
 			} catch (NoRowUpdatedException e) {
 				company = null;
 			} catch (DAOException e) {

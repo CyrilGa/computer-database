@@ -1,23 +1,16 @@
 package fr.cgaiton611.persistence;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.sql.Types;
 import java.util.List;
 
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.SqlParameterValue;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import fr.cgaiton611.exception.dao.DAOException;
 import fr.cgaiton611.exception.dao.NoRowUpdatedException;
-import fr.cgaiton611.exception.dao.NotOneResultException;
 import fr.cgaiton611.exception.dao.QueryException;
 import fr.cgaiton611.exception.dao.UpdateException;
 import fr.cgaiton611.model.Company;
@@ -32,49 +25,37 @@ import fr.cgaiton611.model.Company;
 @Repository
 public class CompanyDAO extends DAO<Company> {
 
-	private static final String SQL_CREATE = "INSERT INTO company(name) VALUES(?)";
-	private static final String SQL_FIND = "SELECT id, name FROM company WHERE id = ?";
-	private static final String SQL_UPDATE = "UPDATE company SET name = ? WHERE id = ? ";
-	private static final String SQL_DELETE = "DELETE FROM company WHERE id = ? ";
-	private static final String SQL_FIND_PAGED = "SELECT id, name FROM company LIMIT ? OFFSET ? ";
-	private static final String SQL_COUNT = "SELECT COUNT(*) as count FROM company";
-	private static final String SQL_FIND_BY_NAME = "SELECT id, name FROM company WHERE name = ?";
-	private static final String SQL_FIND_ALL_NAME = "SELECT name FROM company";
-	private static final String SQL_DELETE_COMPUTER_BY_COMPANY_ID = "DELETE FROM computer WHERE company_id = ? ";
+//	private static final String SQL_CREATE = "INSERT INTO company(name) VALUES(?)";
+	private static final String HQL_FIND = "SELECT cpa FROM Company cpa WHERE id = :id";
+	private static final String HQL_UPDATE = "UPDATE Company SET name = ? WHERE id = :id";
+	private static final String HQL_DELETE = "DELETE Company cpa WHERE cpa.id = :id ";
+	private static final String HQL_FIND_PAGE = "SELECT cpa FROM company cpa";
+	private static final String HQL_COUNT = "SELECT COUNT(cpa) FROM Company cpa";
+	private static final String HQL_FIND_BY_NAME = "SELECT cpa FROM Company cpa WHERE name = :name";
+	private static final String HQL_FIND_ALL_NAME = "SELECT cpa.name FROM Company cpa";
+	private static final String HQL_DELETE_COMPUTER_BY_COMPANY_ID = "DELETE Computer cpu WHERE cpu.company = :id ";
 
-	private RowMapper<Company> companyRowMapper = (rs, pRowNum) -> new Company(rs.getLong("id"), rs.getString("name"));
+	@Autowired
+	private SessionFactory sessionFactory;
 
 	@Override
 	public Company create(Company obj) throws DAOException {
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-		int row;
-		try {
-			row = jdbcTemplate.update(connection -> {
-				PreparedStatement ps = connection.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);
-				ps.setString(1, obj.getName());
-				return ps;
-			}, keyHolder);
-		} catch (DataAccessException e) {
+		try (Session session = sessionFactory.openSession()) {
+			session.save(obj);
+		} catch (HibernateException e) {
 			throw new UpdateException();
 		}
-		if (row == 0) {
-			throw new NoRowUpdatedException();
-		}
-		obj.setId(keyHolder.getKey().longValue());
 		return obj;
 	}
 
 	@Override
 	public Company find(Company obj) throws DAOException {
 		Company company;
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-		Object[] params = { new SqlParameterValue(Types.INTEGER, obj.getId()) };
-		try {
-			company = jdbcTemplate.queryForObject(SQL_FIND, companyRowMapper, params);
-		} catch (IncorrectResultSizeDataAccessException e) {
-			throw new NotOneResultException();
-		} catch (DataAccessException e) {
+		try (Session session = sessionFactory.openSession()) {
+			Query<Company> query = session.createQuery(HQL_FIND, Company.class);
+			query.setParameter("id", obj.getId());
+			company = query.uniqueResult();
+		} catch (HibernateException e) {
 			throw new QueryException();
 		}
 		return company;
@@ -82,79 +63,90 @@ public class CompanyDAO extends DAO<Company> {
 
 	@Override
 	public Company update(Company obj) throws DAOException {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-		Object[] params = { new SqlParameterValue(Types.VARCHAR, obj.getName()),
-				new SqlParameterValue(Types.INTEGER, obj.getId()) };
 		int row;
-		try {
-			row = jdbcTemplate.update(SQL_UPDATE, params);
-		} catch (DataAccessException e) {
-			throw new UpdateException();
-		}
-		if (row == 0) {
-			throw new NoRowUpdatedException();
+		try (Session session = sessionFactory.openSession()) {
+			try {
+				session.getTransaction().begin();
+				row = session.createQuery(HQL_UPDATE).setParameter("name", obj.getName())
+						.setParameter("cpaId", obj.getId()).executeUpdate();
+				session.getTransaction().commit();
+			} catch (HibernateException e) {
+				session.getTransaction().rollback();
+				throw new UpdateException();
+			}
+			if (row == 0) {
+				session.getTransaction().rollback();
+				throw new NoRowUpdatedException();
+			}
 		}
 		return obj;
 	}
 
 	@Override
-	@Transactional
 	public void delete(Company obj) throws DAOException {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-		Object[] params = { new SqlParameterValue(Types.INTEGER, obj.getId()) };
 		int row;
-		try {
-			row = jdbcTemplate.update(SQL_DELETE_COMPUTER_BY_COMPANY_ID, params);
-			row = jdbcTemplate.update(SQL_DELETE, params);
-		} catch (DataAccessException e) {
-			throw new UpdateException();
-		}
-		if (row == 0) {
-			throw new NoRowUpdatedException();
+		try (Session session = sessionFactory.openSession()) {
+			try {
+				session.getTransaction().begin();
+				session.createQuery(HQL_DELETE).setParameter("id", obj.getId()).executeUpdate();
+				row = session.createQuery(HQL_DELETE_COMPUTER_BY_COMPANY_ID).setParameter("id", obj.getId())
+						.executeUpdate();
+				session.getTransaction().commit();
+			} catch (HibernateException e) {
+				session.getTransaction().rollback();
+				session.close();
+				throw new UpdateException();
+			}
+			if (row == 0) {
+				session.getTransaction().rollback();
+				throw new NoRowUpdatedException();
+			}
 		}
 	}
 
 	public List<Company> findPage(int page, int elements) throws DAOException {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
 		List<Company> companies;
-		try {
-			companies = jdbcTemplate.query(SQL_FIND_PAGED, companyRowMapper, elements, page * elements);
-		} catch (DataAccessException e) {
-			throw new QueryException();
+		try (Session session = sessionFactory.openSession()) {
+			Query<Company> query = session.createQuery(HQL_FIND_PAGE, Company.class);
+			query.setMaxResults(elements);
+			query.setFirstResult(page * elements);
+			companies = query.list();
+		} catch (HibernateException e) {
+			throw new UpdateException();
 		}
 		return companies;
 	}
 
 	public int count() throws DAOException {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-		int count;
-		try {
-			count = jdbcTemplate.queryForObject(SQL_COUNT, Integer.class);
-		} catch (DataAccessException e) {
-			throw new QueryException();
+		long count;
+		try (Session session = sessionFactory.openSession()) {
+			count = session.createQuery(HQL_COUNT, Long.class).uniqueResult();
+		} catch (HibernateException e) {
+			throw new UpdateException();
 		}
-		return count;
+		return (int) count;
 	}
 
 	public Company findByName(String name) throws DAOException {
 		Company company;
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-		Object[] params = { new SqlParameterValue(Types.VARCHAR, name) };
-		try {
-			company = jdbcTemplate.queryForObject(SQL_FIND_BY_NAME, companyRowMapper, params);
-		} catch (DataAccessException e) {
+		try (Session session = sessionFactory.openSession()) {
+			Query<Company> query = session.createQuery(HQL_FIND_BY_NAME, Company.class);
+			query.setParameter("name", name);
+			company = query.uniqueResult();
+		} catch (HibernateException e) {
 			throw new QueryException();
 		}
 		return company;
 	}
 
 	public List<String> findAllName() throws DAOException {
+
 		List<String> names;
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-		try {
-			names = jdbcTemplate.query(SQL_FIND_ALL_NAME, (RowMapper<String>) (rs, rowNum) -> rs.getString("name"));
-		} catch (DataAccessException e) {
-			throw new QueryException();
+		try (Session session = sessionFactory.openSession()) {
+			Query<String> query = session.createQuery(HQL_FIND_ALL_NAME, String.class);
+			names = query.list();
+		} catch (HibernateException e) {
+			throw new UpdateException();
 		}
 		return names;
 	}
