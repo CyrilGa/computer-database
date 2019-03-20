@@ -2,6 +2,17 @@ package fr.cgaiton611.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.springframework.lang.Nullable;
+
 /**
  * Represent a computer with an id, name, introduced date, discontinued date and
  * company_id of which company manufactured it
@@ -9,11 +20,25 @@ import java.util.Date;
  * @author cyril
  * @version 1.0
  */
+
+@Entity
+@Table(name = "computer")
 public class Computer {
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
+	@Column(name = "name")
 	private String name;
+	@Nullable
+	@Column(name = "introduced")
 	private Date introduced;
+	@Nullable
+	@Column(name = "discontinued")
 	private Date discontinued;
+	@Nullable
+	@ManyToOne
+	@JoinColumn(name="company_id")
 	private Company company;
 
 	public Computer(long id, String name, Date introduced, Date discontinued, Company company) {

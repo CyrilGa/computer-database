@@ -19,7 +19,7 @@ public class ComputerPage {
 	private ComputerService computerService;
 
 	public int[] ELEMENTS_AUTORISED = { 10, 50, 100 };
-	public String[] ORDERBYNAME_AUTORISED = { "computer.name", "introduced", "discontinued", "company.name" };
+	public String[] ORDERBYNAME_AUTORISED = { "cpu.name", "cpu.introduced", "cpu.discontinued", "cpa.name" };
 	public String[] ORDERBYORDER_AUTORISED = { "ASC", "DESC" };
 	private int elements = ELEMENTS_AUTORISED[0];
 	private int page = 0;

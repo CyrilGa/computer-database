@@ -6,6 +6,11 @@ import java.sql.Types;
 import java.text.MessageFormat;
 import java.util.List;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -41,17 +46,19 @@ public class ComputerDAO extends DAO<Computer> {
 			+ "FROM computer left JOIN company ON company_id = company.id WHERE computer.id = ? ";
 	private static final String SQL_UPDATE = "UPDATE computer SET name = ? ,introduced = ? ,discontinued = ? ,company_id = ?  WHERE id = ? ";
 	private static final String SQL_DELETE = "DELETE FROM computer WHERE id = ? ";
-	private static final String SQL_FIND_BY_NAME_PAGED = "SELECT computer.id as id, computer.name as name, introduced, discontinued, company_id, company.name as companyName "
-			+ "FROM computer left JOIN company ON company_id = company.id WHERE computer.name LIKE ? "
-			+ "ORDER BY {0} {1} LIMIT ? OFFSET ? ";
-	private static final String SQL_COUNT_BY_NAME = "SELECT COUNT(*) as count FROM computer " + "WHERE name LIKE ? ";
-	private static final String SQL_FIND_BY_NAME_PAGED_WITH_COMPANY_NAME = "SELECT computer.id as id, computer.name as name, introduced, discontinued, company_id, company.name as companyName "
-			+ "FROM computer JOIN company "
-			+ "ON company.id IN (SELECT id FROM company WHERE name LIKE ? ) AND company_id = company.id "
-			+ "WHERE computer.name LIKE ? ORDER BY {0} {1} LIMIT ? OFFSET ? ";
-	private static final String SQL_COUNT_BY_NAME_WITH_COMPANY_NAME = "SELECT COUNT(*) as count FROM computer JOIN company "
-			+ "ON company.id IN (SELECT id FROM company WHERE name LIKE ? ) AND company_id = company.id "
-			+ "WHERE computer.name LIKE ? ";
+	private static final String HQL_FIND_BY_NAME_PAGED = "SELECT cpu FROM Computer cpu left JOIN Company cpa "
+			+ "ON cpu.company = cpa.id WHERE lower(cpu.name) LIKE lower(:cpuName) ORDER BY {0} {1}";
+	private static final String HQL_FIND_BY_NAME_PAGED_WITH_COMPANY_NAME = "SELECT cpu FROM Computer cpu JOIN Company cpa "
+			+ "ON cpa.id IN (SELECT cpa.id FROM Company cpa WHERE lower(cpa.name) LIKE lower(:cpaName) ) AND cpu.company_id = cpa.id "
+			+ "WHERE lower(cpu.name) LIKE lower(:cpuName) ORDER BY {0} {1}";
+	private static final String HQL_COUNT_BY_NAME = "SELECT COUNT(cpu) FROM Computer cpu "
+			+ "WHERE lower(cpu.name) LIKE lower(:cpuName) ";
+	private static final String HQL_COUNT_BY_NAME_WITH_COMPANY_NAME = "SELECT COUNT(cpu) FROM Computer cpu JOIN Company cpa "
+			+ "ON cpa.id IN (SELECT cpa.id FROM Company cpa WHERE lower(cpa.name) LIKE lower(:cpaName) ) AND cpu.company_id = cpa.id "
+			+ "WHERE lower(cpu.name) LIKE lower(:cpuName) ";
+
+	@Autowired
+	private SessionFactory sessionFactory;
 
 	private RowMapper<Computer> computerRowMapper = (rs, pRowNum) -> new Computer(rs.getLong("id"),
 			rs.getString("name"), rs.getTimestamp("introduced"), rs.getTimestamp("discontinued"),
@@ -140,60 +147,57 @@ public class ComputerDAO extends DAO<Computer> {
 		}
 	}
 
-	public List<Computer> findPage(int page, int elements) throws DAOException{
+	public List<Computer> findPage(int page, int elements) throws DAOException {
 		return findPage(page, elements, "", "", "computer.id", "ASC");
 	}
 
-	public int count() throws DAOException{
+	public int count() throws DAOException {
 		return count("", "");
 	}
 
 	public List<Computer> findPage(int page, int elements, String computerName, String companyName, String orderByName,
 			String orderByOrder) throws DAOException {
-		String SQL;
-		if ("".equals(companyName)) {
-			SQL = SQL_FIND_BY_NAME_PAGED;
-		} else {
-			SQL = SQL_FIND_BY_NAME_PAGED_WITH_COMPANY_NAME;
-		}
 
-		SQL = MessageFormat.format(SQL, orderByName, orderByOrder);
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
 		List<Computer> computers;
-		try {
+		try (Session session = sessionFactory.openSession()) {
 			if ("".equals(companyName)) {
-				computers = jdbcTemplate.query(SQL, computerRowMapper, "%" + computerName + "%", elements,
-						page * elements);
+				Query<Computer> query = session.createQuery(
+						MessageFormat.format(HQL_FIND_BY_NAME_PAGED, orderByName, orderByOrder), Computer.class);
+				query.setParameter("cpuName", "%" + computerName + "%");
+				query.setMaxResults(elements);
+				query.setFirstResult(page * elements);
+				computers = query.list();
 			} else {
-				computers = jdbcTemplate.query(SQL, computerRowMapper, "%" + companyName + "%",
-						"%" + computerName + "%", elements, page * elements);
+				Query<Computer> query = session.createQuery(
+						MessageFormat.format(HQL_FIND_BY_NAME_PAGED_WITH_COMPANY_NAME, orderByName, orderByOrder),
+						Computer.class);
+				query.setParameter("cpaName", "%" + companyName + "%");
+				query.setParameter("cpuName", "%" + computerName + "%");
+				query.setMaxResults(elements);
+				query.setFirstResult(page * elements);
+				computers = query.list();
 			}
-		} catch (DataAccessException e) {
+		} catch (HibernateException e) {
 			throw new QueryException();
 		}
 		return computers;
 	}
 
-	public int count(String computerName, String companyName) throws DAOException{
-		String SQL;
-		if ("".equals(companyName)) {
-			SQL = SQL_COUNT_BY_NAME;
-		} else {
-			SQL = SQL_COUNT_BY_NAME_WITH_COMPANY_NAME;
-		}
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-		int count;
-		try {
+	public int count(String computerName, String companyName) throws DAOException {
+		long count;
+		try (Session session = sessionFactory.openSession()) {
 			if ("".equals(companyName)) {
-				count = jdbcTemplate.queryForObject(SQL, Integer.class, "%" + computerName + "%");
+				count = session.createQuery(HQL_COUNT_BY_NAME, Long.class)
+						.setParameter("cpuName", "%" + computerName + "%").uniqueResult();
 			} else {
-				count = jdbcTemplate.queryForObject(SQL, Integer.class, "%" + companyName + "%",
-						"%" + computerName + "%");
+				count = session.createQuery(HQL_COUNT_BY_NAME_WITH_COMPANY_NAME, Long.class)
+						.setParameter("cpaName", "%" + companyName + "%")
+						.setParameter("cpuName", "%" + computerName + "%").uniqueResult();
 			}
-		} catch (DataAccessException e) {
+		} catch (HibernateException e) {
 			throw new QueryException();
 		}
-		return count;
+		return (int) count;
 	}
 
 }
