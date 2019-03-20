@@ -36,9 +36,8 @@ public class Company {
 	public Company(String name) {
 		this.name = name;
 	}
-
+	
 	public Company() {
-		id = -1l;
 	}
 
 	public long getId() {

@@ -68,7 +68,7 @@ public class ComputerMapper {
 
 		computerDTO.setDiscontinued(convertUtil.dateToString(computer.getDiscontinued()));
 
-		computerDTO.setCompanyName(computer.getCompany().getName());
+		computerDTO.setCompanyName(computer.getCompany() != null?computer.getCompany().getName():null);
 
 		return computerDTO;
 	}

@@ -96,9 +96,6 @@ public class Computer {
 	}
 
 	public Company getCompany() {
-		if (company == null) {
-			company = new Company();
-		}
 		return company;
 	}
 

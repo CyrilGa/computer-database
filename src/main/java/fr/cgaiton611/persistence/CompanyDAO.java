@@ -41,7 +41,6 @@ public class CompanyDAO extends DAO<Company> {
 	private static final String SQL_FIND_BY_NAME = "SELECT id, name FROM company WHERE name = ?";
 	private static final String SQL_FIND_ALL_NAME = "SELECT name FROM company";
 	private static final String SQL_DELETE_COMPUTER_BY_COMPANY_ID = "DELETE FROM computer WHERE company_id = ? ";
-	
 
 	private RowMapper<Company> companyRowMapper = (rs, pRowNum) -> new Company(rs.getLong("id"), rs.getString("name"));
 
@@ -125,7 +124,7 @@ public class CompanyDAO extends DAO<Company> {
 		}
 		return companies;
 	}
-	
+
 	public int count() throws DAOException {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
 		int count;
