@@ -55,7 +55,7 @@
                                 	<form:input type="date" class="form-control" id="introducedDate" name="introducedDate" 
                                 		value="${introducedDate}" min="0000-01-01" max="9999-01-01" path="introducedDate"/>
                                		<form:input type="time" class="form-control" id="introducedTime" name="introducedTime" 
-                               			placeholder="Introduced date" value="${introducedTime}" path="introducedTime"/>
+                               			value="${introducedTime}" path="introducedTime"/>
                             	</div>
                             </div>
                             <div class="form-group">

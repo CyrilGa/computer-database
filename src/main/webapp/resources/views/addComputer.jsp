@@ -37,6 +37,7 @@
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <h1 id="page-title"><spring:message code="string.addTitle"/></h1>
+                    
                     <form:form id="validForm" action="/cdb/addComputer" method="POST" modelAttribute="computerForm">
                         <fieldset>
                             <div class="form-group">
@@ -49,9 +50,9 @@
                                 <label for="introducedDate"><spring:message code="string.introduced"/></label>
                             	<div class="form-inline">
                                 	<form:input type="date" class="form-control" id="introducedDate" name="introducedDate" 
-                                		min="0000-01-01" max="9999-01-01" path="introducedTime"/>
+                                		min="0000-01-01" max="9999-01-01" path="introducedDate"/>
                                		<form:input type="time" class="form-control" id="introducedTime" name="introducedTime"
-                               			path="introducedDate"/>
+                               			path="introducedTime"/>
                             	</div>
                             </div>
                             <div class="form-group">
