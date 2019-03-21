@@ -6,10 +6,13 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import fr.cgaiton611.exception.dao.DAOException;
+import fr.cgaiton611.exception.dao.NoResultRowException;
 import fr.cgaiton611.exception.dao.NoRowUpdatedException;
 import fr.cgaiton611.exception.dao.QueryException;
 import fr.cgaiton611.exception.dao.UpdateException;
@@ -27,16 +30,18 @@ public class CompanyDAO extends DAO<Company> {
 
 //	private static final String SQL_CREATE = "INSERT INTO company(name) VALUES(?)";
 	private static final String HQL_FIND = "SELECT cpa FROM Company cpa WHERE id = :id";
-	private static final String HQL_UPDATE = "UPDATE Company SET name = ? WHERE id = :id";
+	private static final String HQL_UPDATE = "UPDATE Company SET name = :name WHERE id = :id";
 	private static final String HQL_DELETE = "DELETE Company cpa WHERE cpa.id = :id ";
 	private static final String HQL_FIND_PAGE = "SELECT cpa FROM company cpa";
 	private static final String HQL_COUNT = "SELECT COUNT(cpa) FROM Company cpa";
 	private static final String HQL_FIND_BY_NAME = "SELECT cpa FROM Company cpa WHERE name = :name";
 	private static final String HQL_FIND_ALL_NAME = "SELECT cpa.name FROM Company cpa";
-	private static final String HQL_DELETE_COMPUTER_BY_COMPANY_ID = "DELETE Computer cpu WHERE cpu.company = :id ";
+	private static final String HQL_DELETE_COMPUTER_BY_COMPANY_ID = "DELETE Computer WHERE company_id = :id ";
 
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	private final Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 
 	@Override
 	public Company create(Company obj) throws DAOException {
@@ -58,6 +63,9 @@ public class CompanyDAO extends DAO<Company> {
 		} catch (HibernateException e) {
 			throw new QueryException();
 		}
+		if (company == null) {
+			throw new NoResultRowException();
+		}
 		return company;
 	}
 
@@ -68,7 +76,7 @@ public class CompanyDAO extends DAO<Company> {
 			try {
 				session.getTransaction().begin();
 				row = session.createQuery(HQL_UPDATE).setParameter("name", obj.getName())
-						.setParameter("cpaId", obj.getId()).executeUpdate();
+						.setParameter("id", obj.getId()).executeUpdate();
 				session.getTransaction().commit();
 			} catch (HibernateException e) {
 				session.getTransaction().rollback();
@@ -88,13 +96,12 @@ public class CompanyDAO extends DAO<Company> {
 		try (Session session = sessionFactory.openSession()) {
 			try {
 				session.getTransaction().begin();
-				session.createQuery(HQL_DELETE).setParameter("id", obj.getId()).executeUpdate();
-				row = session.createQuery(HQL_DELETE_COMPUTER_BY_COMPANY_ID).setParameter("id", obj.getId())
-						.executeUpdate();
+				session.createQuery(HQL_DELETE_COMPUTER_BY_COMPANY_ID).setParameter("id", obj.getId()).executeUpdate();
+				row = session.createQuery(HQL_DELETE).setParameter("id", obj.getId()).executeUpdate();
 				session.getTransaction().commit();
 			} catch (HibernateException e) {
+				e.printStackTrace();
 				session.getTransaction().rollback();
-				session.close();
 				throw new UpdateException();
 			}
 			if (row == 0) {

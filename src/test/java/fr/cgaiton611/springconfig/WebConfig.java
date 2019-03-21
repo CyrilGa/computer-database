@@ -18,10 +18,11 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = { "fr.cgaiton611.persistence", "fr.cgaiton611.dto"})
+@ComponentScan(basePackages = { "fr.cgaiton611.page", "fr.cgaiton611.persistence", "fr.cgaiton611.service",
+		"fr.cgaiton611.dto", "fr.cgaiton611.cli", "fr.cgaiton611.controller" })
 public class WebConfig implements WebMvcConfigurer {
 
-//	private final Logger logger = LoggerFactory.getLogger(SpringConfig.class);
+//	private final Logger logger = LoggerFactory.getLogger(WebConfig.class);
 
 	@Bean
 	public ViewResolver viewResolver() {

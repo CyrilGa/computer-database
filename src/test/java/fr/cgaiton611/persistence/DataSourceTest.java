@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.cgaiton611.springconfig.WebConfig;
+import fr.cgaiton611.springconfig.HibernateConfig;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = WebConfig.class)
+@ContextConfiguration(classes = {HibernateConfig.class})
 public class DataSourceTest {
 
 	@Autowired

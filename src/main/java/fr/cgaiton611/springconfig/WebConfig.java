@@ -22,7 +22,7 @@ import org.springframework.web.servlet.view.JstlView;
 		"fr.cgaiton611.dto", "fr.cgaiton611.cli", "fr.cgaiton611.controller" })
 public class WebConfig implements WebMvcConfigurer {
 
-//	private final Logger logger = LoggerFactory.getLogger(SpringConfig.class);
+//	private final Logger logger = LoggerFactory.getLogger(WebConfig.class);
 
 	@Bean
 	public ViewResolver viewResolver() {

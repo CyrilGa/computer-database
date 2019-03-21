@@ -14,16 +14,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.cgaiton611.exception.dao.DAOException;
+import fr.cgaiton611.exception.dao.NoResultRowException;
 import fr.cgaiton611.exception.dao.NoRowUpdatedException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
-import fr.cgaiton611.persistence.ComputerDAO;
 import fr.cgaiton611.springconfig.HibernateConfig;
-import fr.cgaiton611.springconfig.WebAppInitializer;
-import fr.cgaiton611.springconfig.WebConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebConfig.class, HibernateConfig.class, WebAppInitializer.class})
+@ContextConfiguration(classes = {HibernateConfig.class})
 public class ComputerDAOTest {
 
 	private final Logger logger = LoggerFactory.getLogger(ComputerDAOTest.class);
@@ -45,7 +43,7 @@ public class ComputerDAOTest {
 	public void find() {
 		Computer c1;
 		try {
-			c1 = computerDAO.create(new Computer("TEST COMPUTER DAO", new Date(), new Date(), new Company(2)));
+			c1 = computerDAO.create(new Computer("TEST COMPUTER DAO", new Date(), new Date(), new Company()));
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			fail("database error");
@@ -66,8 +64,10 @@ public class ComputerDAOTest {
 	@Test
 	public void findFail() {
 		try {
-			computerDAO.find(new Computer(665169595));
-			fail("sql error");
+			Computer computer = computerDAO.find(new Computer(665169595));
+			fail("fail finFail");
+		} catch(NoResultRowException e) {
+			// ok
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			fail("database error");
@@ -141,6 +141,9 @@ public class ComputerDAOTest {
 
 		try {
 			computerDAO.find(c1);
+			fail("fail delete");
+		} catch (NoResultRowException e) {
+			// ok
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			fail("database error");

@@ -7,11 +7,14 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
+import fr.cgaiton611.cli.Main;
 import fr.cgaiton611.exception.dao.DAOException;
+import fr.cgaiton611.exception.dao.NoResultRowException;
 import fr.cgaiton611.exception.dao.NoRowUpdatedException;
 import fr.cgaiton611.exception.dao.QueryException;
 import fr.cgaiton611.exception.dao.UpdateException;
@@ -48,12 +51,17 @@ public class ComputerDAO extends DAO<Computer> {
 
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	private final Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 
 	@Override
 	public Computer create(Computer obj) throws DAOException {
 		try (Session session = sessionFactory.openSession()) {
+			logger.debug("avant save");
 			session.save(obj);
+			logger.debug("apres save");
 		} catch (HibernateException e) {
+			logger.debug("exception");
 			throw new UpdateException();
 		}
 		return obj;
@@ -68,6 +76,9 @@ public class ComputerDAO extends DAO<Computer> {
 			computer = query.uniqueResult();
 		} catch (HibernateException e) {
 			throw new QueryException();
+		}
+		if (computer == null) {
+			throw new NoResultRowException();
 		}
 		return computer;
 	}

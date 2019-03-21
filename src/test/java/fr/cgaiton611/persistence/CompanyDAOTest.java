@@ -12,13 +12,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.cgaiton611.exception.dao.DAOException;
+import fr.cgaiton611.exception.dao.NoResultRowException;
 import fr.cgaiton611.exception.dao.NoRowUpdatedException;
 import fr.cgaiton611.model.Company;
-import fr.cgaiton611.persistence.CompanyDAO;
-import fr.cgaiton611.springconfig.WebConfig;
+import fr.cgaiton611.springconfig.HibernateConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = WebConfig.class)
+@ContextConfiguration(classes = {HibernateConfig.class})
 public class CompanyDAOTest {
 
 	private final Logger logger = LoggerFactory.getLogger(CompanyDAOTest.class);
@@ -63,7 +63,9 @@ public class CompanyDAOTest {
 	public void findFail() {
 		try {
 			companyDAO.find(new Company(99999999));
-			fail("sql error");
+			fail("fail findFail");
+		} catch (NoResultRowException e) {
+			// ok
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			fail("database error");
@@ -127,6 +129,7 @@ public class CompanyDAOTest {
 		}
 
 		try {
+			logger.debug(c1.toString());
 			companyDAO.delete(c1);
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
@@ -136,6 +139,9 @@ public class CompanyDAOTest {
 
 		try {
 			companyDAO.find(c1);
+			fail("fail delete");
+		} catch (NoResultRowException e) {
+			// ok
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			fail("database error");

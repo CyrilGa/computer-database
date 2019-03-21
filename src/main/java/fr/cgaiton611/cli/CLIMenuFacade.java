@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import fr.cgaiton611.exception.dao.DAOException;
-import fr.cgaiton611.exception.dao.NoRowUpdatedException;
+import fr.cgaiton611.exception.dao.NoResultRowException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.page.CompanyPage;
@@ -119,9 +119,12 @@ public class CLIMenuFacade {
 		try {
 			computer = computerService.find(id.get());
 			printUtil.printn(computer);
-		} catch (DAOException e) {
+		} catch (NoResultRowException e){
 			logger.warn(e.getMessage());
 			printUtil.printn("Computer not found");
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+			printUtil.printn("Database error");
 		}
 	}
 
@@ -144,7 +147,7 @@ public class CLIMenuFacade {
 		Company company;
 		try {
 			company = companyService.find(new Company(companyId.get()));
-		} catch (NoRowUpdatedException e) {
+		} catch (NoResultRowException e) {
 			company = null;
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
@@ -184,7 +187,7 @@ public class CLIMenuFacade {
 		if (companyId.isPresent()) {
 			try {
 				company = companyService.find(new Company(companyId.get()));
-			} catch (NoRowUpdatedException e) {
+			} catch (NoResultRowException e) {
 				company = null;
 			} catch (DAOException e) {
 				logger.warn(e.getMessage());

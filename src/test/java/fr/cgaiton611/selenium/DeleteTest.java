@@ -25,10 +25,10 @@ import fr.cgaiton611.exception.dao.DAOException;
 import fr.cgaiton611.model.Company;
 import fr.cgaiton611.model.Computer;
 import fr.cgaiton611.service.ComputerService;
-import fr.cgaiton611.springconfig.WebConfig;
+import fr.cgaiton611.springconfig.HibernateConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = WebConfig.class)
+@ContextConfiguration(classes = HibernateConfig.class)
 public class DeleteTest {
 
 	private final Logger logger = LoggerFactory.getLogger(DeleteTest.class);

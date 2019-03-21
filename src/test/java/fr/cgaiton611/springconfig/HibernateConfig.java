@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -19,10 +20,12 @@ import com.zaxxer.hikari.pool.HikariPool.PoolInitializationException;
 
 @Configuration
 @EnableTransactionManagement
+@ComponentScan(basePackages = { "fr.cgaiton611.page", "fr.cgaiton611.persistence", "fr.cgaiton611.service",
+		"fr.cgaiton611.dto", "fr.cgaiton611.cli", "fr.cgaiton611.controller" })
 public class HibernateConfig {
 
 	private final Logger logger = LoggerFactory.getLogger(HibernateConfig.class);
-	private final String configFileMain = "src/main/resources/db/main/db.properties";
+	private final String configFileMain = "src/main/resources/db/test/db.properties";
 
 	@Bean
 	public DataSource dataSource() {
@@ -32,7 +35,7 @@ public class HibernateConfig {
 			config = new HikariConfig(configFileMain);
 			try {
 				ds = new HikariDataSource(config);
-				logger.info("Datasource initialized (main db)");
+				logger.info("Datasource initialized (test db)");
 			} catch (PoolInitializationException e) {
 				logger.error("Error initializing HikariDataSource");
 			}
