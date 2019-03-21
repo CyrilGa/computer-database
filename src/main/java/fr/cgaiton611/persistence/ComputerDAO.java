@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import fr.cgaiton611.cli.Main;
 import fr.cgaiton611.exception.dao.DAOException;
 import fr.cgaiton611.exception.dao.NoResultRowException;
 import fr.cgaiton611.exception.dao.NoRowUpdatedException;
@@ -35,9 +34,9 @@ public class ComputerDAO extends DAO<Computer> {
 
 //	private static final String HQL_CREATE = "INSERT INTO Computer(name, introduced, discontinued, company_id) VALUES(?, ?, ?, ?)";
 	private static final String HQL_FIND = "SELECT cpu FROM Computer cpu WHERE cpu.id = :id";
-	private static final String HQL_UPDATE = "UPDATE Computer cpu SET cpu.name = :name ,cpu.introduced = :introduced ,"
-			+ "cpu.discontinued = :discontinued, cpu.company = :cpaId  WHERE id = :cpuId ";
-	private static final String HQL_DELETE = "DELETE Computer cpu WHERE cpu.id = :id";
+	private static final String HQL_UPDATE = "UPDATE Computer SET name = :name, introduced = :introduced, "
+			+ "discontinued = :discontinued, company_id = :cpaId  WHERE id = :cpuId ";
+	private static final String HQL_DELETE = "DELETE Computer WHERE id = :id";
 	private static final String HQL_FIND_BY_NAME_PAGE = "SELECT cpu FROM Computer cpu LEFT JOIN Company cpa "
 			+ "ON cpu.company = cpa.id WHERE lower(cpu.name) LIKE lower(:cpuName) ORDER BY {0} {1}";
 	private static final String HQL_FIND_BY_NAME_PAGE_WITH_COMPANY_NAME = "SELECT cpu FROM Computer cpu JOIN Company cpa "
@@ -57,11 +56,8 @@ public class ComputerDAO extends DAO<Computer> {
 	@Override
 	public Computer create(Computer obj) throws DAOException {
 		try (Session session = sessionFactory.openSession()) {
-			logger.debug("avant save");
 			session.save(obj);
-			logger.debug("apres save");
 		} catch (HibernateException e) {
-			logger.debug("exception");
 			throw new UpdateException();
 		}
 		return obj;
@@ -101,6 +97,7 @@ public class ComputerDAO extends DAO<Computer> {
 						.setParameter("cpaId", cpaId).setParameter("cpuId", obj.getId()).executeUpdate();
 				session.getTransaction().commit();
 			} catch (HibernateException e) {
+				logger.debug(e.getMessage());
 				session.getTransaction().rollback();
 				throw new UpdateException();
 			}

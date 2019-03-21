@@ -47,11 +47,11 @@ public class DeleteTest {
 	@Before
 	public void beforeAll() {
 		try {
-			if (computerService.findPageWithParameters(0, 1, "TEST 1 COMPUTER DELETE", "", "computer.id", "ASC")
+			if (computerService.findPageWithParameters(0, 1, "TEST 1 COMPUTER DELETE", "", "cpu.id", "ASC")
 					.size() == 0) {
 				computerService.create(new Computer("TEST 1 COMPUTER DELETE", null, null, new Company()));
 			}
-			if (computerService.findPageWithParameters(0, 1, "TEST 2 COMPUTER DELETE", "", "computer.id", "ASC")
+			if (computerService.findPageWithParameters(0, 1, "TEST 2 COMPUTER DELETE", "", "cpu.id", "ASC")
 					.size() == 0) {
 				computerService.create(new Computer("TEST 2 COMPUTER DELETE", null, null, new Company()));
 			}
@@ -75,9 +75,9 @@ public class DeleteTest {
 		;
 		driver.findElement(By.id("deleteSelected")).click();
 		driver.switchTo().alert().accept();
-		new WebDriverWait(driver, 10).until(ExpectedConditions.urlToBe("http://localhost:9090/cdb/dashboard"));
+		new WebDriverWait(driver, 2);
 		String url = driver.getCurrentUrl();
-		assertTrue("http://localhost:9090/cdb/dashboard".equals(url));
+		assertTrue(url.startsWith("http://localhost:9090/cdb/dashboard"));
 		String dashMsg = driver.findElement(By.id("dashboardMsg")).getText();
 		assertTrue(dashMsg.endsWith("Computer(s) successfully deleted"));
 
@@ -109,7 +109,7 @@ public class DeleteTest {
 		driver.findElement(By.id("editComputer")).click();
 
 		String url = driver.getCurrentUrl();
-		assertTrue("http://localhost:9090/cdb/dashboard#".equals(url));
+		assertTrue(url.startsWith("http://localhost:9090/cdb/dashboard"));
 
 		int c2 = 0;
 		try {

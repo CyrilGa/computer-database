@@ -69,7 +69,8 @@ public class AddTest {
 		driver.findElement(By.id("btnSubmit")).click();
 
 		String url = driver.getCurrentUrl();
-		assertTrue("http://localhost:9090/cdb/dashboard".equals(url));
+		logger.debug(url);
+		assertTrue(url.startsWith("http://localhost:9090/cdb/dashboard"));
 		String dashMsg = driver.findElement(By.id("dashboardMsg")).getText();
 		logger.debug(dashMsg);
 		assertTrue(dashMsg.startsWith("Computer successfully created"));
@@ -91,7 +92,7 @@ public class AddTest {
 
 		String url = driver.getCurrentUrl();
 		System.out.println(url);
-		assertTrue("http://localhost:9090/cdb/dashboard".equals(url));
+		assertTrue(url.startsWith("http://localhost:9090/cdb/dashboard"));
 		String dashMsg = driver.findElement(By.id("dashMsg")).getText();
 		assertTrue("Computer successfully created".equals(dashMsg));
 	}

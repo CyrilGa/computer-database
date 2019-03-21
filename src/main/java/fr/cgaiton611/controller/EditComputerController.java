@@ -135,41 +135,4 @@ public class EditComputerController {
 
 	}
 
-//	@PostMapping
-//	public String doPost(@RequestParam(required = false, name = "computerName") String pId,
-//			@RequestParam(required = false, name = "computerName") String pComputerName,
-//			@RequestParam(required = false, name = "introducedDate") String pIntroducedDate,
-//			@RequestParam(required = false, name = "introducedTime") String pIntroducedTime,
-//			@RequestParam(required = false, name = "discontinuedDate") String pDiscontinuedDate,
-//			@RequestParam(required = false, name = "discontinuedTime") String pDiscontinuedTime,
-//			@RequestParam(required = false, name = "companyName") String pCompanyName,
-//			RedirectAttributes redirectAttributes) {
-//		String introduced = pIntroducedDate + " " + pIntroducedTime;
-//		String discontinued = pDiscontinuedDate + " " + pDiscontinuedTime;
-//		if ("select-option-default".equals(pCompanyName))
-//			pCompanyName = null;
-//		ComputerDTO computerDTO = new ComputerDTO(pId, pComputerName, introduced, discontinued, pCompanyName);
-//		String dashboardMsg;
-//		Computer computer = computerMapper.toComputer(computerDTO);
-//		try {
-//			ComputerValidator.validateForEdit(computer);
-//			try {
-//				computerService.update(computer);
-//				dashboardMsg = "Computer successfully updated";
-//			} catch (NoRowUpdatedException e) {
-//				logger.warn(e.getMessage());
-//				dashboardMsg = "Computer not updated, computer not found";
-//			} catch (DAOException e) {
-//				logger.warn(e.getMessage());
-//				dashboardMsg = "Computer not updated, database not accessible";
-//			}
-//		} catch (ValidationException e) {
-//			logger.warn(e.getMessage());
-//			dashboardMsg = "Computer not updated, bad validation";
-//		}
-//
-//		redirectAttributes.addAttribute("dashboardMsg", dashboardMsg);
-//		return "redirect:dashboard";
-//
-//	}
 }

@@ -65,7 +65,7 @@ public class EditTest {
 
 		try {
 			List<Computer> computers = computerService.findPageWithParameters(0, 1, "TEST COMPUTER EDIT", "",
-					"computer.id", "ASC");
+					"cpu.id", "ASC");
 			if (computers.size() == 0) {
 				computerService.create(new Computer("TEST COMPUTER EDIT", null, null, new Company()));
 			}
@@ -86,8 +86,9 @@ public class EditTest {
 		driver.findElement(By.id("btnSubmit")).click();
 
 		String url = driver.getCurrentUrl();
-		assertTrue("http://localhost:9090/cdb/dashboard".equals(url));
+		assertTrue(url.startsWith("http://localhost:9090/cdb/dashboard"));
 		String dashMsg = driver.findElement(By.id("dashboardMsg")).getText();
+		logger.debug(dashMsg);
 		assertTrue("Computer successfully updated".equals(dashMsg));
 	}
 
@@ -105,7 +106,7 @@ public class EditTest {
 		driver.findElement(By.id("btnSubmit")).click();
 
 		String url = driver.getCurrentUrl();
-		assertTrue("http://localhost:9090/cdb/dashboard".equals(url));
+		assertTrue(url.startsWith("http://localhost:9090/cdb/dashboard"));
 		String dashMsg = driver.findElement(By.id("dashboardMsg")).getText();
 		assertTrue("Computer successfully updated".equals(dashMsg));
 	}

@@ -25,7 +25,7 @@ import com.zaxxer.hikari.pool.HikariPool.PoolInitializationException;
 public class HibernateConfig {
 
 	private final Logger logger = LoggerFactory.getLogger(HibernateConfig.class);
-	private final String configFileMain = "src/main/resources/db/test/db.properties";
+	private final String configFileMain = "src/main/resources/db/main/db.properties";
 
 	@Bean
 	public DataSource dataSource() {
