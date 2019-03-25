@@ -101,7 +101,7 @@ header div {
 	width: 89%;
 }
 
-header img{
+header img {
 	height: 20px;
 }
 
@@ -109,6 +109,13 @@ header span :nth-child(1) {
 	margin-right: 3px;
 }
 
-header span :nth-child(2){
+header span :nth-child(2) {
 	margin-left: 3px;
+}
+
+.container-login-main {
+	padding-right: 500px;
+	padding-left: 500px;
+	margin-right: auto;
+	margin-left: auto;
 }
