@@ -27,6 +27,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .formLogin()
         .loginPage("/login")
         .loginProcessingUrl("/loginProcess")
+        .usernameParameter("username")
+        .passwordParameter("password")
         .defaultSuccessUrl("/dashboard", true)
         .failureUrl("/login?error=true");
 	}
