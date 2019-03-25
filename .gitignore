@@ -1,5 +1,5 @@
 ### Custom ###
-resources/db/db.properties
+db.properties
 
 
 # Created by https://www.gitignore.io/api/java,maven,eclipse,java-web,intellij
