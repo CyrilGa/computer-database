@@ -1,0 +1,114 @@
+body {
+	background: #f2f2f2;
+	padding-top: 70px;
+	padding-bottom: 70px;
+}
+
+footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	background: #FEFEFE;
+	border-top: 1px solid #CCC;
+	height: 60px;
+}
+
+footer .pagination {
+	margin: 10px 0px;
+}
+
+footer .btn-group {
+	margin: 10px 10px;
+}
+
+input[type='checkbox'] {
+	margin: 0px;
+	padding: 0px;
+	border-radius: 5px;
+	white-space: nowrap;
+}
+
+#custom-p {
+	color: #888888;
+}
+
+#container-title {
+	display: flex;
+	align-items: center;
+}
+
+#container-title span {
+	color: #ffb53f;
+	font-size: 20px;
+	margin-left: 50px;
+	margin-top: 10px;
+}
+
+#container-id {
+	font-size: 20px;
+}
+
+#introducedDate {
+	margin-bottom: 5px;
+}
+
+#discontinuedDate {
+	margin-bottom: 5px;
+}
+
+#actions {
+	display: flex;
+	justify-content: space-between;
+}
+
+#secondDiv {
+	margin-top: 6px;
+}
+
+.hiddenElement {
+	visibility: collapse;
+}
+
+th a {
+	text-decoration: none;
+	color: black;
+	transition: 0.3s;
+}
+
+th a:hover {
+	text-decoration: none;
+	color: #dd1c1c;
+}
+
+.flag-icon {
+	background-size: contain;
+	background-position: 50%;
+	background-repeat: no-repeat;
+	position: relative;
+	display: inline-block;
+	width: 1.33333333em;
+	line-height: 1em;
+}
+
+header div {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-left: 15px;
+	padding-right: 15px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 89%;
+}
+
+header img{
+	height: 20px;
+}
+
+header span :nth-child(1) {
+	margin-right: 3px;
+}
+
+header span :nth-child(2){
+	margin-left: 3px;
+}
