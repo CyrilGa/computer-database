@@ -27,7 +27,7 @@
 			<artifactId>binding</artifactId>
 			<version>${sub-module-version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>fr.cgaiton611.cdb</groupId>
 			<artifactId>spring-config</artifactId>
@@ -140,12 +140,6 @@
 			</plugin>
 
 		</plugins>
-		
-<!-- 		<resources> -->
-<!-- 			<resource> -->
-<!-- 				<directory>src/main/resources/logs</directory> -->
-<!-- 			</resource> -->
-<!-- 		</resources> -->
 
 	</build>
 
