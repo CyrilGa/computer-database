@@ -1,4 +1,4 @@
-package fr.cgaiton611.cdb.springconfig;
+package fr.cgaiton611.cdb.config;
 
 import java.util.Properties;
 
@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.pool.HikariPool.PoolInitializationException;
+
+import fr.cgaiton611.cdb.config.HibernateConfig;
 
 @Configuration
 @EnableTransactionManagement

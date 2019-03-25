@@ -1,4 +1,4 @@
-package fr.cgaiton611.cdb.springconfig;
+package fr.cgaiton611.cdb.config;
 
 import java.util.Locale;
 

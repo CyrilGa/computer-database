@@ -27,7 +27,7 @@
 			<artifactId>core</artifactId>
 			<version>${sub-module-version}</version>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>fr.cgaiton611.cdb</groupId>
 			<artifactId>spring-config</artifactId>

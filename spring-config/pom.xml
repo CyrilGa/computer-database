@@ -16,6 +16,10 @@
 	<packaging>jar</packaging>
 	<name>spring-config</name>
 
+	<properties>
+		<sub-module-version>1.0-SNAPSHOT</sub-module-version>
+	</properties>
+
 	<dependencies>
 
 		<dependency>
@@ -23,7 +27,6 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.15</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -61,6 +64,19 @@
 			<artifactId>spring-orm</artifactId>
 			<version>${spring-global-version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring-security-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring-security-version}</version>
+		</dependency>
+
 
 	</dependencies>
 

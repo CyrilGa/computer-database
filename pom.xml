@@ -32,13 +32,15 @@
 		<spring-global-version>5.1.5.RELEASE</spring-global-version>
 		<hibernate-core-version>5.3.9.Final</hibernate-core-version>
 		<hibernate-validator-version>5.4.3.Final</hibernate-validator-version>
+		<spring-security-version>5.1.4.RELEASE</spring-security-version>
+		<javax-persistence-version>2.2</javax-persistence-version>
+		<javax-validation-version>2.0.1.Final</javax-validation-version>
 
 		<!-- plugins -->
 		<exec-maven-version>1.2.1</exec-maven-version>
 		<tomcat-version>2.2</tomcat-version>
 		<maven-failsafe-version>2.22.1</maven-failsafe-version>
 		<maven-surefire-version>2.22.1</maven-surefire-version>
-
 
 	</properties>
 

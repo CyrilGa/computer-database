@@ -139,6 +139,9 @@ public class CompanyDAO extends DAO<Company> {
 		} catch (HibernateException e) {
 			throw new QueryException();
 		}
+		if (company == null) {
+			throw new NoResultRowException();
+		}
 		return company;
 	}
 
