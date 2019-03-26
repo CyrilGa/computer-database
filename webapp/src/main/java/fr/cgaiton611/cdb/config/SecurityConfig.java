@@ -14,6 +14,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(userDetailsService);
+//    }
+	
 	@Autowired
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication().withUser("user").password(passwordEncoder().encode("password")).roles("USER");
@@ -22,8 +28,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/addComputer").authenticated().anyRequest().permitAll().and().formLogin()
-				.defaultSuccessUrl("/dashboard", true).failureUrl("/login?error=true");
+		http.authorizeRequests()
+		.antMatchers("/addComputer").authenticated()
+		.anyRequest().permitAll()
+		.and()
+		.formLogin()
+		.defaultSuccessUrl("/dashboard", true)
+		.failureUrl("/login?error=true");
 	}
 
 	@Bean

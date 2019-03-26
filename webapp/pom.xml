@@ -21,20 +21,10 @@
 	</properties>
 
 	<dependencies>
-<dependency>
-    <groupId>org.springframework.security</groupId>
-    <artifactId>spring-security-web</artifactId>
-    <version>${spring-security-version}</version>
-</dependency>
-		<dependency>
-			<groupId>fr.cgaiton611.cdb</groupId>
-			<artifactId>binding</artifactId>
-			<version>${sub-module-version}</version>
-		</dependency>
 
 		<dependency>
 			<groupId>fr.cgaiton611.cdb</groupId>
-			<artifactId>spring-config</artifactId>
+			<artifactId>binding</artifactId>
 			<version>${sub-module-version}</version>
 		</dependency>
 
@@ -51,9 +41,28 @@
 		</dependency>
 
 		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${servlet-version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring-global-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring-security-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring-security-version}</version>
 		</dependency>
 
 		<dependency>
@@ -144,6 +153,12 @@
 			</plugin>
 
 		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources/i18n</directory>
+			</resource>
+		</resources>
 
 	</build>
 

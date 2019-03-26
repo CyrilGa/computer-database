@@ -1,4 +1,4 @@
-package fr.cgaiton611.selenium;
+package fr.cgaiton611.cdb.selenium;
 
 import static org.junit.Assert.assertTrue;
 
