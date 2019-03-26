@@ -14,8 +14,14 @@
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<a class="navbar-brand" href="/cdb/dashboard"> Application - Computer Database </a>
+		<div>
+			<a class="navbar-brand" href="/cdb/dashboard">
+				title
+			</a>
+			<span>
+				<a href="?lang=fr"><img src="<c:url value="/img/fr.svg"/>"></img></a>
+				<a href="?lang=en"><img src="<c:url value="/img/gb.svg"/>"></img></a>
+			</span>
 		</div>
 	</header>
 
@@ -27,12 +33,16 @@
 				</div>
 			</c:if>
 			
-			<form id="searchForm" action="/loginProcess" method="POST">
+			
+			<form id="searchForm" action="/cdb/LoginProcess" method="POST">
+				<h1>Please Sign In</h1>
 				<fieldset>
 					<div class="form-group">
 						<label for="username">Username</label>
 						<input type="text" id="username" name="username" class="form-control" 
 							placeholder="username" />
+					</div>
+					<div class="form-group">
 						<label for="password">Password</label>
 						<input type="text" id="password" name="password" class="form-control" 
 							placeholder="password" />

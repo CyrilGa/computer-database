@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		} catch (DAOException e) {
 			logger.warn("User cannot be created");
 		}
-		
+
 		try {
 			userService.create(new User("admin", passwordEncoder().encode("admin"), "ADMIN"));
 		} catch (DAOException e) {
@@ -59,16 +59,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return authProvider;
 	}
 
-//	@Autowired
-//	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.inMemoryAuthentication().withUser("user").password(passwordEncoder().encode("password")).roles("USER");
-//		auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN");
-//	}
-
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/addComputer").authenticated().anyRequest().permitAll().and().formLogin()
-				.defaultSuccessUrl("/dashboard", true).failureUrl("/login?error=true");
+		http.authorizeRequests().antMatchers("/addComputer").authenticated().anyRequest().permitAll()
+		.and()
+		.formLogin()
+		.loginPage("/login")
+		.loginProcessingUrl("/LoginProcess")
+		.defaultSuccessUrl("/dashboard")
+		.failureUrl("/login?error=true")
+		.and()
+		.logout()
+		.logoutUrl("/LogoutProcess")
+		.logoutSuccessUrl("/dashboard")
+		.and()
+		.csrf().disable();
 	}
 
 	@Bean
