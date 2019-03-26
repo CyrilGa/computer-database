@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import fr.cgaiton611.cdb.config.WebConfig;
+import fr.cgaiton611.cdb.config.HibernateConfig;
 
 /**
  * Main class for the cli Used like a stateless automaton
@@ -25,7 +25,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		context = new AnnotationConfigApplicationContext(WebConfig.class);
+		context = new AnnotationConfigApplicationContext(HibernateConfig.class);
 		CLIMenuFacade cliMenuFacade = context.getBean(CLIMenuFacade.class);
 				
 		ScanUtil scanUtil = new ScanUtil();
