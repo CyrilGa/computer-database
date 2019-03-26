@@ -78,9 +78,14 @@
 					<mainClass>${main-class}</mainClass>
 				</configuration>
 			</plugin>
-			
+
 		</plugins>
-		
+
+		<resources>
+			<resource>
+				<directory>src/main/resources/logs</directory>
+			</resource>
+		</resources>
 	</build>
 
 </project>

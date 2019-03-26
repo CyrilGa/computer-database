@@ -10,13 +10,15 @@ import org.springframework.stereotype.Repository;
 import fr.cgaiton611.cdb.exception.DAOException;
 import fr.cgaiton611.cdb.exception.NoResultRowException;
 import fr.cgaiton611.cdb.exception.QueryException;
+import fr.cgaiton611.cdb.exception.UpdateException;
 import fr.cgaiton611.cdb.model.User;
 
 @Repository
 public class UserDAO {
 
-	private static final String HQL_FIND_BY_NAME = "SELECT user FROM User user WHERE name = :name";
-	
+	private static final String HQL_FIND_BY_NAME = "SELECT user FROM User user WHERE username = :username ";
+//	private final Logger logger = LoggerFactory.getLogger(UserDAO.class);
+
 	@Autowired
 	SessionFactory sessionFactory;
 
@@ -24,7 +26,7 @@ public class UserDAO {
 		User user;
 		try (Session session = sessionFactory.openSession()) {
 			Query<User> query = session.createQuery(HQL_FIND_BY_NAME, User.class);
-			query.setParameter("name", name);
+			query.setParameter("username", name);
 			user = query.uniqueResult();
 		} catch (HibernateException e) {
 			throw new QueryException();
@@ -33,6 +35,15 @@ public class UserDAO {
 			throw new NoResultRowException();
 		}
 		return user;
+	}
+	
+	public User create(User obj) throws DAOException {
+		try (Session session = sessionFactory.openSession()) {
+			session.save(obj);
+		} catch (HibernateException e) {
+			throw new UpdateException();
+		}
+		return obj;
 	}
 	
 }

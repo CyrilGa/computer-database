@@ -1,6 +1,7 @@
 package fr.cgaiton611.cdb.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,6 +14,8 @@ import fr.cgaiton611.cdb.persistence.UserDAO;
 @Service
 public class UserService implements UserDetailsService {
 
+//	private final Logger logger = LoggerFactory.getLogger(UserService.class);
+	
 	@Autowired
 	UserDAO userDAO;
 
@@ -24,7 +27,15 @@ public class UserService implements UserDetailsService {
 		} catch (DAOException e) {
 			throw new UsernameNotFoundException(username);
 		}
-		return user;
+		UserBuilder builder;
+		builder = org.springframework.security.core.userdetails.User.withUsername(username);
+		builder.password(user.getPassword());
+		builder.roles(user.getRole());
+		return builder.build();
+	}
+	
+	public User create(User user) throws DAOException{
+		return userDAO.create(user);
 	}
 
 }

@@ -18,7 +18,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = { "fr.cgaiton611.cdb.page", "fr.cgaiton611.cdb.service", "fr.cgaiton611.cdb.dto",
+@ComponentScan(basePackages = { "fr.cgaiton611.cdb.page", "fr.cgaiton611.cdb.dto",
 		"fr.cgaiton611.cdb.cli", "fr.cgaiton611.cdb.controller", "fr.cgaiton611.cdb.mapper" })
 public class WebConfig implements WebMvcConfigurer {
 
