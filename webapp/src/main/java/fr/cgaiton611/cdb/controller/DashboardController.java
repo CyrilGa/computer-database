@@ -1,5 +1,6 @@
 package fr.cgaiton611.cdb.controller;
 
+import java.security.Principal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,8 @@ public class DashboardController {
 
 	private final Logger logger = LoggerFactory.getLogger(DashboardController.class);
 
-	private final String[] tableNames = { "string.computerName", "string.introduced", "string.discontinued", "string.companyName" };
+	private final String[] tableNames = { "string.computerName", "string.introduced", "string.discontinued",
+			"string.companyName" };
 
 	@Autowired
 	private ComputerService computerService;
@@ -49,7 +51,12 @@ public class DashboardController {
 			@RequestParam(required = false, name = "elements") String pElements,
 			@RequestParam(required = false, name = "computerName") String pComputerName,
 			@RequestParam(required = false, name = "companyName") String pCompanyName,
-			@RequestParam(required = false, name = "orderByName") String pOrderByName, Model model) {
+			@RequestParam(required = false, name = "orderByName") String pOrderByName, Model model,
+			Principal principal) {
+
+		if (principal != null) {
+			model.addAttribute("username", principal.getName());
+		}
 
 		model.addAttribute("dashboardMsg", pDashboardMsg);
 		Optional<Integer> page = convertUtil.stringToInteger(pPage);

@@ -1,5 +1,6 @@
 package fr.cgaiton611.cdb.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +45,12 @@ public class AddComputerController {
 	private ComputerMapper computerMapper;
 
 	@GetMapping
-	public String doGet(@RequestParam(required = false, name = "errorMsgs") List<String> errorMsgs, Model model) {
+	public String doGet(@RequestParam(required = false, name = "errorMsgs") List<String> errorMsgs, Model model,
+			Principal principal) {
+
+		if (principal != null) {
+			model.addAttribute("username", principal.getName());
+		}
 
 		List<String> names = new ArrayList<>();
 		try {
@@ -103,6 +109,5 @@ public class AddComputerController {
 
 		return "redirect:dashboard";
 	}
-
 
 }

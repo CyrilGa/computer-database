@@ -1,5 +1,6 @@
 package fr.cgaiton611.cdb.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +48,12 @@ public class EditComputerController {
 	@GetMapping
 	public String doGet(@RequestParam(required = false, name = "dashboard") String pDashboard,
 			@RequestParam(required = false, name = "computerId") String pComputerId,
-			@RequestParam(required = false, name = "errorMsgs") List<String> errorMsgs, Model model) {
+			@RequestParam(required = false, name = "errorMsgs") List<String> errorMsgs, Model model,
+			Principal principal) {
+
+		if (principal != null) {
+			model.addAttribute("username", principal.getName());
+		}
 
 		List<String> names = new ArrayList<>();
 		try {

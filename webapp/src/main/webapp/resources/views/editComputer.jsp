@@ -14,13 +14,28 @@
 </head>
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
-		<div>
+		<div id="container-header">
 			<a class="navbar-brand" href="/cdb/dashboard">
 				<spring:message code="string.title"/>
 			</a>
 			<span>
-				<a href="?lang=fr"><img src="<c:url value="/img/fr.svg"/>"></img></a>
-				<a href="?lang=en"><img src="<c:url value="/img/gb.svg"/>"></img></a>
+				<c:choose>
+				<c:when test="${username != null}">
+					<span id="glyph-user" class="glyphicon glyphicon-user"> ${username} </span>
+					<a href="/cdb/LogoutProcess" id="log-link">
+          				<span class="glyphicon glyphicon-log-out"></span>
+          				<spring:message code="string.logout.text"/>
+        			</a>
+        		</c:when>
+        		<c:otherwise>
+        			<a href="/cdb/login" id="log-link">
+          				<span class="glyphicon glyphicon-log-in"></span>
+          				<spring:message code="string.login.text"/>
+        			</a>
+        		</c:otherwise>	
+        		</c:choose>
+				<a class="flag" href="?lang=fr"><img src="<c:url value="/img/fr.svg"/>"></img></a>
+				<a class="flag" href="?lang=en"><img src="<c:url value="/img/gb.svg"/>"></img></a>
 			</span>
 		</div>
 	</header>

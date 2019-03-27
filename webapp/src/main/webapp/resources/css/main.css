@@ -90,7 +90,7 @@ th a:hover {
 	line-height: 1em;
 }
 
-header div {
+#container-header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -102,15 +102,27 @@ header div {
 }
 
 header img {
-	height: 20px;
+	height: 18px;
 }
 
-header span :nth-child(1) {
-	margin-right: 3px;
+header span #log-link {
+	margin-right: 50px;
+	text-decoration: none;
 }
 
-header span :nth-child(2) {
-	margin-left: 3px;
+header span .flag {
+	margin-right: 5px;
+}
+
+header span .flag :hover {
+	filter: grayscale(50%);
+}
+
+
+header span #glyph-user{
+	color: white;
+	margin-right: 20px;
+/* 	vertical-align: sub; */
 }
 
 .container-login-main {
@@ -119,3 +131,4 @@ header span :nth-child(2) {
 	margin-right: auto;
 	margin-left: auto;
 }
+
