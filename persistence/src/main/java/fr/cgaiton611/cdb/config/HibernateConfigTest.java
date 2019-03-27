@@ -39,7 +39,6 @@ public class HibernateConfigTest {
 	public DataSource dataSource() {
 		HikariDataSource ds = new HikariDataSource();
 		try {
-			logger.debug("allllllllllloooooooooooooooooo");
 			ds.setJdbcUrl(env.getRequiredProperty("jdbcUrl"));
 			ds.setUsername(env.getRequiredProperty("dataSource.user"));
 			ds.setPassword(env.getRequiredProperty("dataSource.password"));

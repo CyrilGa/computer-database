@@ -1,0 +1,14 @@
+fr.cgaiton611.cdb.annotation
+fr.cgaiton611.cdb.cli
+fr.cgaiton611.cdb.config
+fr.cgaiton611.cdb.controller
+fr.cgaiton611.cdb.dao
+fr.cgaiton611.cdb.dto
+fr.cgaiton611.cdb.exception
+fr.cgaiton611.cdb.mapper
+fr.cgaiton611.cdb.model
+fr.cgaiton611.cdb.page
+fr.cgaiton611.cdb.selenium
+fr.cgaiton611.cdb.service
+fr.cgaiton611.cdb.util
+fr.cgaiton611.cdb.validation
