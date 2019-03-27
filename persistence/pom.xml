@@ -84,7 +84,7 @@
 	<build>
 		<resources>
 			<resource>
-				<directory>src/test/resources/logs</directory>
+				<directory>src/main/resources/logs</directory>
 			</resource>
 			<resource>
 				<directory>src/main/resources/db</directory>
