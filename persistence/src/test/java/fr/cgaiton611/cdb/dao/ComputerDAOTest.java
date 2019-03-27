@@ -1,4 +1,4 @@
-package fr.cgaiton611.cdb.persistence;
+package fr.cgaiton611.cdb.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
