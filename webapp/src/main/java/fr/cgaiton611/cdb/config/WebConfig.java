@@ -2,6 +2,8 @@ package fr.cgaiton611.cdb.config;
 
 import java.util.Locale;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +24,12 @@ import org.springframework.web.servlet.view.JstlView;
 		"fr.cgaiton611.cdb.cli", "fr.cgaiton611.cdb.controller", "fr.cgaiton611.cdb.mapper" })
 public class WebConfig implements WebMvcConfigurer {
 
-//	private final Logger logger = LoggerFactory.getLogger(WebConfig.class);
+	private final Logger logger = LoggerFactory.getLogger(WebConfig.class);
 
+	public WebConfig() {
+		logger.info("##### WebConfig is being initialized ... #####");
+	}
+	
 	@Bean
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();

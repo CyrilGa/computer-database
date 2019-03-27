@@ -28,8 +28,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
+	@Autowired
+	private UserService userService;
+	
+	public SecurityConfig() {
+		logger.info("##### SecurityConfig is being initialized ... #####");
+	}
+	
 	@PostConstruct
-	private void init() {
+	public void init() {
 		try {
 			userService.create(new User("user", passwordEncoder().encode("user"), "USER"));
 		} catch (DAOException e) {
@@ -42,10 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			logger.warn("User cannot be created");
 		}
 	}
-
-	@Autowired
-	private UserService userService;
-
+	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authenticationProvider(userService));

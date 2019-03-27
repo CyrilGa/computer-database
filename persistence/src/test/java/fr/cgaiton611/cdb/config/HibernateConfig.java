@@ -22,16 +22,16 @@ import fr.cgaiton611.cdb.config.HibernateConfig;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = { "fr.cgaiton611.cdb.dao", "fr.cgaiton611.cdb.mapper", "fr.cgaiton611.cdb.service"})
+@ComponentScan(basePackages = { "fr.cgaiton611.cdb.dao",  "fr.cgaiton611.cdb.mapper" })
 public class HibernateConfig {
 
 	private final Logger logger = LoggerFactory.getLogger(HibernateConfig.class);
-	private final String configFileMain = "src/main/resources/db/db.properties";
-	
-	public HibernateConfig() {
-		logger.info("##### HibernateConfig is being initialized ... #####");
-	}
+	private final String configFileMain = "src/test/resources/db/db.properties";
 
+	public HibernateConfig() {
+		logger.info("##### HibernateConfig (test) is being initialized ... #####");
+	}
+	
 	@Bean
 	public DataSource dataSource() {
 		DataSource ds = new HikariDataSource();
@@ -40,7 +40,7 @@ public class HibernateConfig {
 			config = new HikariConfig(configFileMain);
 			try {
 				ds = new HikariDataSource(config);
-				logger.info("Datasource initialized (main db)");
+				logger.info("Datasource initialized (test db)");
 			} catch (PoolInitializationException e) {
 				logger.error("Error initializing HikariDataSource");
 			}
