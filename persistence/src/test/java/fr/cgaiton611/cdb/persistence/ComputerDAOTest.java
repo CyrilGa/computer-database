@@ -14,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.cgaiton611.cdb.config.HibernateConfig;
+import fr.cgaiton611.cdb.dao.ComputerDAO;
 import fr.cgaiton611.cdb.exception.DAOException;
 import fr.cgaiton611.cdb.exception.NoResultRowException;
 import fr.cgaiton611.cdb.exception.NoRowUpdatedException;

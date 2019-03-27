@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.cgaiton611.cdb.dao.ComputerDAO;
 import fr.cgaiton611.cdb.exception.DAOException;
 import fr.cgaiton611.cdb.model.Computer;
-import fr.cgaiton611.cdb.persistence.ComputerDAO;
 
 @Service
 public class ComputerService {

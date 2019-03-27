@@ -22,7 +22,7 @@ import fr.cgaiton611.cdb.config.HibernateConfig;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = { "fr.cgaiton611.cdb.persistence" })
+@ComponentScan(basePackages = { "fr.cgaiton611.cdb.dao" })
 public class HibernateConfig {
 
 	private final Logger logger = LoggerFactory.getLogger(HibernateConfig.class);

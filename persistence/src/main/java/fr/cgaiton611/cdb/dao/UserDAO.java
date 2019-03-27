@@ -1,4 +1,4 @@
-package fr.cgaiton611.cdb.persistence;
+package fr.cgaiton611.cdb.dao;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;

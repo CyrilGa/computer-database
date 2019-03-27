@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.cgaiton611.cdb.dao.CompanyDAO;
 import fr.cgaiton611.cdb.exception.DAOException;
 import fr.cgaiton611.cdb.model.Company;
-import fr.cgaiton611.cdb.persistence.CompanyDAO;
 
 @Service
 public class CompanyService {

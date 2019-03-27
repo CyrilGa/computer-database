@@ -7,9 +7,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import fr.cgaiton611.cdb.dao.UserDAO;
 import fr.cgaiton611.cdb.exception.DAOException;
 import fr.cgaiton611.cdb.model.User;
-import fr.cgaiton611.cdb.persistence.UserDAO;
 
 @Service
 public class UserService implements UserDetailsService {
