@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <!DOCTYPE html>
 <html>
@@ -8,34 +8,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
-<link href="<c:url value="/css/bootstrap.min.css" />" rel="stylesheet" media="screen">
-<link href="<c:url value="/css/font-awesome.css" />" rel="stylesheet" media="screen">
-<link href="<c:url value="/css/main.css" />" rel="stylesheet" media="screen">
+<link href="<c:url value="/css/bootstrap.min.css" />" rel="stylesheet"
+	media="screen">
+<link href="<c:url value="/css/font-awesome.css" />" rel="stylesheet"
+	media="screen">
+<link href="<c:url value="/css/main.css" />" rel="stylesheet"
+	media="screen">
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div id="container-header">
-			<a class="navbar-brand" href="/cdb/dashboard">
-				<spring:message code="string.title"/>
-			</a>
-			<span>
-				<c:choose>
-				<c:when test="${username != null}">
-					<span id="glyph-user" class="glyphicon glyphicon-user"> ${username} </span>
-					<a href="/cdb/LogoutProcess" id="log-link">
-          				<span class="glyphicon glyphicon-log-out"></span>
-          				<spring:message code="string.logout.text"/>
-        			</a>
-        		</c:when>
-        		<c:otherwise>
-        			<a href="/cdb/login" id="log-link">
-          				<span class="glyphicon glyphicon-log-in"></span>
-          				<spring:message code="string.login.text"/>
-        			</a>
-        		</c:otherwise>	
-        		</c:choose>
-				<a class="flag" href="?lang=fr"><img src="<c:url value="/img/fr.svg"/>"></img></a>
-				<a class="flag" href="?lang=en"><img src="<c:url value="/img/gb.svg"/>"></img></a>
+			<a class="navbar-brand" href="/cdb/dashboard"> <spring:message
+					code="string.title" />
+			</a> <span> <c:choose>
+					<c:when test="${username != null}">
+						<span id="glyph-user" class="glyphicon glyphicon-user">
+							${username} </span>
+						<a href="/cdb/LogoutProcess" id="log-link"> <span
+							class="glyphicon glyphicon-log-out"></span> <spring:message
+								code="string.logout.text" />
+						</a>
+					</c:when>
+					<c:otherwise>
+						<a href="/cdb/login" id="log-link"> <span
+							class="glyphicon glyphicon-log-in"></span> <spring:message
+								code="string.login.text" />
+						</a>
+					</c:otherwise>
+				</c:choose> <a class="flag" href="?lang=fr"><img
+					src="<c:url value="/img/fr.svg"/>"></img></a> <a class="flag"
+				href="?lang=en"><img src="<c:url value="/img/gb.svg"/>"></img></a>
 			</span>
 		</div>
 	</header>
@@ -43,50 +45,58 @@
 	<section id="main">
 		<div class="container">
 			<c:if test="${dashboardMsg != null}">
-	            <div id="dashboardMsg" class="alert alert-warning">
-	            ${dashboardMsg}
-	            </div>
-            </c:if>
-            <c:if test="${errorMsg != null}">
-	            <div id="errorMsg" class="alert alert-danger">
-	            ${errorMsgList}<br/>${errorMsgCount}
-	            </div>
-            </c:if>
-        </div>
+				<div id="dashboardMsg" class="alert alert-warning">
+					${dashboardMsg}</div>
+			</c:if>
+			<c:if test="${errorMsg != null}">
+				<div id="errorMsg" class="alert alert-danger">
+					${errorMsgList}<br />${errorMsgCount}
+				</div>
+			</c:if>
+		</div>
 		<div class="container">
 			<div id="container-title">
-				<h1 id="homeTitle">${count} <spring:message code="string.computerFound"/> </h1>
+				<h1 id="homeTitle">${count}
+					<spring:message code="string.computerFound" />
+				</h1>
 			</div>
 			<div id="actions" class="">
 				<div class="">
-					<form id="searchForm" action="/cdb/dashboard" method="GET" class="form-inline">
+					<form id="searchForm" action="/cdb/dashboard" method="GET"
+						class="form-inline">
 						<i class="btn btn-secondary" onClick="$.fn.showSecondSearch();">
 							<span id="spanSecondSearch" class="glyphicon glyphicon-plus-sign"></span>
-						</i>
-						<input type="search" id="searchbox" name="computerName" class="form-control" 
-							placeholder="<spring:message code="string.computerName"/>" value="${computerName}" />
-						<input type="submit" id="searchsubmit" value="<spring:message code="string.filter"/>" class="btn btn-primary" />
-						<c:if test="${!\"\".equals(computerName) || !\"\".equals(companyName)}">
-							 <button class="btn btn-danger" onClick="$.fn.resetSearch();">
-							 	<span class="glyphicon glyphicon-remove-sign"></span>
-							 </button>
+						</i> <input type="search" id="searchbox" name="computerName"
+							class="form-control"
+							placeholder="<spring:message code="string.computerName"/>"
+							value="${computerName}" /> <input type="submit"
+							id="searchsubmit" value="<spring:message code="string.filter"/>"
+							class="btn btn-primary" />
+						<c:if
+							test="${!\"\".equals(computerName) || !\"\".equals(companyName)}">
+							<button class="btn btn-danger" onClick="$.fn.resetSearch();">
+								<span class="glyphicon glyphicon-remove-sign"></span>
+							</button>
 						</c:if>
 						<div id="secondDiv" class="form-inline">
-							<a class="btn" class="hiddenElement">
-							 	<span class="glyphicon glyphicon-remove-sign hiddenElement"></span>
-							 </a>
-							<input type="search" name="companyName" id="companyName" class="form-control" 
-								placeholder="<spring:message code="string.companyName"/>" value="${companyName}" />	
+							<a class="btn" class="hiddenElement"> <span
+								class="glyphicon glyphicon-remove-sign hiddenElement"></span>
+							</a> <input type="search" name="companyName" id="companyName"
+								class="form-control"
+								placeholder="<spring:message code="string.companyName"/>"
+								value="${companyName}" />
 						</div>
 					</form>
 				</div>
 				<div class="">
-					<span class="btn" id="custom-p"><spring:message code="string.commands"/></span>
+					<span class="btn" id="custom-p"><spring:message
+							code="string.commands" /></span>
 				</div>
 				<div class="">
-					<a class="btn btn-success" id="addComputer" href="/cdb/addComputer"><spring:message code="string.add"/></a> 
-					<a class="btn btn-default" id="editComputer" href="#" 
-						onclick="$.fn.toggleEditMode();"><spring:message code="string.edit"/></a>
+					<a class="btn btn-success" id="addComputer" href="/cdb/addComputer"><spring:message
+							code="string.add" /></a> <a class="btn btn-default" id="editComputer"
+						href="#" onclick="$.fn.toggleEditMode();"><spring:message
+							code="string.edit" /></a>
 				</div>
 			</div>
 		</div>
@@ -102,43 +112,37 @@
 						<!-- Variable declarations for passing labels as parameters -->
 						<!-- Table header for Computer Name -->
 
-						<th class="editMode" style="width: 70px; height: 22px;">
-							<input type="checkbox" id="selectall" /> 
-							<span style="vertical-align: top;"> - <a href="#" id="deleteSelected" 
-								onclick="$.fn.deleteSelected();">
-									<i class="fa fa-trash-o fa-lg"></i> 
-								</a>
-							</span>
-						</th>
-						<c:forEach items="${ORDERBYNAME_AUTORISED}" var="orderName" varStatus="status">
-						<c:choose>
-							<c:when test="${orderName.equals(orderByName)}">
-								<c:choose>
-									<c:when test="${\"ASC\".equals(orderByOrder)}">
-										<th>
-											<a href="/cdb/dashboard?orderByName=${orderName}">
-												<spring:message code="${tableNames[status.index]}"/>
-											</a>
-											<span class="glyphicon glyphicon-sort-by-attributes"></span>
-										</th>
-									</c:when>
-									<c:otherwise>
-										<th>
-											<a href="/cdb/dashboard?orderByName=${orderName}">
-												<spring:message code="${tableNames[status.index]}"/>
-											</a>
-											<span class="glyphicon glyphicon-sort-by-attributes-alt"></span>
-										</th>
-									</c:otherwise>
-								</c:choose>
-							</c:when>
-							<c:otherwise>
-								<th>
-									<a href="/cdb/dashboard?orderByName=${orderName}">
-										<spring:message code="${tableNames[status.index]}"/>
-									</a>
-								</th>
-							</c:otherwise>
+						<th class="editMode" style="width: 70px; height: 22px;"><input
+							type="checkbox" id="selectall" /> <span
+							style="vertical-align: top;"> - <a href="#"
+								id="deleteSelected" onclick="$.fn.deleteSelected();"> <i
+									class="fa fa-trash-o fa-lg"></i>
+							</a>
+						</span></th>
+						<c:forEach items="${ORDERBYNAME_AUTORISED}" var="orderName"
+							varStatus="status">
+							<c:choose>
+								<c:when test="${orderName.equals(orderByName)}">
+									<c:choose>
+										<c:when test="${\"ASC\".equals(orderByOrder)}">
+											<th><a href="/cdb/dashboard?orderByName=${orderName}">
+													<spring:message code="${tableNames[status.index]}" />
+											</a> <span class="glyphicon glyphicon-sort-by-attributes"></span>
+											</th>
+										</c:when>
+										<c:otherwise>
+											<th><a href="/cdb/dashboard?orderByName=${orderName}">
+													<spring:message code="${tableNames[status.index]}" />
+											</a> <span class="glyphicon glyphicon-sort-by-attributes-alt"></span>
+											</th>
+										</c:otherwise>
+									</c:choose>
+								</c:when>
+								<c:otherwise>
+									<th><a href="/cdb/dashboard?orderByName=${orderName}">
+											<spring:message code="${tableNames[status.index]}" />
+									</a></th>
+								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 
@@ -198,7 +202,7 @@
 					</c:choose>
 				</c:forEach>
 			</div>
-			
+
 		</div>
 	</footer>
 	<script type="text/javascript">

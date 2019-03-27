@@ -118,11 +118,10 @@ header span .flag :hover {
 	filter: grayscale(50%);
 }
 
-
-header span #glyph-user{
+header span #glyph-user {
 	color: white;
 	margin-right: 20px;
-/* 	vertical-align: sub; */
+	/* 	vertical-align: sub; */
 }
 
 .container-login-main {
@@ -131,4 +130,3 @@ header span #glyph-user{
 	margin-right: auto;
 	margin-left: auto;
 }
-
