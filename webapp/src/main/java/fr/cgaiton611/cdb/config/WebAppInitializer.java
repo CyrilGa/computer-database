@@ -2,9 +2,6 @@ package fr.cgaiton611.cdb.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import fr.cgaiton611.cdb.config.HibernateConfig;
-import fr.cgaiton611.cdb.config.WebConfig;
-
 public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 	
 	@Override
