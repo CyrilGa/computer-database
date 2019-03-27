@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.cgaiton611.cdb.config.HibernateConfig;
+import fr.cgaiton611.cdb.config.HibernateConfigTest;
 import fr.cgaiton611.cdb.mapper.ComputerMapper;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {HibernateConfig.class})
+@ContextConfiguration(classes = {HibernateConfigTest.class})
 public class ComputerMapperTest {
 
 	@Autowired

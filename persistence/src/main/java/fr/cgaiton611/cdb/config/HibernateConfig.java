@@ -6,27 +6,30 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.pool.HikariPool.PoolInitializationException;
 
-import fr.cgaiton611.cdb.config.HibernateConfig;
-
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = { "fr.cgaiton611.cdb.dao", "fr.cgaiton611.cdb.mapper", "fr.cgaiton611.cdb.service"})
+@ComponentScan(basePackages = { "fr.cgaiton611.cdb.dao"})
+@PropertySource(value = { "classpath:db-main.properties" })
 public class HibernateConfig {
 
 	private final Logger logger = LoggerFactory.getLogger(HibernateConfig.class);
-	private final String configFileMain = "src/main/resources/db/db.properties";
+	
+	@Autowired
+	private Environment env;
 	
 	public HibernateConfig() {
 		logger.info("##### HibernateConfig is being initialized ... #####");
@@ -34,18 +37,15 @@ public class HibernateConfig {
 
 	@Bean
 	public DataSource dataSource() {
-		DataSource ds = new HikariDataSource();
-		HikariConfig config = null;
+		HikariDataSource ds = new HikariDataSource();
 		try {
-			config = new HikariConfig(configFileMain);
-			try {
-				ds = new HikariDataSource(config);
-				logger.info("Datasource initialized (main db)");
-			} catch (PoolInitializationException e) {
-				logger.error("Error initializing HikariDataSource");
-			}
-		} catch (RuntimeException e) {
-			logger.error(e.getMessage());
+			ds.setJdbcUrl(env.getRequiredProperty("jdbcUrl"));
+			ds.setUsername(env.getRequiredProperty("dataSource.user"));
+			ds.setPassword(env.getRequiredProperty("dataSource.password"));
+			logger.info("Datasource initialized (main db)");
+		} catch (PoolInitializationException e) {
+			logger.error("Error initializing HikariDataSource");
+		} catch (IllegalStateException e) {
 			logger.error("Properties file for database not found or incorrect");
 		}
 		return ds;

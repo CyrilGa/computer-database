@@ -86,6 +86,12 @@
 			<resource>
 				<directory>src/test/resources/logs</directory>
 			</resource>
+			<resource>
+				<directory>src/main/resources/db</directory>
+			</resource>
+			<resource>
+				<directory>src/test/resources/db</directory>
+			</resource>
 		</resources>
 	</build>
 

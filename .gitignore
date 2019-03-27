@@ -1,5 +1,7 @@
 ### Custom ###
 db.properties
+db-main.properties
+db-test.properties
 
 
 # Created by https://www.gitignore.io/api/java,maven,eclipse,java-web,intellij

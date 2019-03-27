@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.cgaiton611.cdb.config.HibernateConfig;
+import fr.cgaiton611.cdb.config.HibernateConfigTest;
 import fr.cgaiton611.cdb.dao.ComputerDAO;
 import fr.cgaiton611.cdb.exception.DAOException;
 import fr.cgaiton611.cdb.exception.NoResultRowException;
@@ -22,7 +22,7 @@ import fr.cgaiton611.cdb.model.Company;
 import fr.cgaiton611.cdb.model.Computer;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {HibernateConfig.class})
+@ContextConfiguration(classes = {HibernateConfigTest.class})
 public class ComputerDAOTest {
 
 	private final Logger logger = LoggerFactory.getLogger(ComputerDAOTest.class);
