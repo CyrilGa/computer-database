@@ -115,7 +115,7 @@
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>3.0.0</version>
 				<configuration>
-					<configLocation>resources/checkstyle.xml</configLocation>
+					<configLocation>resources/checkstyle/checkstyle.xml</configLocation>
 				</configuration>
 			</plugin>
 		</plugins>

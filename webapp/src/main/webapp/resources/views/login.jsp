@@ -66,7 +66,7 @@
 					<div class="form-group">
 						<label for="password"> <spring:message
 								code="string.login.password" />
-						</label> <input type="text" id="password" name="password"
+						</label> <input type="password" id="password" name="password"
 							class="form-control"
 							placeholder="<spring:message code="string.login.password"/>" />
 					</div>
