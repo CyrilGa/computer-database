@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import fr.cgaiton611.cdb.config.ConsoleConfig;
 import fr.cgaiton611.cdb.config.HibernateConfig;
 
 /**
@@ -25,7 +26,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		context = new AnnotationConfigApplicationContext(HibernateConfig.class);
+		context = new AnnotationConfigApplicationContext(HibernateConfig.class, ConsoleConfig.class);
 		CLIMenuFacade cliMenuFacade = context.getBean(CLIMenuFacade.class);
 				
 		ScanUtil scanUtil = new ScanUtil();

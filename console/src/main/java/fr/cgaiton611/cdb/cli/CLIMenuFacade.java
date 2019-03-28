@@ -67,11 +67,9 @@ public class CLIMenuFacade {
 				input = scanUtil.getLine();
 			}
 			if (input.equals("p")) {
-				System.out.println("p");
-				computerPage.pageInc();
-			} else if (input.equals("n")) {
-				System.out.println("n");
 				computerPage.pageDec();
+			} else if (input.equals("n")) {
+				computerPage.pageInc();
 			} else if (input.equals("e"))
 				break;
 		}
@@ -99,9 +97,9 @@ public class CLIMenuFacade {
 				input = scanUtil.getLine();
 			}
 			if (input.equals("p"))
-				companyPage.pageInc();
-			else if (input.equals("n"))
 				companyPage.pageDec();
+			else if (input.equals("n"))
+				companyPage.pageInc();
 			else if (input.equals("e"))
 				break;
 		}
@@ -119,7 +117,7 @@ public class CLIMenuFacade {
 		try {
 			computer = computerService.find(id.get());
 			printUtil.printn(computer);
-		} catch (NoResultRowException e){
+		} catch (NoResultRowException e) {
 			logger.warn(e.getMessage());
 			printUtil.printn("Computer not found");
 		} catch (DAOException e) {
@@ -199,8 +197,8 @@ public class CLIMenuFacade {
 		try {
 			computerService.update(new Computer(id.get(), name.orElse(null), introduced.orElse(null),
 					discontinued.orElse(null), company));
-			logger.debug(new Computer(id.get(), name.orElse(null), introduced.orElse(null),
-					discontinued.orElse(null), company).toString());
+			logger.debug(new Computer(id.get(), name.orElse(null), introduced.orElse(null), discontinued.orElse(null),
+					company).toString());
 			printUtil.printn("Computer sucefully updated !");
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());

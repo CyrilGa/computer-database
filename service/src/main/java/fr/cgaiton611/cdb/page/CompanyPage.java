@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.cgaiton611.cdb.exception.DAOException;
@@ -15,11 +14,19 @@ import fr.cgaiton611.cdb.service.CompanyService;
 public class CompanyPage {
 
 	private final Logger logger = LoggerFactory.getLogger(CompanyPage.class);
-	@Autowired
-	private CompanyService companyService;
 	private int elements = 10;
 	private int page = 0;
 	private int max = 0;
+	private CompanyService companyService;
+	
+	public CompanyPage(CompanyService companyService) {
+		this.companyService = companyService;
+		try {
+			calculateMax();
+		} catch (DAOException e) {
+			logger.warn(e.getMessage());
+		}
+	}
 
 	public int getMax() {
 		return max;

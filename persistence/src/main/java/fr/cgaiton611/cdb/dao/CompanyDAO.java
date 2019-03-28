@@ -30,7 +30,7 @@ public class CompanyDAO extends DAO<Company> {
 	private static final String HQL_FIND = "SELECT cpa FROM Company cpa WHERE cpa.id = :id";
 	private static final String HQL_UPDATE = "UPDATE Company SET name = :name WHERE id = :id";
 	private static final String HQL_DELETE = "DELETE Company WHERE id = :id ";
-	private static final String HQL_FIND_PAGE = "SELECT cpa FROM company cpa";
+	private static final String HQL_FIND_PAGE = "SELECT cpa FROM Company cpa";
 	private static final String HQL_COUNT = "SELECT COUNT(cpa) FROM Company cpa";
 	private static final String HQL_FIND_BY_NAME = "SELECT cpa FROM Company cpa WHERE name = :name";
 	private static final String HQL_FIND_ALL_NAME = "SELECT cpa.name FROM Company cpa";

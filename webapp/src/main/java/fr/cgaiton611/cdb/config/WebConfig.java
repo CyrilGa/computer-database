@@ -20,8 +20,8 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = { "fr.cgaiton611.cdb.page", "fr.cgaiton611.cdb.dto",
-		"fr.cgaiton611.cdb.cli", "fr.cgaiton611.cdb.controller", "fr.cgaiton611.cdb.mapper" })
+@ComponentScan(basePackages = { "fr.cgaiton611.cdb.page", "fr.cgaiton611.cdb.dto", "fr.cgaiton611.cdb.controller",
+		"fr.cgaiton611.cdb.mapper" })
 public class WebConfig implements WebMvcConfigurer {
 
 	private final Logger logger = LoggerFactory.getLogger(WebConfig.class);
@@ -29,7 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
 	public WebConfig() {
 		logger.info("##### WebConfig is being initialized ... #####");
 	}
-	
+
 	@Bean
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();

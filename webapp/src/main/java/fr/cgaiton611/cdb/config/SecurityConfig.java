@@ -23,7 +23,7 @@ import fr.cgaiton611.cdb.service.UserService;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan(basePackages = { "fr.cgaiton611.cdb.service" })
+@ComponentScan(basePackages = { "fr.cgaiton611.cdb.service", "fr.cgaiton611.cdb.dao" })
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);

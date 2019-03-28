@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -22,15 +21,14 @@ import com.zaxxer.hikari.pool.HikariPool.PoolInitializationException;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = { "fr.cgaiton611.cdb.dao"})
 @PropertySource(value = { "classpath:db-main.properties" })
 public class HibernateConfig {
 
 	private final Logger logger = LoggerFactory.getLogger(HibernateConfig.class);
-	
+
 	@Autowired
 	private Environment env;
-	
+
 	public HibernateConfig() {
 		logger.info("##### HibernateConfig is being initialized ... #####");
 	}

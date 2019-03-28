@@ -29,7 +29,6 @@ public class ComputerPage {
 	private String orderByName = ORDERBYNAME_AUTORISED[0];
 	private String orderByOrder = ORDERBYORDER_AUTORISED[0];
 
-	@Autowired
 	public ComputerPage(ComputerService computerService) {
 		this.computerService = computerService;
 		try {
