@@ -26,8 +26,12 @@ public class CompanyService {
 		return companyDAO.findByName(name);
 	}
 
-	public Company create(String name) throws DAOException {
-		return companyDAO.create(new Company(name));
+	public Company create(Company company) throws DAOException {
+		return companyDAO.create(company);
+	}
+	
+	public Company update(Company company) throws DAOException {
+		return companyDAO.update(company);
 	}
 
 	public int count() throws DAOException {

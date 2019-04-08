@@ -55,7 +55,7 @@ public class EditTest {
 			logger.info("TEST COMANY EDIT already created");
 		} catch (NoRowUpdatedException e) {
 			try {
-				companyService.create("TEST COMPANY EDIT");
+				companyService.create(new Company("TEST COMPANY EDIT"));
 			} catch (DAOException e1) {
 				logger.error(e.getMessage());
 			}

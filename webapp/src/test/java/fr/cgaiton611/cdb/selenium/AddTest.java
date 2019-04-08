@@ -23,6 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import fr.cgaiton611.cdb.config.HibernateConfigTest;
 import fr.cgaiton611.cdb.exception.DAOException;
 import fr.cgaiton611.cdb.exception.NoRowUpdatedException;
+import fr.cgaiton611.cdb.model.Company;
 import fr.cgaiton611.cdb.service.CompanyService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -47,7 +48,7 @@ public class AddTest {
 			companyService.findByName("TEST COMPANY ADD");
 		} catch (NoRowUpdatedException e) {
 			try {
-				companyService.create("TEST COMPANY ADD");
+				companyService.create(new Company("TEST COMPANY ADD"));
 			} catch (DAOException e1) {
 				logger.error(e.getMessage());
 			}

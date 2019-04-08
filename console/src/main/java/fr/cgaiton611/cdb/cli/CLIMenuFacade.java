@@ -115,7 +115,7 @@ public class CLIMenuFacade {
 
 		Computer computer;
 		try {
-			computer = computerService.find(id.get());
+			computer = computerService.find(new Computer(id.get()));
 			printUtil.printn(computer);
 		} catch (NoResultRowException e) {
 			logger.warn(e.getMessage());

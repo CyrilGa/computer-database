@@ -14,8 +14,8 @@ public class ComputerService {
 	@Autowired
 	private ComputerDAO computerDAO;
 
-	public Computer find(long id) throws DAOException {
-		return computerDAO.find(new Computer(id));
+	public Computer find(Computer computer) throws DAOException {
+		return computerDAO.find(computer);
 	}
 
 	public Computer create(Computer computer) throws DAOException {

@@ -21,7 +21,7 @@ import org.springframework.web.servlet.view.JstlView;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = { "fr.cgaiton611.cdb.page", "fr.cgaiton611.cdb.dto", "fr.cgaiton611.cdb.controller",
-		"fr.cgaiton611.cdb.mapper" })
+		"fr.cgaiton611.cdb.mapper" , "fr.cgaiton611.cdb.rest"})
 public class WebConfig implements WebMvcConfigurer {
 
 	private final Logger logger = LoggerFactory.getLogger(WebConfig.class);

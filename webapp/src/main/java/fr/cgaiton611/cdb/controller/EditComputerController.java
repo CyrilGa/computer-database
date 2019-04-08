@@ -67,7 +67,7 @@ public class EditComputerController {
 
 		Computer computer;
 		try {
-			computer = computerService.find(Long.parseLong(pComputerId));
+			computer = computerService.find(new Computer(Long.parseLong(pComputerId)));
 		} catch (NumberFormatException | DAOException e) {
 			logger.warn(e.getMessage());
 			return "redirect:dashboard";
