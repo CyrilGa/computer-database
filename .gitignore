@@ -2,6 +2,7 @@
 db.properties
 db-main.properties
 db-test.properties
+sonar-command.bash
 
 
 # Created by https://www.gitignore.io/api/java,maven,eclipse,java-web,intellij
