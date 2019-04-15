@@ -1,10 +1,7 @@
 package fr.cgaiton611.cdb.rest;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fr.cgaiton611.cdb.dto.ComputerDTO;
 import fr.cgaiton611.cdb.exception.DAOException;
+import fr.cgaiton611.cdb.exception.entityValidation.EntityValidationException;
 import fr.cgaiton611.cdb.mapper.ComputerMapper;
 import fr.cgaiton611.cdb.model.Computer;
 import fr.cgaiton611.cdb.service.ComputerService;
 import fr.cgaiton611.cdb.webentity.GetAllParametersEntity;
+import fr.cgaiton611.cdb.webentity.GetAllParametersEntityValidator;
 
 @RestController
 @RequestMapping("/computer")
@@ -38,14 +37,19 @@ public class ComputerRestController {
 
 	@Autowired
 	private ComputerMapper computerMapper;
+	
+	@Autowired
+	private GetAllParametersEntityValidator entityValidator;
 
 	@RequestMapping("/all")
 	@GetMapping
 	public ResponseEntity<Object> findPage(@RequestBody GetAllParametersEntity entity) {
 		List<Computer> computers = new ArrayList<>();
 		try {
+			entityValidator.validate(entity);
+			entity.translateOrderAttribute();
 			computers = computerService.findPageWithParameters(entity);
-		} catch (DAOException e) {
+		} catch (DAOException | EntityValidationException e) {
 			logger.warn(e.getMessage());
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
