@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import fr.cgaiton611.cdb.exception.MappingStringToDateException;
 import fr.cgaiton611.cdb.exception.validation.ValidationException;
 import fr.cgaiton611.cdb.model.Computer;
 import fr.cgaiton611.cdb.util.ConvertUtil;
@@ -13,7 +14,7 @@ public class ComputerValidatorTest {
 	ConvertUtil convertUtil = new ConvertUtil();
 
 	@Test
-	public void validateForAdd() {
+	public void validateForAdd() throws MappingStringToDateException {
 		Computer computer = null;
 		try {
 			ComputerValidator.validateForAdd(computer);
@@ -44,7 +45,7 @@ public class ComputerValidatorTest {
 	}
 
 	@Test
-	public void validateForEdit() {
+	public void validateForEdit() throws MappingStringToDateException {
 		Computer computer = null;
 		try {
 			ComputerValidator.validateForAdd(computer);

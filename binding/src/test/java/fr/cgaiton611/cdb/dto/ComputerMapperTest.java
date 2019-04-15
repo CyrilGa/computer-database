@@ -7,6 +7,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.cgaiton611.cdb.config.HibernateConfigTest;
+import fr.cgaiton611.cdb.exception.MappingException;
 import fr.cgaiton611.cdb.mapper.ComputerMapper;
 
 
@@ -18,13 +19,13 @@ public class ComputerMapperTest {
 	ComputerMapper computerMapper;
 
 	@Test
-	public void toComputer() {
+	public void toComputer() throws MappingException {
 		ComputerDTO computerDTO = new ComputerDTO("20", "slt", null, null, null);
 		computerMapper.toComputer(computerDTO);
 	}
 
 	@Test
-	public void toComputerFail() {
+	public void toComputerFail() throws MappingException {
 		ComputerDTO computerDTO = new ComputerDTO("non", "slt", null, null, null);
 		computerMapper.toComputer(computerDTO);
 	}

@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.cgaiton611.cdb.dto.ComputerDTO;
 import fr.cgaiton611.cdb.exception.DAOException;
+import fr.cgaiton611.cdb.exception.MappingStringToIntegerException;
 import fr.cgaiton611.cdb.mapper.ComputerMapper;
 import fr.cgaiton611.cdb.model.Computer;
 import fr.cgaiton611.cdb.page.ComputerPage;
@@ -57,17 +58,21 @@ public class DashboardController {
 		if (principal != null) {
 			model.addAttribute("username", principal.getName());
 		}
-
 		model.addAttribute("dashboardMsg", pDashboardMsg);
-		Optional<Integer> page = convertUtil.stringToInteger(pPage);
-		if (page.isPresent()) {
-			computerPage.setPage(page.get());
+		
+		try {
+			Optional<Integer> page = convertUtil.stringToInteger(pPage);
+			if (page.isPresent()) {
+				computerPage.setPage(page.get());
+			}
+			Optional<Integer> elements = convertUtil.stringToInteger(pElements);
+			if (elements.isPresent()) {
+				computerPage.setElements(elements.get());
+			}
+		} catch(MappingStringToIntegerException e) {
+			logger.warn(e.getMessage());
 		}
-
-		Optional<Integer> elements = convertUtil.stringToInteger(pElements);
-		if (elements.isPresent()) {
-			computerPage.setElements(elements.get());
-		}
+		
 
 		computerPage.setComputerName(pComputerName);
 		model.addAttribute("computerName", computerPage.getComputerName());

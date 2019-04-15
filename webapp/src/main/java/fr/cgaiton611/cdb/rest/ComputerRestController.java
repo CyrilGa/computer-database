@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fr.cgaiton611.cdb.dto.ComputerDTO;
 import fr.cgaiton611.cdb.exception.DAOException;
+import fr.cgaiton611.cdb.exception.MappingException;
 import fr.cgaiton611.cdb.exception.entityValidation.EntityValidationException;
 import fr.cgaiton611.cdb.mapper.ComputerMapper;
 import fr.cgaiton611.cdb.model.Computer;
@@ -70,10 +71,11 @@ public class ComputerRestController {
 
 	@PostMapping
 	public ResponseEntity<Object> create(@RequestBody ComputerDTO computerDTO) {
-		Computer computer = computerMapper.toComputer(computerDTO);
+		Computer computer;
 		try {
+			computer = computerMapper.toComputer(computerDTO);
 			computer = computerService.create(computer);
-		} catch (DAOException e) {
+		} catch (DAOException | MappingException e) {
 			logger.warn(e.getMessage());
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
@@ -83,11 +85,12 @@ public class ComputerRestController {
 	@PutMapping
 	public ResponseEntity<Object> update(@RequestBody ComputerDTO computerDTO) {
 		System.out.println(computerDTO);
-		Computer computer = computerMapper.toComputer(computerDTO);
+		Computer computer;
 		try {
+			computer = computerMapper.toComputer(computerDTO);
 			System.out.println(computer);
 			computer = computerService.update(computer);
-		} catch (DAOException e) {
+		} catch (DAOException | MappingException e) {
 			logger.warn(e.getMessage());
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}

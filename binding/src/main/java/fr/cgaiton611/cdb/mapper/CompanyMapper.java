@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import fr.cgaiton611.cdb.dto.CompanyDTO;
+import fr.cgaiton611.cdb.exception.MappingException;
+import fr.cgaiton611.cdb.exception.MappingStringToLongException;
 import fr.cgaiton611.cdb.model.Company;
 import fr.cgaiton611.cdb.util.ConvertUtil;
 
@@ -15,7 +17,7 @@ public class CompanyMapper {
 
 	private ConvertUtil convertUtil = new ConvertUtil();
 
-	public Company toCompany(CompanyDTO companyDTO) {
+	public Company toCompany(CompanyDTO companyDTO) throws MappingException {
 		Company company = new Company();
 
 		Optional<Long> id = convertUtil.stringToLong(companyDTO.getId());

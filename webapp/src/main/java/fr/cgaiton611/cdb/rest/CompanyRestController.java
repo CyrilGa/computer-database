@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fr.cgaiton611.cdb.dto.CompanyDTO;
 import fr.cgaiton611.cdb.exception.DAOException;
+import fr.cgaiton611.cdb.exception.MappingException;
 import fr.cgaiton611.cdb.exception.entityValidation.EntityValidationException;
 import fr.cgaiton611.cdb.mapper.CompanyMapper;
 import fr.cgaiton611.cdb.model.Company;
@@ -69,10 +70,11 @@ public class CompanyRestController {
 
 	@PostMapping
 	public ResponseEntity<Object> create(@RequestBody CompanyDTO companyDTO) {
-		Company company = companyMapper.toCompany(companyDTO);
+		Company company;
 		try {
+			company = companyMapper.toCompany(companyDTO);
 			company = companyService.create(company);
-		} catch (DAOException e) {
+		} catch (DAOException | MappingException e) {
 			logger.warn(e.getMessage());
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
@@ -81,10 +83,11 @@ public class CompanyRestController {
 	
 	@PutMapping
 	public ResponseEntity<Object> update(@RequestBody CompanyDTO companyDTO) {
-		Company company = companyMapper.toCompany(companyDTO);
+		Company company;
 		try {
+			company = companyMapper.toCompany(companyDTO);
 			company = companyService.update(company);
-		} catch (DAOException e) {
+		} catch (DAOException | MappingException e) {
 			logger.warn(e.getMessage());
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}

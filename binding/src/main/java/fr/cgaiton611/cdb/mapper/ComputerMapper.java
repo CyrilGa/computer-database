@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import fr.cgaiton611.cdb.dto.ComputerDTO;
 import fr.cgaiton611.cdb.exception.DAOException;
+import fr.cgaiton611.cdb.exception.MappingException;
 import fr.cgaiton611.cdb.model.Company;
 import fr.cgaiton611.cdb.model.Computer;
 import fr.cgaiton611.cdb.service.CompanyService;
@@ -30,7 +31,7 @@ public class ComputerMapper {
 
 	private ConvertUtil convertUtil = new ConvertUtil();
 
-	public Computer toComputer(ComputerDTO computerDTO) {
+	public Computer toComputer(ComputerDTO computerDTO) throws MappingException {
 		Computer computer = new Computer();
 
 		Optional<Long> id = convertUtil.stringToLong(computerDTO.getId());

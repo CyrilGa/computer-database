@@ -25,6 +25,7 @@ import fr.cgaiton611.cdb.dto.ComputerDTO;
 import fr.cgaiton611.cdb.dto.ComputerForm;
 import fr.cgaiton611.cdb.mapper.ComputerMapper;
 import fr.cgaiton611.cdb.exception.DAOException;
+import fr.cgaiton611.cdb.exception.MappingException;
 import fr.cgaiton611.cdb.exception.NoRowUpdatedException;
 import fr.cgaiton611.cdb.exception.validation.ValidationException;
 import fr.cgaiton611.cdb.model.Computer;
@@ -118,8 +119,8 @@ public class EditComputerController {
 		String dashboardMsg;
 
 		ComputerDTO computerDTO = new ComputerDTO(computerForm);
-		Computer computer = computerMapper.toComputer(computerDTO);
 		try {
+			Computer computer = computerMapper.toComputer(computerDTO);
 			ComputerValidator.validateForEdit(computer);
 			try {
 				computerService.update(computer);
@@ -131,7 +132,7 @@ public class EditComputerController {
 				logger.warn(e.getMessage());
 				dashboardMsg = "Computer not updated, database not accessible";
 			}
-		} catch (ValidationException e) {
+		} catch (ValidationException | MappingException e) {
 			logger.warn(e.getMessage());
 			dashboardMsg = "Computer not updated, bad validation";
 		}
