@@ -86,7 +86,7 @@ public class EditComputerController {
 			model.addAttribute("discontinuedDate", discontinued.substring(0, 10));
 			model.addAttribute("discontinuedTime", discontinued.substring(11));
 		}
-		model.addAttribute("companyName", computerDTO.getCompanyName());
+		model.addAttribute("companyName", computerDTO.getCompanyDTO().getName());
 
 		model.addAttribute("errorMsgs", errorMsgs);
 

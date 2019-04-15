@@ -19,9 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fr.cgaiton611.cdb.dto.CompanyDTO;
 import fr.cgaiton611.cdb.exception.DAOException;
+import fr.cgaiton611.cdb.exception.entityValidation.EntityValidationException;
 import fr.cgaiton611.cdb.mapper.CompanyMapper;
 import fr.cgaiton611.cdb.model.Company;
 import fr.cgaiton611.cdb.service.CompanyService;
+import fr.cgaiton611.cdb.webentity.GetAllParametersEntity;
+import fr.cgaiton611.cdb.webentity.GetAllParametersEntityValidator;
 
 @RestController
 @RequestMapping("/company")
@@ -34,15 +37,18 @@ public class CompanyRestController {
 
 	@Autowired
 	private CompanyMapper companyMapper;
+	
+	@Autowired
+	private GetAllParametersEntityValidator entityValidator;
 
 	@RequestMapping("/all")
 	@GetMapping
-	public ResponseEntity<Object> findPage(@RequestParam(required = true, name = "page") int pPage,
-			@RequestParam(required = true, name = "elements") int pElements) {
+	public ResponseEntity<Object> findPage(@RequestBody GetAllParametersEntity entity) {
 		List<Company> companies = new ArrayList<>();
 		try {
-			companies = companyService.findPage(pPage, pElements);
-		} catch (DAOException e) {
+			entityValidator.validate(entity);
+			companies = companyService.findPage(entity);
+		} catch (DAOException | EntityValidationException e) {
 			logger.warn(e.getMessage());
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}

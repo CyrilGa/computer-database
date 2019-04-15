@@ -82,8 +82,10 @@ public class ComputerRestController {
 
 	@PutMapping
 	public ResponseEntity<Object> update(@RequestBody ComputerDTO computerDTO) {
+		System.out.println(computerDTO);
 		Computer computer = computerMapper.toComputer(computerDTO);
 		try {
+			System.out.println(computer);
 			computer = computerService.update(computer);
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
