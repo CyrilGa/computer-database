@@ -23,41 +23,31 @@ public class ComputerValidator {
 		if (computer == null) {
 			throw new ComputerNullException();
 		}
-		if (!stringNotEmpty(computer.getName())) {
-			throw new NameIsEmptyException();
-		}
-		if (!validateDate(computer.getIntroduced())) {
-			throw new DateNotValidException();
-		}
-		if (!validateDate(computer.getDiscontinued())) {
-			throw new DateNotValidException();
-		}
+		stringNotEmpty(computer.getName());
+		validateDate(computer.getIntroduced());
+		validateDate(computer.getDiscontinued());
 	}
 
 	public static void validateForEdit(Computer computer) throws ValidationException {
 		if (computer == null) {
 			throw new ComputerNullException();
 		}
-		if (!longNotZero(computer.getId())) {
-			throw new IdIsZeroException();
-		}
-		if (!stringNotEmpty(computer.getName())) {
+		longNotZero(computer.getId());
+		stringNotEmpty(computer.getName());
+		validateDate(computer.getIntroduced());
+		validateDate(computer.getDiscontinued());
+	}
+
+	private static void stringNotEmpty(String s) throws NameIsEmptyException {
+		if(s == null || s == "") {
 			throw new NameIsEmptyException();
 		}
-		if (!validateDate(computer.getIntroduced())) {
-			throw new DateNotValidException();
-		}
-		if (!validateDate(computer.getDiscontinued())) {
-			throw new DateNotValidException();
-		}
 	}
 
-	private static boolean stringNotEmpty(String s) {
-		return s != null && s != "";
-	}
-
-	private static boolean longNotZero(long i) {
-		return i != 0l;
+	private static void longNotZero(long i) throws IdIsZeroException {
+		if(i == 0l) {
+			throw new IdIsZeroException();
+		}
 	}
 
 	/**
@@ -65,25 +55,25 @@ public class ComputerValidator {
 	 * 
 	 * @param date
 	 * @return
+	 * @throws DateNotValidException 
 	 * @throws ComputerValidatorException
 	 */
-	private static boolean validateDate(Date date) {
-		if (date == null)
-			return true;
+	private static void validateDate(Date date) throws DateNotValidException {
+		if (date == null) {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+			String s = dateFormat.format(date);
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-		String s = dateFormat.format(date);
-
-		String year = s.substring(0, 4);
-		String month = s.substring(5, 7);
-		String day = s.substring(8, 10);
-		String hour = s.substring(11, 13);
-		String minute = s.substring(14, 16);
-		if (isIn(year, 0000, 9999) && isIn(month, 0, 11) && isIn(day, 1, 31) && isIn(hour, 0, 23)
-				&& isIn(minute, 0, 59)) {
-			return true;
+			String year = s.substring(0, 4);
+			String month = s.substring(5, 7);
+			String day = s.substring(8, 10);
+			String hour = s.substring(11, 13);
+			String minute = s.substring(14, 16);
+			boolean goodFormatDate = isIn(year, 0000, 9999) && isIn(month, 0, 11) && isIn(day, 1, 31) && isIn(hour, 0, 23)
+					&& isIn(minute, 0, 59);
+			if (!goodFormatDate) {
+				throw new DateNotValidException();
+			}
 		}
-		return false;
 	}
 
 	/**
