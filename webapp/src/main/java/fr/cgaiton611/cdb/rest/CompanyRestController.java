@@ -35,7 +35,7 @@ public class CompanyRestController {
 	@Autowired
 	private CompanyMapper companyMapper;
 
-	@RequestMapping("getpage")
+	@RequestMapping("/all")
 	@GetMapping
 	public ResponseEntity<Object> findPage(@RequestParam(required = true, name = "page") int pPage,
 			@RequestParam(required = true, name = "elements") int pElements) {

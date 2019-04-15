@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import fr.cgaiton611.cdb.exception.ValidationException;
+import fr.cgaiton611.cdb.exception.validation.ValidationException;
 import fr.cgaiton611.cdb.model.Computer;
 import fr.cgaiton611.cdb.util.ConvertUtil;
 

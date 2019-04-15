@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -38,15 +39,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@PostConstruct
 	public void init() {
 		try {
-			userService.create(new User("user", passwordEncoder().encode("user"), "USER"));
-		} catch (DAOException e) {
-			logger.warn("User cannot be created");
+			userService.loadUserByUsername("user");
+		} catch (UsernameNotFoundException e) {
+			try {
+				userService.create(new User("user", passwordEncoder().encode("user"), "USER"));
+			} catch (DAOException e1) {
+				logger.debug(e.getMessage());
+			}
 		}
 
 		try {
-			userService.create(new User("admin", passwordEncoder().encode("admin"), "ADMIN"));
-		} catch (DAOException e) {
-			logger.warn("User cannot be created");
+			userService.loadUserByUsername("admin");
+		} catch (UsernameNotFoundException e) {
+			try {
+				userService.create(new User("admin", passwordEncoder().encode("admin"), "ADMIN"));
+			} catch (DAOException e1) {
+				logger.debug(e.getMessage());
+			}
 		}
 	}
 	

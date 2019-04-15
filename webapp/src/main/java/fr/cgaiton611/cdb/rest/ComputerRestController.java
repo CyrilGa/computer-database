@@ -1,7 +1,10 @@
 package fr.cgaiton611.cdb.rest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +25,7 @@ import fr.cgaiton611.cdb.exception.DAOException;
 import fr.cgaiton611.cdb.mapper.ComputerMapper;
 import fr.cgaiton611.cdb.model.Computer;
 import fr.cgaiton611.cdb.service.ComputerService;
+import fr.cgaiton611.cdb.webentity.GetAllParametersEntity;
 
 @RestController
 @RequestMapping("/computer")
@@ -35,18 +39,12 @@ public class ComputerRestController {
 	@Autowired
 	private ComputerMapper computerMapper;
 
-	@RequestMapping("getpage")
+	@RequestMapping("/all")
 	@GetMapping
-	public ResponseEntity<Object> findPage(@RequestParam(required = true, name = "page") int pPage,
-			@RequestParam(required = true, name = "elements") int pElements,
-			@RequestParam(required = false, name = "computerName", defaultValue = "") String pComputerName,
-			@RequestParam(required = false, name = "companyName", defaultValue = "") String pCompanyName,
-			@RequestParam(required = false, name = "orderByName", defaultValue = "cpu.name") String pOrderByName,
-			@RequestParam(required = false, name = "orderByName", defaultValue = "ASC") String pOrderByOrder) {
+	public ResponseEntity<Object> findPage(@RequestBody GetAllParametersEntity entity) {
 		List<Computer> computers = new ArrayList<>();
 		try {
-			computers = computerService.findPageWithParameters(pPage, pElements, pComputerName, pCompanyName,
-					pOrderByName, pOrderByOrder);
+			computers = computerService.findPageWithParameters(entity);
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -77,7 +75,7 @@ public class ComputerRestController {
 		}
 		return new ResponseEntity<>(computerMapper.toComputerDTO(computer), HttpStatus.OK);
 	}
-	
+
 	@PutMapping
 	public ResponseEntity<Object> update(@RequestBody ComputerDTO computerDTO) {
 		Computer computer = computerMapper.toComputer(computerDTO);
@@ -100,5 +98,5 @@ public class ComputerRestController {
 		}
 		return new ResponseEntity<>("Sucessfully deleted", HttpStatus.OK);
 	}
-	
+
 }

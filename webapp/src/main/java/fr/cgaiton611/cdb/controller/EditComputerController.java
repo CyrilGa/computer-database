@@ -26,7 +26,7 @@ import fr.cgaiton611.cdb.dto.ComputerForm;
 import fr.cgaiton611.cdb.mapper.ComputerMapper;
 import fr.cgaiton611.cdb.exception.DAOException;
 import fr.cgaiton611.cdb.exception.NoRowUpdatedException;
-import fr.cgaiton611.cdb.exception.ValidationException;
+import fr.cgaiton611.cdb.exception.validation.ValidationException;
 import fr.cgaiton611.cdb.model.Computer;
 import fr.cgaiton611.cdb.service.CompanyService;
 import fr.cgaiton611.cdb.service.ComputerService;

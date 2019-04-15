@@ -1,4 +1,4 @@
-package fr.cgaiton611.cdb.exception;
+package fr.cgaiton611.cdb.exception.validation;
 
 public class ComputerNullException extends ValidationException {
 

@@ -3,11 +3,11 @@ package fr.cgaiton611.cdb.validation;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import fr.cgaiton611.cdb.exception.ComputerNullException;
-import fr.cgaiton611.cdb.exception.DateNotValidException;
-import fr.cgaiton611.cdb.exception.IdIsZeroException;
-import fr.cgaiton611.cdb.exception.NameIsEmptyException;
-import fr.cgaiton611.cdb.exception.ValidationException;
+import fr.cgaiton611.cdb.exception.validation.ComputerNullException;
+import fr.cgaiton611.cdb.exception.validation.DateNotValidException;
+import fr.cgaiton611.cdb.exception.validation.IdIsZeroException;
+import fr.cgaiton611.cdb.exception.validation.NameIsEmptyException;
+import fr.cgaiton611.cdb.exception.validation.ValidationException;
 import fr.cgaiton611.cdb.model.Computer;
 
 /**
