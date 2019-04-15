@@ -5,24 +5,24 @@ public class ComputerDTO {
 	private String name;
 	private String introduced;
 	private String discontinued;
-	private String companyName;
+	private CompanyDTO companyDTO;
 
 	public ComputerDTO() {
 	}
 
-	public ComputerDTO(String name, String introduced, String discontinued, String companyName) {
+	public ComputerDTO(String name, String introduced, String discontinued, CompanyDTO companyDTO) {
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.companyName = companyName;
+		this.companyDTO = companyDTO;
 	}
 
-	public ComputerDTO(String id, String name, String introduced, String discontinued, String companyName) {
+	public ComputerDTO(String id, String name, String introduced, String discontinued, CompanyDTO companyDTO) {
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.companyName = companyName;
+		this.companyDTO = companyDTO;
 	}
 
 	public ComputerDTO(ComputerForm computerForm) {
@@ -31,9 +31,9 @@ public class ComputerDTO {
 		introduced = computerForm.getIntroducedDate() + " " + computerForm.getIntroducedTime();
 		discontinued = computerForm.getDiscontinuedDate() + " " + computerForm.getDiscontinuedTime();
 		if ("select-option-default".equals(computerForm.getCompanyName())) {
-			companyName = null;
+			companyDTO.setName(null);
 		} else {
-			companyName = computerForm.getCompanyName();
+			companyDTO.setName(computerForm.getCompanyName());
 		}
 	}
 
@@ -69,18 +69,20 @@ public class ComputerDTO {
 		this.discontinued = discontinued;
 	}
 
-	public String getCompanyName() {
-		return companyName;
+	public CompanyDTO getCompanyDTO() {
+		return companyDTO;
 	}
 
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
+	public void setCompanyDTO(CompanyDTO companyDTO) {
+		this.companyDTO = companyDTO;
 	}
 
 	@Override
 	public String toString() {
-		return "ComputerDTO [name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
-				+ ", companyName=" + companyName + "]";
+		return "ComputerDTO [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued="
+				+ discontinued + ", companyDTO=" + companyDTO + "]";
 	}
+	
 
+	
 }

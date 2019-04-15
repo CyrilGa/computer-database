@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import fr.cgaiton611.cdb.dao.CompanyDAO;
 import fr.cgaiton611.cdb.exception.DAOException;
 import fr.cgaiton611.cdb.model.Company;
+import fr.cgaiton611.cdb.webentity.GetAllParametersEntity;
 
 @Service
 public class CompanyService {
@@ -16,6 +17,10 @@ public class CompanyService {
 
 	public List<Company> findPage(int page, int elements) throws DAOException {
 		return companyDAO.findPage(page, elements);
+	}
+	
+	public List<Company> findPage(GetAllParametersEntity entity) throws DAOException {
+		return companyDAO.findPage(entity.getNumPage(), entity.getNbElements());
 	}
 
 	public Company find(Company company) throws DAOException {

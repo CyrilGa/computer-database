@@ -13,7 +13,7 @@ public class NumPageNotValidException extends EntityValidationException {
 
 	@Override
 	public String getMessage() {
-		return "The number of elements should be between " + min + " and " + max;
+		return "In this case, the value of the attribute \"nbPage\" should be between " + min + " and " + max;
 	}
 
 }

@@ -6,7 +6,7 @@ public class NbElementsNotValidException extends EntityValidationException {
 
 	@Override
 	public String getMessage() {
-		return "The number of elements should be in (10, 25, 50, 75, 100).";
+		return "The value of the attribute \"nbElements\" should be in (10, 25, 50, 75, 100).";
 	}
 	
 }

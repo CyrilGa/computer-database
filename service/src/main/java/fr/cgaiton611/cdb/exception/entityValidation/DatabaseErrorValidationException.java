@@ -6,7 +6,7 @@ public class DatabaseErrorValidationException extends EntityValidationException{
 
 	@Override
 	public String getMessage() {
-		return "Error in databse durring the validation";
+		return "Error in database during the validation";
 	}
 	
 }

@@ -9,7 +9,7 @@ public class GetAllParametersEntity {
 	private int nbElements = 10;
 	private String computerName = "";
 	private String companyName = "";
-	private String orderAttribute = "cpu.name";
+	private String orderAttribute = "id";
 	private String orderType = "ASC";
 	
 	public static final List<String> ORDER_ATTRIBUTES_AUTORISED = Arrays.asList("id", "computerName", "introduced",

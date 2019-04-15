@@ -25,6 +25,9 @@ public class ComputerMapper {
 	@Autowired
 	private CompanyService companyService;
 
+	@Autowired
+	private CompanyMapper companyMapper;
+
 	private ConvertUtil convertUtil = new ConvertUtil();
 
 	public Computer toComputer(ComputerDTO computerDTO) {
@@ -42,18 +45,31 @@ public class ComputerMapper {
 
 		Optional<Date> discontinued = convertUtil.stringToDate(computerDTO.getDiscontinued());
 		computer.setDiscontinued(discontinued.orElse(null));
-
-		if (computerDTO.getCompanyName() != null && computerDTO.getCompanyName() != "") {
-			Company company;
+		
+		Company company;
+		Optional<Long> idCompany = convertUtil.stringToLong(computerDTO.getCompanyDTO().getId());
+		if (idCompany.isPresent()) {
 			try {
-				company = companyService.findByName(computerDTO.getCompanyName());
+				company = companyService.find(new Company(idCompany.get()));
 				computer.setCompany(company);
 			} catch (DAOException e) {
 				logger.warn(e.getMessage());
 				computer.setCompany(null);
 			}
-		} else {
-			computer.setCompany(null);
+		}
+
+		if (computer.getCompany() == null) {
+			if (computerDTO.getCompanyDTO().getName() != null && computerDTO.getCompanyDTO().getName() != "") {
+				try {
+					company = companyService.findByName(computerDTO.getCompanyDTO().getName());
+					computer.setCompany(company);
+				} catch (DAOException e) {
+					logger.warn(e.getMessage());
+					computer.setCompany(null);
+				}
+			} else {
+				computer.setCompany(null);
+			}
 		}
 		return computer;
 	}
@@ -69,7 +85,7 @@ public class ComputerMapper {
 
 		computerDTO.setDiscontinued(convertUtil.dateToString(computer.getDiscontinued()));
 
-		computerDTO.setCompanyName(computer.getCompany() != null?computer.getCompany().getName():null);
+		computerDTO.setCompanyDTO(companyMapper.toCompanyDTO(computer.getCompany()));
 
 		return computerDTO;
 	}

@@ -59,7 +59,7 @@ public class GetAllParametersEntityValidator {
 		} catch (DAOException e) {
 			throw new DatabaseErrorValidationException();
 		}
-		if (entity.getNumPage() < 0 || entity.getNumPage() >= maxPage) {
+		if (entity.getNumPage() < 0 || entity.getNumPage() > maxPage) {
 			throw new NumPageNotValidException(0, maxPage);
 		}
 	}

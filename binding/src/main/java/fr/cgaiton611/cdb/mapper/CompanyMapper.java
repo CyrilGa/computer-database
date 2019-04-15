@@ -19,8 +19,9 @@ public class CompanyMapper {
 		Company company = new Company();
 
 		Optional<Long> id = convertUtil.stringToLong(companyDTO.getId());
-		if (id.isPresent())
+		if (id.isPresent()) {
 			company.setId(id.get());
+		}
 
 		company.setName(companyDTO.getName());
 
@@ -29,6 +30,10 @@ public class CompanyMapper {
 
 	public CompanyDTO toCompanyDTO(Company company) {
 		CompanyDTO companyDTO = new CompanyDTO();
+		
+		if (company == null){
+			return companyDTO;
+		}
 
 		companyDTO.setId(String.valueOf(company.getId()));
 
