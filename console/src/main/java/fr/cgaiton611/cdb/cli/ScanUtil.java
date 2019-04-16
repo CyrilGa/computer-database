@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.Scanner;
 
+import fr.cgaiton611.cdb.exception.MappingStringToDateException;
+import fr.cgaiton611.cdb.exception.MappingStringToLongException;
 import fr.cgaiton611.cdb.util.ConvertUtil;
 import fr.cgaiton611.cdb.validation.Type;
 import fr.cgaiton611.cdb.validation.TypeValidator;
@@ -63,7 +65,11 @@ public class ScanUtil {
 	 * @return An integer or null if user has skip or the 3 tries were failed
 	 */
 	public Optional<Long> askLong(String msg, boolean skip) {
-		return convertUtil.stringToLong(askSomething(msg, skip, Type.Long));
+		try {
+			return convertUtil.stringToLong(askSomething(msg, skip, Type.Long));
+		} catch (MappingStringToLongException e) {
+			return Optional.empty();
+		}
 	}
 
 	/**
@@ -74,7 +80,11 @@ public class ScanUtil {
 	 * @return An integer or null if user has skip or the 3 tries were failed
 	 */
 	public Optional<Date> askDate(String msg, boolean skip) {
-		return convertUtil.stringToDate(askSomething(msg, skip, Type.Date));
+		try {
+			return convertUtil.stringToDate(askSomething(msg, skip, Type.Date));
+		} catch (MappingStringToDateException e) {
+			return Optional.empty();
+		}
 	}
 
 	/**

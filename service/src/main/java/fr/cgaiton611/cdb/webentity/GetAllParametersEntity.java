@@ -57,5 +57,13 @@ public class GetAllParametersEntity {
 	public void translateOrderAttribute() {
 		orderAttribute = ORDER_ATTRIBUTES_AUTORISED_TRANSLATED.get(ORDER_ATTRIBUTES_AUTORISED.indexOf(orderAttribute));
 	}
+	@Override
+	public String toString() {
+		return "GetAllParametersEntity [numPage=" + numPage + ", nbElements=" + nbElements + ", computerName="
+				+ computerName + ", companyName=" + companyName + ", orderAttribute=" + orderAttribute + ", orderType="
+				+ orderType + "]";
+	}
+	
+	
 	
 }

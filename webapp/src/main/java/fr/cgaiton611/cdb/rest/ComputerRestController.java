@@ -34,7 +34,7 @@ public class ComputerRestController {
 	private final Logger logger = LoggerFactory.getLogger(ComputerRestController.class);
 
 	@Autowired
-	ComputerService computerService;
+	private ComputerService computerService;
 
 	@Autowired
 	private ComputerMapper computerMapper;
@@ -42,7 +42,6 @@ public class ComputerRestController {
 	@Autowired
 	private GetAllParametersEntityValidator entityValidator;
 
-	@RequestMapping("/all")
 	@GetMapping
 	public ResponseEntity<Object> findPage(@RequestBody GetAllParametersEntity entity) {
 		List<Computer> computers = new ArrayList<>();
@@ -84,11 +83,9 @@ public class ComputerRestController {
 
 	@PutMapping
 	public ResponseEntity<Object> update(@RequestBody ComputerDTO computerDTO) {
-		System.out.println(computerDTO);
 		Computer computer;
 		try {
 			computer = computerMapper.toComputer(computerDTO);
-			System.out.println(computer);
 			computer = computerService.update(computer);
 		} catch (DAOException | MappingException e) {
 			logger.warn(e.getMessage());
