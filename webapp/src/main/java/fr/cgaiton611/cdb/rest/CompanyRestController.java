@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,7 +44,6 @@ public class CompanyRestController {
 	@Autowired
 	private GetAllParametersEntityValidator entityValidator;
 
-	@RequestMapping("/all")
 	@GetMapping
 	public ResponseEntity<Object> findPage(@RequestBody GetAllParametersEntity entity) {
 		List<Company> companies = new ArrayList<>();
@@ -60,8 +60,8 @@ public class CompanyRestController {
 		return new ResponseEntity<>(companyMapper.toCompanyDTOList(companies), HttpStatus.OK);
 	}
 
-	@GetMapping
-	public ResponseEntity<Object> find(@RequestParam(required = true, name = "id") int pId) {
+	@GetMapping("/{id}")
+	public ResponseEntity<Object> find(@PathVariable("id") int pId) {
 		Company company = null;
 		try {
 			company = companyService.find(new Company(pId));
@@ -104,8 +104,8 @@ public class CompanyRestController {
 		return new ResponseEntity<>(companyMapper.toCompanyDTO(company), HttpStatus.OK);
 	}
 
-	@DeleteMapping
-	public ResponseEntity<Object> delete(@RequestParam(required = true, name = "id") int pId) {
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Object> delete(@PathVariable("id") int pId) {
 		try {
 			companyService.delete(pId);
 		} catch (DAOException e) {
