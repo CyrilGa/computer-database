@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.cgaiton611.cdb.dto.CompanyDTO;
+import fr.cgaiton611.cdb.error.ErrorModel.ErrorModelBuilder;
 import fr.cgaiton611.cdb.exception.DAOException;
 import fr.cgaiton611.cdb.exception.MappingException;
 import fr.cgaiton611.cdb.exception.entityValidation.EntityValidationException;
@@ -49,9 +50,12 @@ public class CompanyRestController {
 		try {
 			entityValidator.validate(entity);
 			companies = companyService.findPage(entity);
-		} catch (DAOException | EntityValidationException e) {
+		} catch (DAOException e) {
 			logger.warn(e.getMessage());
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ErrorModelBuilder().setHttpCode(HttpStatus.BAD_REQUEST.toString()).setMessage(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+		} catch (EntityValidationException e) {
+			logger.warn(e.getMessage());
+			return new ResponseEntity<>(new ErrorModelBuilder().setHttpCode(HttpStatus.FAILED_DEPENDENCY.toString()).setMessage(e.getMessage()).build(), HttpStatus.FAILED_DEPENDENCY);
 		}
 		return new ResponseEntity<>(companyMapper.toCompanyDTOList(companies), HttpStatus.OK);
 	}
@@ -63,7 +67,7 @@ public class CompanyRestController {
 			company = companyService.find(new Company(pId));
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ErrorModelBuilder().setHttpCode(HttpStatus.BAD_REQUEST.toString()).setMessage(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(companyMapper.toCompanyDTO(company), HttpStatus.OK);
 	}
@@ -74,9 +78,12 @@ public class CompanyRestController {
 		try {
 			company = companyMapper.toCompany(companyDTO);
 			company = companyService.create(company);
-		} catch (DAOException | MappingException e) {
+		} catch (DAOException e) {
 			logger.warn(e.getMessage());
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ErrorModelBuilder().setHttpCode(HttpStatus.BAD_REQUEST.toString()).setMessage(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+		} catch (MappingException e) {
+			logger.warn(e.getMessage());
+			return new ResponseEntity<>(new ErrorModelBuilder().setHttpCode(HttpStatus.FAILED_DEPENDENCY.toString()).setMessage(e.getMessage()).build(), HttpStatus.FAILED_DEPENDENCY);
 		}
 		return new ResponseEntity<>(companyMapper.toCompanyDTO(company), HttpStatus.OK);
 	}
@@ -87,9 +94,12 @@ public class CompanyRestController {
 		try {
 			company = companyMapper.toCompany(companyDTO);
 			company = companyService.update(company);
-		} catch (DAOException | MappingException e) {
+		} catch (DAOException e) {
 			logger.warn(e.getMessage());
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ErrorModelBuilder().setHttpCode(HttpStatus.BAD_REQUEST.toString()).setMessage(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+		} catch (MappingException e) {
+			logger.warn(e.getMessage());
+			return new ResponseEntity<>(new ErrorModelBuilder().setHttpCode(HttpStatus.FAILED_DEPENDENCY.toString()).setMessage(e.getMessage()).build(), HttpStatus.FAILED_DEPENDENCY);
 		}
 		return new ResponseEntity<>(companyMapper.toCompanyDTO(company), HttpStatus.OK);
 	}
@@ -100,7 +110,7 @@ public class CompanyRestController {
 			companyService.delete(pId);
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ErrorModelBuilder().setHttpCode(HttpStatus.BAD_REQUEST.toString()).setMessage(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>("Sucessfully deleted", HttpStatus.OK);
 	}
