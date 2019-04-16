@@ -28,7 +28,7 @@ import fr.cgaiton611.cdb.webentity.GetAllParametersEntity;
 import fr.cgaiton611.cdb.webentity.GetAllParametersEntityValidator;
 
 @RestController
-@RequestMapping("/computer")
+@RequestMapping("/api/computer")
 public class ComputerRestController {
 
 	private final Logger logger = LoggerFactory.getLogger(ComputerRestController.class);
@@ -46,7 +46,7 @@ public class ComputerRestController {
 	public ResponseEntity<Object> findPage(@RequestBody GetAllParametersEntity entity) {
 		List<Computer> computers = new ArrayList<>();
 		try {
-			entityValidator.validate(entity);
+			entityValidator.validateForComputer(entity);
 			entity.translateOrderAttribute();
 			computers = computerService.findPageWithParameters(entity);
 		} catch (DAOException e) {

@@ -28,7 +28,7 @@ import fr.cgaiton611.cdb.webentity.GetAllParametersEntity;
 import fr.cgaiton611.cdb.webentity.GetAllParametersEntityValidator;
 
 @RestController
-@RequestMapping("/company")
+@RequestMapping("/api/company")
 public class CompanyRestController {
 
 	private final Logger logger = LoggerFactory.getLogger(CompanyRestController.class);
@@ -46,7 +46,7 @@ public class CompanyRestController {
 	public ResponseEntity<Object> findPage(@RequestBody GetAllParametersEntity entity) {
 		List<Company> companies = new ArrayList<>();
 		try {
-			entityValidator.validate(entity);
+			entityValidator.validateForCompany(entity);
 			companies = companyService.findPage(entity);
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());

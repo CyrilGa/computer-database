@@ -15,6 +15,7 @@ import fr.cgaiton611.cdb.exception.entityValidation.NbElementsNotValidException;
 import fr.cgaiton611.cdb.exception.entityValidation.NumPageNotValidException;
 import fr.cgaiton611.cdb.exception.entityValidation.OrderAttributeNotValidException;
 import fr.cgaiton611.cdb.exception.entityValidation.OrderTypeNotValidException;
+import fr.cgaiton611.cdb.service.CompanyService;
 import fr.cgaiton611.cdb.service.ComputerService;;
 
 @Component
@@ -23,14 +24,22 @@ public class GetAllParametersEntityValidator {
 	@Autowired
 	ComputerService computerService;
 
+	@Autowired
+	CompanyService companyService;
+
 	private final List<Integer> NBELEMENTS_AUTORISED = Arrays.asList(10, 25, 50, 75, 100);
 	private final List<String> ORDERTYPE_AUTORISED = Arrays.asList("ASC", "DESC");
 
-	public void validate(GetAllParametersEntity entity) throws EntityValidationException {
+	public void validateForComputer(GetAllParametersEntity entity) throws EntityValidationException {
 		nbElementsValidator(entity.getNbElements());
 		orderAttributeValidator(entity.getOrderAttribute());
 		orderTypeValidator(entity.getOrderType());
-		numPageValidator(entity);
+		numPageValidatorComputer(entity);
+	}
+	
+	public void validateForCompany(GetAllParametersEntity entity) throws EntityValidationException {
+		nbElementsValidator(entity.getNbElements());
+		numPageValidatorCompany(entity);
 	}
 
 	private void nbElementsValidator(int test) throws NbElementsNotValidException {
@@ -51,11 +60,23 @@ public class GetAllParametersEntityValidator {
 		}
 	}
 
-	private void numPageValidator(GetAllParametersEntity entity) throws EntityValidationException {
+	private void numPageValidatorComputer(GetAllParametersEntity entity) throws EntityValidationException {
 		int maxPage;
 		try {
 			maxPage = (computerService.countWithParameters(entity.getComputerName(), entity.getCompanyName())
 					/ entity.getNbElements());
+		} catch (DAOException e) {
+			throw new DatabaseErrorValidationException();
+		}
+		if (entity.getNumPage() < 0 || entity.getNumPage() > maxPage) {
+			throw new NumPageNotValidException(0, maxPage);
+		}
+	}
+	
+	private void numPageValidatorCompany(GetAllParametersEntity entity) throws EntityValidationException {
+		int maxPage;
+		try {
+			maxPage = (companyService.count() / entity.getNbElements());
 		} catch (DAOException e) {
 			throw new DatabaseErrorValidationException();
 		}
