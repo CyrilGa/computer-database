@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.cgaiton611.cdb.dto.CompanyDTO;
@@ -24,12 +24,11 @@ import fr.cgaiton611.cdb.exception.MappingException;
 import fr.cgaiton611.cdb.exception.entityValidation.EntityValidationException;
 import fr.cgaiton611.cdb.mapper.CompanyMapper;
 import fr.cgaiton611.cdb.model.Company;
+import fr.cgaiton611.cdb.rest.parametersmanager.GetAllParametersManager;
 import fr.cgaiton611.cdb.service.CompanyService;
-import fr.cgaiton611.cdb.webentity.GetAllParametersEntity;
-import fr.cgaiton611.cdb.webentity.GetAllParametersEntityValidator;
 
 @RestController
-@RequestMapping("/api/company")
+@RequestMapping("/api/v1/company")
 public class CompanyRestController {
 
 	private final Logger logger = LoggerFactory.getLogger(CompanyRestController.class);
@@ -41,16 +40,14 @@ public class CompanyRestController {
 	private CompanyMapper companyMapper;
 	
 	@Autowired
-	private GetAllParametersEntityValidator entityValidator;
+	private GetAllParametersManager getAllParametersManager;
 
-	@GetMapping
-	public ResponseEntity<Object> findPage(@RequestBody GetAllParametersEntity entity,  @CookieValue("JSESSIONID") String jsessionid) {
-	  System.out.println(jsessionid);
-	  
+	public ResponseEntity<Object> findPage(@RequestParam(required = false, defaultValue = "0") int numPage,
+			@RequestParam(required = false, defaultValue = "10") int nbElements) {
 		List<Company> companies = new ArrayList<>();
 		try {
-			entityValidator.validateForCompany(entity);
-			companies = companyService.findPage(entity);
+			getAllParametersManager.validateForCompany(numPage, nbElements);
+			companies = companyService.findPage(numPage, nbElements);
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

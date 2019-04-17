@@ -1,6 +1,4 @@
-package fr.cgaiton611.cdb.webentity;
-
-import static fr.cgaiton611.cdb.webentity.GetAllParametersEntity.ORDER_ATTRIBUTES_AUTORISED;
+package fr.cgaiton611.cdb.rest.parametersmanager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +17,7 @@ import fr.cgaiton611.cdb.service.CompanyService;
 import fr.cgaiton611.cdb.service.ComputerService;;
 
 @Component
-public class GetAllParametersEntityValidator {
+public class GetAllParametersManager {
 
 	@Autowired
 	ComputerService computerService;
@@ -29,17 +27,27 @@ public class GetAllParametersEntityValidator {
 
 	private final List<Integer> NBELEMENTS_AUTORISED = Arrays.asList(10, 25, 50, 75, 100);
 	private final List<String> ORDERTYPE_AUTORISED = Arrays.asList("ASC", "DESC");
-
-	public void validateForComputer(GetAllParametersEntity entity) throws EntityValidationException {
-		nbElementsValidator(entity.getNbElements());
-		orderAttributeValidator(entity.getOrderAttribute());
-		orderTypeValidator(entity.getOrderType());
-		numPageValidatorComputer(entity);
-	}
+	private static final List<String> ORDER_ATTRIBUTES_AUTORISED = Arrays.asList("id", "computerName", "introduced",
+			"discontinued", "companyName");;
+	private static final List<String> ORDER_ATTRIBUTES_AUTORISED_TRANSLATED = Arrays.asList("cpu.id", "cpu.name",
+			"cpu.introduced", "cpu.discontinued", "cpa.name");
 	
-	public void validateForCompany(GetAllParametersEntity entity) throws EntityValidationException {
-		nbElementsValidator(entity.getNbElements());
-		numPageValidatorCompany(entity);
+	
+	public String translateOrderAttribute(String orderAttribute) {
+		return ORDER_ATTRIBUTES_AUTORISED_TRANSLATED.get(ORDER_ATTRIBUTES_AUTORISED.indexOf(orderAttribute));
+	}
+
+	public void validateForComputer(int numPage, int nbElements, String computerName, String companyName,
+			String orderAttribute, String orderType) throws EntityValidationException {
+		nbElementsValidator(nbElements);
+		orderAttributeValidator(orderAttribute);
+		orderTypeValidator(orderType);
+		numPageValidatorComputer(numPage, nbElements, computerName, companyName);
+	}
+
+	public void validateForCompany(int numPage, int nbElements) throws EntityValidationException {
+		nbElementsValidator(nbElements);
+		numPageValidatorCompany(numPage, nbElements);
 	}
 
 	private void nbElementsValidator(int test) throws NbElementsNotValidException {
@@ -60,27 +68,27 @@ public class GetAllParametersEntityValidator {
 		}
 	}
 
-	private void numPageValidatorComputer(GetAllParametersEntity entity) throws EntityValidationException {
+	private void numPageValidatorComputer(int numPage, int nbElements, String computerName, String companyName)
+			throws EntityValidationException {
 		int maxPage;
 		try {
-			maxPage = (computerService.countWithParameters(entity.getComputerName(), entity.getCompanyName())
-					/ entity.getNbElements());
+			maxPage = (computerService.countWithParameters(computerName, companyName) / nbElements);
 		} catch (DAOException e) {
 			throw new DatabaseErrorValidationException();
 		}
-		if (entity.getNumPage() < 0 || entity.getNumPage() > maxPage) {
+		if (numPage < 0 || numPage > maxPage) {
 			throw new NumPageNotValidException(0, maxPage);
 		}
 	}
-	
-	private void numPageValidatorCompany(GetAllParametersEntity entity) throws EntityValidationException {
+
+	private void numPageValidatorCompany(int numPage, int nbElements) throws EntityValidationException {
 		int maxPage;
 		try {
-			maxPage = (companyService.count() / entity.getNbElements());
+			maxPage = (companyService.count() / nbElements);
 		} catch (DAOException e) {
 			throw new DatabaseErrorValidationException();
 		}
-		if (entity.getNumPage() < 0 || entity.getNumPage() > maxPage) {
+		if (numPage < 0 || numPage > maxPage) {
 			throw new NumPageNotValidException(0, maxPage);
 		}
 	}

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import fr.cgaiton611.cdb.dao.ComputerDAO;
 import fr.cgaiton611.cdb.exception.DAOException;
 import fr.cgaiton611.cdb.model.Computer;
-import fr.cgaiton611.cdb.webentity.GetAllParametersEntity;
 
 @Service
 public class ComputerService {
@@ -39,17 +38,6 @@ public class ComputerService {
 			String orderByName, String orderByOrder) throws DAOException {
 		return computerDAO.findPage(page, elements, computerName, companyName, orderByName, orderByOrder);
 	}
-	
-	public List<Computer> findPageWithParameters(GetAllParametersEntity entity) throws DAOException {
-		return computerDAO.findPage(entity.getNumPage(),
-				entity.getNbElements(),
-				entity.getComputerName(),
-				entity.getCompanyName(),
-				entity.getOrderAttribute(),
-				entity.getOrderType());
-	}
-	
-	
 
 	public int countWithParameters(String computerName, String companyName) throws DAOException {
 		return computerDAO.count(computerName, companyName);
