@@ -111,7 +111,7 @@
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>${tomcat-version}</version>
 				<configuration>
-					<port>8000</port>
+					<port>8080</port>
 					<path>/cdb</path>
 				</configuration>
 				<executions>
