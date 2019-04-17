@@ -29,19 +29,20 @@ import fr.cgaiton611.cdb.rest.parametersmanager.GetAllParametersManager;
 import fr.cgaiton611.cdb.service.ComputerService;
 
 @RestController
-@RequestMapping("/api/v1/computer")
+@RequestMapping("/api/v1/computers")
 public class ComputerRestController {
 
 	private final Logger logger = LoggerFactory.getLogger(ComputerRestController.class);
 
-	@Autowired
 	private ComputerService computerService;
-
-	@Autowired
 	private ComputerMapper computerMapper;
-
-	@Autowired
 	private GetAllParametersManager getAllParametersManager;
+	
+	public ComputerRestController(ComputerService computerService, ComputerMapper computerMapper, GetAllParametersManager getAllParametersManager) {
+	  this.computerService = computerService;
+	  this.computerMapper = computerMapper;
+	  this.getAllParametersManager = getAllParametersManager;
+	}
 
 	@GetMapping
 	public ResponseEntity<Object> findPage(@RequestParam(required = false, defaultValue = "0") int numPage,

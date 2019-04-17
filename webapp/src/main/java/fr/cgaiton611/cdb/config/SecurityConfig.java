@@ -29,11 +29,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
-	@Autowired
 	private UserService userService;
 	
-	public SecurityConfig() {
+	public SecurityConfig(UserService userService) {
 		logger.info("##### SecurityConfig is being initialized ... #####");
+		this.userService = userService;
 	}
 	
 	@PostConstruct

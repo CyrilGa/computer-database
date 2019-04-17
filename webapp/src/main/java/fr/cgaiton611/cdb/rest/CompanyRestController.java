@@ -28,19 +28,19 @@ import fr.cgaiton611.cdb.rest.parametersmanager.GetAllParametersManager;
 import fr.cgaiton611.cdb.service.CompanyService;
 
 @RestController
-@RequestMapping("/api/v1/company")
+@RequestMapping("/api/v1/companies")
 public class CompanyRestController {
-
 	private final Logger logger = LoggerFactory.getLogger(CompanyRestController.class);
 
-	@Autowired
-	CompanyService companyService;
-
-	@Autowired
+	private CompanyService companyService;
 	private CompanyMapper companyMapper;
-	
-	@Autowired
 	private GetAllParametersManager getAllParametersManager;
+	
+	public CompanyRestController(CompanyService companyService, CompanyMapper companyMapper, GetAllParametersManager getAllParametersManager) {
+	  this.companyService = companyService;
+	  this.companyMapper = companyMapper;
+	  this.getAllParametersManager = getAllParametersManager;
+	}
 
 	public ResponseEntity<Object> findPage(@RequestParam(required = false, defaultValue = "0") int numPage,
 			@RequestParam(required = false, defaultValue = "10") int nbElements) {

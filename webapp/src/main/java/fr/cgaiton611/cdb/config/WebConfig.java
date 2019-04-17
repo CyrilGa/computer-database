@@ -18,6 +18,8 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import fr.cgaiton611.cdb.util.ConvertUtil;
+
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = { "fr.cgaiton611.cdb.page", "fr.cgaiton611.cdb.dto", "fr.cgaiton611.cdb.controller",
@@ -74,7 +76,10 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(localeInterceptor());
-
 	}
-
+	
+	@Bean
+	public ConvertUtil convertUtil() {
+	  return new ConvertUtil();
+	}
 }

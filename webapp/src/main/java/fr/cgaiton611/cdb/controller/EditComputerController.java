@@ -39,12 +39,15 @@ public class EditComputerController {
 
 	private final Logger logger = LoggerFactory.getLogger(EditComputerController.class);
 
-	@Autowired
 	private ComputerService computerService;
-	@Autowired
 	private CompanyService companyService;
-	@Autowired
 	private ComputerMapper computerMapper;
+	
+	public EditComputerController(ComputerService computerService, CompanyService companyService, ComputerMapper computerMapper) {
+	  this.computerService = computerService;
+	  this.companyService = companyService;
+	  this.computerMapper = computerMapper;
+	}
 
 	@GetMapping
 	public String doGet(@RequestParam(required = false, name = "dashboard") String pDashboard,

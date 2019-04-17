@@ -35,16 +35,17 @@ public class DashboardController {
 	private final String[] tableNames = { "string.computerName", "string.introduced", "string.discontinued",
 			"string.companyName" };
 
-	@Autowired
 	private ComputerService computerService;
-
-	@Autowired
 	private ComputerMapper computerMapper;
-
-	@Autowired
 	private ComputerPage computerPage;
-
-	ConvertUtil convertUtil = new ConvertUtil();
+	private ConvertUtil convertUtil;
+	
+	public DashboardController(ComputerService computerService, ComputerMapper computerMapper, ComputerPage computerPage, ConvertUtil convertUtil) {
+	  this.computerService = computerService;
+	  this.computerMapper = computerMapper;
+	  this.computerPage = computerPage;
+	  this.convertUtil = convertUtil;
+	}
 
 	@GetMapping
 	public String doGet(@RequestParam(required = false, name = "dashboardMsg") String pDashboardMsg,

@@ -38,12 +38,15 @@ public class AddComputerController {
 
 	private final Logger logger = LoggerFactory.getLogger(AddComputerController.class);
 
-	@Autowired
 	private ComputerService computerService;
-	@Autowired
 	private CompanyService companyService;
-	@Autowired
 	private ComputerMapper computerMapper;
+	
+	public AddComputerController(ComputerService computerService, CompanyService companyService, ComputerMapper computerMapper) {
+	  this.computerService = computerService;
+	  this.companyService = companyService;
+	  this.computerMapper = computerMapper;
+	}
 
 	@GetMapping
 	public String doGet(@RequestParam(required = false, name = "errorMsgs") List<String> errorMsgs, Model model,
