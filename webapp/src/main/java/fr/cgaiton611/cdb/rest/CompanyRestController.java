@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,7 +44,9 @@ public class CompanyRestController {
 	private GetAllParametersEntityValidator entityValidator;
 
 	@GetMapping
-	public ResponseEntity<Object> findPage(@RequestBody GetAllParametersEntity entity) {
+	public ResponseEntity<Object> findPage(@RequestBody GetAllParametersEntity entity,  @CookieValue("JSESSIONID") String jsessionid) {
+	  System.out.println(jsessionid);
+	  
 		List<Company> companies = new ArrayList<>();
 		try {
 			entityValidator.validateForCompany(entity);
@@ -59,8 +62,8 @@ public class CompanyRestController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Object> find(@PathVariable("id") int pId) {
-		Company company = null;
+	public ResponseEntity<Object> find(@PathVariable("id") int pId) {  
+	  Company company = null;
 		try {
 			company = companyService.find(new Company(pId));
 		} catch (DAOException e) {
