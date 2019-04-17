@@ -1,5 +1,7 @@
 package fr.cgaiton611.cdb.config;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Locale;
 
 import org.slf4j.Logger;
@@ -8,6 +10,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -22,64 +27,64 @@ import fr.cgaiton611.cdb.util.ConvertUtil;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = { "fr.cgaiton611.cdb.page", "fr.cgaiton611.cdb.dto", "fr.cgaiton611.cdb.controller",
-		"fr.cgaiton611.cdb.mapper" , "fr.cgaiton611.cdb.rest", "fr.cgaiton611.cdb.webentity"})
+@ComponentScan(basePackages = { "fr.cgaiton611.cdb.page", "fr.cgaiton611.cdb.dto", "fr.cgaiton611.cdb.controller", "fr.cgaiton611.cdb.mapper", "fr.cgaiton611.cdb.rest",
+    "fr.cgaiton611.cdb.webentity" })
 public class WebConfig implements WebMvcConfigurer {
 
-	private final Logger logger = LoggerFactory.getLogger(WebConfig.class);
+  private final Logger logger = LoggerFactory.getLogger(WebConfig.class);
 
-	public WebConfig() {
-		logger.info("##### WebConfig is being initialized ... #####");
-	}
+  public WebConfig() {
+    logger.info("##### WebConfig is being initialized ... #####");
+  }
 
-	@Bean
-	public ViewResolver viewResolver() {
-		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-		viewResolver.setViewClass(JstlView.class);
-		viewResolver.setPrefix("/resources/views/");
-		viewResolver.setSuffix(".jsp");
-		return viewResolver;
-	}
+  @Bean
+  public ViewResolver viewResolver() {
+    InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+    viewResolver.setViewClass(JstlView.class);
+    viewResolver.setPrefix("/resources/views/");
+    viewResolver.setSuffix(".jsp");
+    return viewResolver;
+  }
 
-	@Override
-	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/js/**").addResourceLocations("/resources/js/");
-		registry.addResourceHandler("/css/**").addResourceLocations("/resources/css/");
-		registry.addResourceHandler("/fonts/**").addResourceLocations("/resources/fonts/");
-		registry.addResourceHandler("/img/**").addResourceLocations("/resources/img/");
-	}
+  @Override
+  public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+    registry.addResourceHandler("/js/**").addResourceLocations("/resources/js/");
+    registry.addResourceHandler("/css/**").addResourceLocations("/resources/css/");
+    registry.addResourceHandler("/fonts/**").addResourceLocations("/resources/fonts/");
+    registry.addResourceHandler("/img/**").addResourceLocations("/resources/img/");
+  }
 
-	@Bean
-	public ReloadableResourceBundleMessageSource messageSource() {
-		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-		messageSource.setBasename("classpath:strings");
-		messageSource.setDefaultEncoding("UTF-8");
-		return messageSource;
-	}
+  @Bean
+  public ReloadableResourceBundleMessageSource messageSource() {
+    ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+    messageSource.setBasename("classpath:strings");
+    messageSource.setDefaultEncoding("UTF-8");
+    return messageSource;
+  }
 
-	@Bean
-	public CookieLocaleResolver localeResolver() {
-		CookieLocaleResolver localeResolver = new CookieLocaleResolver();
-		localeResolver.setDefaultLocale(Locale.FRENCH);
-		localeResolver.setCookieName("my-locale-cookie");
-		localeResolver.setCookieMaxAge(3600);
-		return localeResolver;
-	}
+  @Bean
+  public CookieLocaleResolver localeResolver() {
+    CookieLocaleResolver localeResolver = new CookieLocaleResolver();
+    localeResolver.setDefaultLocale(Locale.FRENCH);
+    localeResolver.setCookieName("my-locale-cookie");
+    localeResolver.setCookieMaxAge(3600);
+    return localeResolver;
+  }
 
-	@Bean
-	public LocaleChangeInterceptor localeInterceptor() {
-		LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
-		interceptor.setParamName("lang");
-		return interceptor;
-	}
+  @Bean
+  public LocaleChangeInterceptor localeInterceptor() {
+    LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
+    interceptor.setParamName("lang");
+    return interceptor;
+  }
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(localeInterceptor());
-	}
-	
-	@Bean
-	public ConvertUtil convertUtil() {
-	  return new ConvertUtil();
-	}
+  @Override
+  public void addInterceptors(InterceptorRegistry registry) {
+    registry.addInterceptor(localeInterceptor());
+  }
+
+  @Bean
+  public ConvertUtil convertUtil() {
+    return new ConvertUtil();
+  }
 }
