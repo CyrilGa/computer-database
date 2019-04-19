@@ -72,7 +72,7 @@ public class GetAllParametersManager {
 			throws EntityValidationException {
 		int maxPage;
 		try {
-			maxPage = (computerService.countWithParameters(computerName, companyName) / nbElements);
+			maxPage = getMaxPage(computerName, companyName, nbElements);
 		} catch (DAOException e) {
 			throw new DatabaseErrorValidationException();
 		}
@@ -91,6 +91,10 @@ public class GetAllParametersManager {
 		if (numPage < 0 || numPage > maxPage) {
 			throw new NumPageNotValidException(0, maxPage);
 		}
+	}
+	
+	public int getMaxPage(String computerName, String companyName, int nbElements) throws DAOException {
+	  return (computerService.countWithParameters(computerName, companyName) / nbElements);
 	}
 
 }

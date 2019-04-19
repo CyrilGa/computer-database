@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -29,7 +30,6 @@ import fr.cgaiton611.cdb.model.Computer;
 import fr.cgaiton611.cdb.rest.parametersmanager.GetAllParametersManager;
 import fr.cgaiton611.cdb.service.ComputerService;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/computers")
 public class ComputerRestController {
@@ -54,12 +54,16 @@ public class ComputerRestController {
 			@RequestParam(required = false, defaultValue = "id") String orderAttribute,
 			@RequestParam(required = false, defaultValue = "ASC") String orderType) {
 		List<Computer> computers = new ArrayList<>();
+		int maxPage;
+		
 		try {
 			getAllParametersManager.validateForComputer(numPage, nbElements, computerName, companyName, orderAttribute,
 					orderType);
 			orderAttribute = getAllParametersManager.translateOrderAttribute(orderAttribute);
 			computers = computerService.findPageWithParameters(numPage, nbElements, computerName, companyName, orderAttribute,
 					orderType);
+			
+			maxPage = getAllParametersManager.getMaxPage(computerName, companyName, nbElements);
 		} catch (DAOException e) {
 			logger.warn(e.getMessage());
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -67,7 +71,13 @@ public class ComputerRestController {
 			logger.warn(e.getMessage());
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.FAILED_DEPENDENCY);
 		}
-		return new ResponseEntity<>(computerMapper.toComputerDTOList(computers), HttpStatus.OK);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("MaxPageId", String.valueOf(maxPage));
+		
+		return ResponseEntity.ok()
+		    .headers(headers)
+		    .body(computerMapper.toComputerDTOList(computers));
 	}
 
 	@GetMapping("/{id}")

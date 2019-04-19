@@ -29,7 +29,6 @@ import fr.cgaiton611.cdb.model.Company;
 import fr.cgaiton611.cdb.rest.parametersmanager.GetAllParametersManager;
 import fr.cgaiton611.cdb.service.CompanyService;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/companies")
 public class CompanyRestController {
