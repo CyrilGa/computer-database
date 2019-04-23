@@ -62,9 +62,12 @@ public class UserRestController {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, user.getPassword()));
             String token = jwtTokenProvider.createToken(username, Collections.singletonList(user.getRole()));
 
+            user = userService.loadUser(username);
+
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("token", token);
+            model.put("role", user.getRole());
             return ok(model);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username/password supplied");

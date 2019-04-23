@@ -85,7 +85,6 @@ public class ComputerRestController {
 
 	@CrossOrigin
 	@GetMapping("/{id}")
-	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<Object> find(@PathVariable("id") int pId) {
 		Computer computer = null;
 		try {
