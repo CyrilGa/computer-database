@@ -32,8 +32,6 @@ import fr.cgaiton611.cdb.model.Computer;
 import fr.cgaiton611.cdb.rest.parametersmanager.GetAllParametersManager;
 import fr.cgaiton611.cdb.service.ComputerService;
 
-import javax.servlet.http.HttpServletResponse;
-
 @RestController
 @RequestMapping("/api/v1/computers")
 public class ComputerRestController {
@@ -50,14 +48,16 @@ public class ComputerRestController {
 	  this.getAllParametersManager = getAllParametersManager;
 	}
 
-	@CrossOrigin
+	@CrossOrigin(exposedHeaders = {
+			"MaxPageId"
+	})
 	@GetMapping
 	public ResponseEntity<Object> findPage(@RequestParam(required = false, defaultValue = "0") int numPage,
-										   @RequestParam(required = false, defaultValue = "10") int nbElements,
-										   @RequestParam(required = false, defaultValue = "") String computerName,
-										   @RequestParam(required = false, defaultValue = "") String companyName,
-										   @RequestParam(required = false, defaultValue = "id") String orderAttribute,
-										   @RequestParam(required = false, defaultValue = "ASC") String orderType, HttpServletResponse response) {
+			@RequestParam(required = false, defaultValue = "10") int nbElements,
+			@RequestParam(required = false, defaultValue = "") String computerName,
+			@RequestParam(required = false, defaultValue = "") String companyName,
+			@RequestParam(required = false, defaultValue = "id") String orderAttribute,
+			@RequestParam(required = false, defaultValue = "ASC") String orderType) {
 		List<Computer> computers = new ArrayList<>();
 		int maxPage;
 		
@@ -77,9 +77,11 @@ public class ComputerRestController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.FAILED_DEPENDENCY);
 		}
 		
-		response.addHeader("MaxPageId", String.valueOf(maxPage));
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("MaxPageId", String.valueOf(maxPage));
 
 		return ResponseEntity.ok()
+		    .headers(headers)
 		    .body(computerMapper.toComputerDTOList(computers));
 	}
 
