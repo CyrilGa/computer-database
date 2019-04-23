@@ -35,6 +35,8 @@
 		<spring-security-version>5.1.4.RELEASE</spring-security-version>
 		<javax-persistence-version>2.2</javax-persistence-version>
 		<javax-validation-version>2.0.1.Final</javax-validation-version>
+		<jackson.version>2.9.8</jackson.version>
+		<jjwt.version>0.8.0</jjwt.version>
 
 		<!-- plugins -->
 		<exec-maven-version>1.2.1</exec-maven-version>

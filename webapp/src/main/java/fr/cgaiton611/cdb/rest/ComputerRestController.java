@@ -85,8 +85,9 @@ public class ComputerRestController {
 		    .body(computerMapper.toComputerDTOList(computers));
 	}
 
+	@CrossOrigin
 	@GetMapping("/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<Object> find(@PathVariable("id") int pId) {
 		Computer computer = null;
 		try {
@@ -98,6 +99,7 @@ public class ComputerRestController {
 		return new ResponseEntity<>(computerMapper.toComputerDTO(computer), HttpStatus.OK);
 	}
 
+	@CrossOrigin
 	@PostMapping
 	public ResponseEntity<Object> create(@RequestBody ComputerDTO computerDTO) {
 		Computer computer;
@@ -114,6 +116,7 @@ public class ComputerRestController {
 		return new ResponseEntity<>(computerMapper.toComputerDTO(computer), HttpStatus.OK);
 	}
 
+	@CrossOrigin
 	@PutMapping
 	public ResponseEntity<Object> update(@RequestBody ComputerDTO computerDTO) {
 		Computer computer;
@@ -130,6 +133,7 @@ public class ComputerRestController {
 		return new ResponseEntity<>(computerMapper.toComputerDTO(computer), HttpStatus.OK);
 	}
 
+	@CrossOrigin
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> delete(@PathVariable("id") int pId) {
 		try {
