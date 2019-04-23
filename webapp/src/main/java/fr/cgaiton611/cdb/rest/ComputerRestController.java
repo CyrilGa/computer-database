@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,6 +33,7 @@ import fr.cgaiton611.cdb.rest.parametersmanager.GetAllParametersManager;
 import fr.cgaiton611.cdb.service.ComputerService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/v1/computers")
 public class ComputerRestController {
 
@@ -81,6 +84,7 @@ public class ComputerRestController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Object> find(@PathVariable("id") int pId) {
 		Computer computer = null;
 		try {

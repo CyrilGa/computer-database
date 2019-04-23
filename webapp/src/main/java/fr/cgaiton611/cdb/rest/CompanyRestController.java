@@ -30,6 +30,7 @@ import fr.cgaiton611.cdb.rest.parametersmanager.GetAllParametersManager;
 import fr.cgaiton611.cdb.service.CompanyService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/v1/companies")
 public class CompanyRestController {
 	private final Logger logger = LoggerFactory.getLogger(CompanyRestController.class);
