@@ -48,7 +48,9 @@ public class ComputerRestController {
 	  this.getAllParametersManager = getAllParametersManager;
 	}
 
-	@CrossOrigin
+	@CrossOrigin(exposedHeaders = {
+			"MaxPageId"
+	})
 	@GetMapping
 	public ResponseEntity<Object> findPage(@RequestParam(required = false, defaultValue = "0") int numPage,
 			@RequestParam(required = false, defaultValue = "10") int nbElements,
@@ -77,7 +79,7 @@ public class ComputerRestController {
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("MaxPageId", String.valueOf(maxPage));
-		
+
 		return ResponseEntity.ok()
 		    .headers(headers)
 		    .body(computerMapper.toComputerDTOList(computers));
