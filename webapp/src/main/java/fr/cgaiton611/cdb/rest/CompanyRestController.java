@@ -30,7 +30,6 @@ import fr.cgaiton611.cdb.rest.parametersmanager.GetAllParametersManager;
 import fr.cgaiton611.cdb.service.CompanyService;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api/v1/companies")
 public class CompanyRestController {
 	private final Logger logger = LoggerFactory.getLogger(CompanyRestController.class);
@@ -45,6 +44,7 @@ public class CompanyRestController {
 	  this.getAllParametersManager = getAllParametersManager;
 	}
 
+	@CrossOrigin
 	@GetMapping
 	public ResponseEntity<Object> findPage(@RequestParam(required = false, defaultValue = "0") int numPage,
 			@RequestParam(required = false, defaultValue = "10") int nbElements) {
@@ -62,6 +62,7 @@ public class CompanyRestController {
 		return new ResponseEntity<>(companyMapper.toCompanyDTOList(companies), HttpStatus.OK);
 	}
 
+	@CrossOrigin
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> find(@PathVariable("id") int pId) {  
 	  Company company = null;
@@ -74,6 +75,7 @@ public class CompanyRestController {
 		return new ResponseEntity<>(companyMapper.toCompanyDTO(company), HttpStatus.OK);
 	}
 
+	@CrossOrigin
 	@PostMapping
 	public ResponseEntity<Object> create(@RequestBody CompanyDTO companyDTO) {
 		Company company;
@@ -106,6 +108,7 @@ public class CompanyRestController {
 		return new ResponseEntity<>(companyMapper.toCompanyDTO(company), HttpStatus.OK);
 	}
 
+	@CrossOrigin
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> delete(@PathVariable("id") int pId) {
 		try {

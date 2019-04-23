@@ -27,8 +27,7 @@ import fr.cgaiton611.cdb.util.ConvertUtil;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = { "fr.cgaiton611.cdb.page", "fr.cgaiton611.cdb.dto", "fr.cgaiton611.cdb.controller", "fr.cgaiton611.cdb.mapper", "fr.cgaiton611.cdb.rest",
-    "fr.cgaiton611.cdb.webentity" })
+@ComponentScan(basePackages = { "fr.cgaiton611.cdb.page", "fr.cgaiton611.cdb.dto", "fr.cgaiton611.cdb.controller", "fr.cgaiton611.cdb.mapper", "fr.cgaiton611.cdb.rest" })
 public class WebConfig implements WebMvcConfigurer {
 
   private final Logger logger = LoggerFactory.getLogger(WebConfig.class);

@@ -33,7 +33,6 @@ import fr.cgaiton611.cdb.rest.parametersmanager.GetAllParametersManager;
 import fr.cgaiton611.cdb.service.ComputerService;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api/v1/computers")
 public class ComputerRestController {
 
@@ -49,6 +48,7 @@ public class ComputerRestController {
 	  this.getAllParametersManager = getAllParametersManager;
 	}
 
+	@CrossOrigin
 	@GetMapping
 	public ResponseEntity<Object> findPage(@RequestParam(required = false, defaultValue = "0") int numPage,
 			@RequestParam(required = false, defaultValue = "10") int nbElements,
@@ -83,8 +83,9 @@ public class ComputerRestController {
 		    .body(computerMapper.toComputerDTOList(computers));
 	}
 
+	@CrossOrigin
 	@GetMapping("/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<Object> find(@PathVariable("id") int pId) {
 		Computer computer = null;
 		try {
@@ -96,6 +97,7 @@ public class ComputerRestController {
 		return new ResponseEntity<>(computerMapper.toComputerDTO(computer), HttpStatus.OK);
 	}
 
+	@CrossOrigin
 	@PostMapping
 	public ResponseEntity<Object> create(@RequestBody ComputerDTO computerDTO) {
 		Computer computer;
@@ -112,6 +114,7 @@ public class ComputerRestController {
 		return new ResponseEntity<>(computerMapper.toComputerDTO(computer), HttpStatus.OK);
 	}
 
+	@CrossOrigin
 	@PutMapping
 	public ResponseEntity<Object> update(@RequestBody ComputerDTO computerDTO) {
 		Computer computer;
@@ -128,6 +131,7 @@ public class ComputerRestController {
 		return new ResponseEntity<>(computerMapper.toComputerDTO(computer), HttpStatus.OK);
 	}
 
+	@CrossOrigin
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> delete(@PathVariable("id") int pId) {
 		try {
