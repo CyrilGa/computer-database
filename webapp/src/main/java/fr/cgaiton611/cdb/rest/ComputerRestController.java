@@ -141,7 +141,7 @@ public class ComputerRestController {
 			logger.warn(e.getMessage());
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>("Sucessfully deleted", HttpStatus.OK);
+		return new ResponseEntity<>("", HttpStatus.OK);
 	}
 
 }
