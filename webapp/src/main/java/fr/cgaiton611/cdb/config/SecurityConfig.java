@@ -93,9 +93,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+
                 .antMatchers("/api/v1/users/register").permitAll()
                 .antMatchers("/api/v1/users/signin").permitAll()
-                //.anyRequest().authenticated()
+                .antMatchers("/api/v1/users/refresh_token").authenticated()
+
+                .antMatchers(HttpMethod.GET, "/api/v1/computers").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/computers/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/computers").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/v1/computers").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/api/v1/computers").hasRole("ADMIN")
+
+                .antMatchers(HttpMethod.GET, "/api/v1/companies").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/companies/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/companies").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/v1/companies").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/api/v1/companies").hasRole("ADMIN")
+
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));
     }

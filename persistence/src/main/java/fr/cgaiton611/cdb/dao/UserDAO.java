@@ -4,6 +4,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +19,7 @@ import fr.cgaiton611.cdb.model.User;
 public class UserDAO {
 
 	private static final String HQL_FIND_BY_NAME = "SELECT user FROM User user WHERE username = :username ";
-//	private final Logger logger = LoggerFactory.getLogger(UserDAO.class);
+	private final Logger logger = LoggerFactory.getLogger(UserDAO.class);
 
 	@Autowired
 	SessionFactory sessionFactory;
@@ -41,6 +43,7 @@ public class UserDAO {
 		try (Session session = sessionFactory.openSession()) {
 			session.save(obj);
 		} catch (HibernateException e) {
+			logger.warn(e.getCause().getClass().toString());
 			throw new UpdateException();
 		}
 		return obj;
